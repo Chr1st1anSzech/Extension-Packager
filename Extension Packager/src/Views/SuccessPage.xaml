@@ -1,0 +1,93 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="Extension_Packager.src.Views.SuccessPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Extension_Packager.src.Views"
+    xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
+    xmlns:converter="using:Extension_Packager.src.Converter"
+    xmlns:controls="using:Extension_Packager.src.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <viewmodels:SuccessPageViewModel />
+    </Page.DataContext>
+
+    <Grid
+        Padding="0"
+        HorizontalAlignment="Stretch"
+        x:Name="MainGrid"
+        Style="{StaticResource BaseGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer
+            Padding="0"
+            Grid.Row="0">
+            <Grid
+                Style="{StaticResource BaseGridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*"
+                        MinWidth="312"
+                        MaxWidth="512" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    AutomationProperties.HeadingLevel="Level2"
+                    x:Uid="SuccessTitle"
+                    Style="{StaticResource Header01Style}" />
+
+                <TextBox
+                    x:Uid="PolicyStringTextBox"
+                    AutomationProperties.IsRequiredForForm="True"
+                    AutomationProperties.AccessKey="I"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    IsReadOnly="True"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
+                    Text="{Binding Path=PolicyString, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </ScrollViewer>
+
+        <StackPanel
+            Style="{StaticResource BaseStackPanelStyle}"
+            Grid.Row="1"
+            Spacing="24"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+
+            <Button
+                x:Uid="NewExtensionButton"
+                Width="96"
+                Command="{Binding Path=NewExtensionCommand}"
+                Style="{StaticResource HighlightedButtonStyle}" />
+
+            <Button
+                x:Uid="BackToStartpageButton"
+                Width="96"
+                Command="{Binding Path=BackToStartpageCommand}"
+                Style="{StaticResource HighlightedButtonStyle}" />
+
+        </StackPanel>
+
+    </Grid>
+</Page>

@@ -1,0 +1,130 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="Extension_Packager.src.Views.CrxSelectPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
+    xmlns:controls="using:Extension_Packager.src.Controls"
+    xmlns:navigation="using:Extension_Packager.src.Navigation"
+    xmlns:converter="using:Extension_Packager.src.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="MyCrxSelectPage">
+
+    <Page.DataContext>
+        <viewmodels:CrxSelectPageViewModel />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <converter:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
+    </Page.Resources>
+
+    <Grid
+        Padding="0"
+        HorizontalAlignment="Stretch"
+        x:Name="MainGrid"
+        Style="{StaticResource BaseGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Grid
+            Padding="0"
+            Grid.Row="0"
+            Style="{StaticResource BaseGridStyle}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*"
+                    MinWidth="312"
+                    MaxWidth="512" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition
+                    Height="auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                AutomationProperties.HeadingLevel="Level2"
+                Grid.Row="0"
+                x:Uid="CreatePageTitle"
+                Style="{StaticResource Header01Style}" />
+
+            <TextBlock
+                x:Uid="InvalideCrxPathWarning"
+                Grid.Row="1"
+                MinWidth="300"
+                MinHeight="32"
+                Style="{StaticResource WarningTextBlockStyle}"
+                TextWrapping="WrapWholeWords"
+                Text="{Binding Path=ErrorMessage}"
+                Visibility="{Binding Path=ErrorOccurred,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
+
+            <controls:PathTextBox
+                Grid.Row="2"
+                x:Uid="ExtensionPathTextBox"
+                x:Name="ExtensionPathTextBox"
+                PickerType="File"
+                Value="{Binding Path=ViewModel.ExtensionPath,Mode=TwoWay,ElementName=MyCrxSelectPage}"
+                PickerFileTypes=".crx" />
+        </Grid>
+        
+        
+
+        <StackPanel
+            Style="{StaticResource BaseStackPanelStyle}"
+            Grid.Row="1"
+            Spacing="24"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+            
+            <Button
+                x:Uid="CancelButton"
+                Width="96"
+                Command="{Binding Path=CancelCommand}"
+                Style="{StaticResource HighlightedButtonStyle}" />
+            
+            <Button
+                x:Uid="NextStepButton"
+                Width="96"
+                Command="{Binding Path=NextPageCommand}"
+                Style="{StaticResource HighlightedButtonStyle}" />
+
+        </StackPanel>
+
+        <Grid
+            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter}}"
+            Style="{StaticResource BaseGridStyle}"
+            Grid.RowSpan="2"
+            Background="{ThemeResource PrimaryBackgroundSemiTransparent}"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+            <Grid
+                Style="{StaticResource BaseGridStyle}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <StackPanel
+                    Style="{StaticResource BaseStackPanelStyle}">
+                    <ProgressRing
+                        IsActive="True" />
+                    <TextBlock
+                        Style="{StaticResource BaseTextBlockStyle}"
+                        x:Uid="ExtractCrx" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        
+
+    </Grid>
+</Page>

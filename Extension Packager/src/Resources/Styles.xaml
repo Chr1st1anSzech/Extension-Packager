@@ -1,0 +1,321 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--#region Container -->
+
+    <Style
+        TargetType="Grid"
+        x:Key="BaseGridStyle">
+        <Setter
+            Property="Background"
+            Value="{StaticResource PrimaryBackground}" />
+        <Setter
+            Property="Padding"
+            Value="24,12" />
+    </Style>
+
+    <Style
+        TargetType="Expander"
+        x:Key="BaseExpanderStyle">
+        <Setter
+            Property="Background"
+            Value="{StaticResource PrimaryBackground}" />
+        <Setter
+            Property="Padding"
+            Value="12" />
+    </Style>
+
+    <Style
+        TargetType="StackPanel"
+        x:Key="BaseStackPanelStyle">
+        <Setter
+            Property="Background"
+            Value="{StaticResource PrimaryBackground}" />
+        <Setter
+            Property="Padding"
+            Value="12" />
+    </Style>
+
+    <Style
+        TargetType="StackPanel"
+        x:Key="SecondaryStackPanelStyle">
+        <Setter
+            Property="Background"
+            Value="{StaticResource SecondaryBackground}" />
+        <Setter
+            Property="Padding"
+            Value="12" />
+    </Style>
+
+    <Style
+        TargetType="StackPanel"
+        BasedOn="{StaticResource BaseStackPanelStyle}"
+        x:Key="ColumnStackPanelStyle">
+        <Setter
+            Property="Background"
+            Value="{StaticResource PrimaryBackground}" />
+        <Setter
+            Property="Padding"
+            Value="0,12,0,12" />
+    </Style>
+
+    <!--#endregion-->
+    
+    <!--#region TextBlock & TextBox -->
+
+    <Style
+        TargetType="TextBlock"
+        x:Key="BaseTextStyle">
+        <Setter
+            Property="FontFamily"
+            Value="Segoe UI" />
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource ForegroundColor}" />
+    </Style>
+
+    <Style
+        TargetType="RichTextBlock"
+        x:Key="BaseRichTextStyle">
+        <Setter
+            Property="FontFamily"
+            Value="Segoe UI" />
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource ForegroundColor}" />
+    </Style>
+
+    <Style
+        TargetType="TextBlock"
+        BasedOn="{StaticResource BaseTextStyle}"
+        x:Key="WarningTextBlockStyle">
+        <Setter
+            Property="FontSize"
+            Value="12" />
+        <Setter
+            Property="Foreground"
+            Value="DarkRed" />
+    </Style>
+
+    <Style
+        TargetType="TextBlock"
+        BasedOn="{StaticResource BaseTextStyle}"
+        x:Key="InfoTextBlockStyle">
+        <Setter
+            Property="FontSize"
+            Value="12" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource Accent}" />
+    </Style>
+
+    <Style
+        TargetType="TextBox"
+        x:Key="BaseTextboxStyle">
+        <Setter
+            Property="FontFamily"
+            Value="Segoe UI" />
+        <Setter
+            Property="CornerRadius"
+            Value="4" />
+        <Setter
+            Property="MaxWidth"
+            Value="512" />
+        <Setter
+            Property="MinWidth"
+            Value="256" />
+        <Setter
+            Property="FontSize"
+            Value="12" />
+        <Setter
+            Property="Height"
+            Value="32" />
+        <Setter
+            Property="Margin"
+            Value="0,12,0,12" />
+        <Setter
+            Property="Padding"
+            Value="12,8,12,4" />
+        <Setter
+            Property="Background"
+            Value="{ThemeResource SecondaryBackground}" />
+        <Setter
+            Property="BorderBrush"
+            Value="{ThemeResource Border}" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource ForegroundColor}" />
+    </Style>
+
+    <Style
+        TargetType="TextBox"
+        BasedOn="{StaticResource BaseTextboxStyle}"
+        x:Key="TextboxWithHeaderStyle">
+        <Setter
+            Property="Height"
+            Value="60" />
+    </Style>
+
+    <Style
+        TargetType="TextBlock"
+        BasedOn="{StaticResource BaseTextStyle}"
+        x:Key="LabelStyle">
+        <Setter
+            Property="FontSize"
+            Value="12" />
+        <Setter
+            Property="FontWeight"
+            Value="SemiBold" />
+        <Setter
+            Property="FontFamily"
+            Value="Segoe UI" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource SecondaryForeground}" />
+    </Style>
+
+
+    <!--#region Header-->
+    <Style
+        TargetType="TextBlock"
+        BasedOn="{StaticResource BaseTextStyle}"
+        x:Key="BaseHeaderStyle">
+        <Setter
+            Property="Margin"
+            Value="0,6,0,12" />
+    </Style>
+    <Style
+        TargetType="TextBlock"
+        BasedOn="{StaticResource BaseHeaderStyle}"
+        x:Key="Header01Style">
+        <Setter
+            Property="FontWeight"
+            Value="SemiBold" />
+        <Setter
+            Property="FontSize"
+            Value="24" />
+    </Style>
+
+    <Style
+        TargetType="TextBlock"
+        BasedOn="{StaticResource BaseHeaderStyle}"
+        x:Key="Header02Style">
+        <Setter
+            Property="FontWeight"
+            Value="SemiBold" />
+        <Setter
+            Property="FontSize"
+            Value="18" />
+    </Style>
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region Button -->
+
+    <Style
+        TargetType="Button"
+        x:Key="HighlightedButtonStyle">
+        <Style.Setters>
+            <Setter
+                Property="Margin"
+                Value="0,12,0,12" />
+            <Setter
+                Property="Padding"
+                Value="11,6,12,7" />
+            <Setter
+                Property="FontSize"
+                Value="14" />
+            <Setter
+                Property="IsEnabled"
+                Value="true" />
+            <Setter
+                Property="CornerRadius"
+                Value="4" />
+            <Setter
+                Property="Background"
+                Value="{ThemeResource AccentBackground}" />
+            <Setter
+                Property="BorderThickness"
+                Value="0" />
+            <Setter
+                Property="Foreground"
+                Value="{ThemeResource ForegroundForAccent}" />
+        </Style.Setters>
+    </Style>
+
+    <Style
+        TargetType="Button"
+        x:Key="IconButtonStyle">
+        <Style.Setters>
+            <Setter
+                Property="Margin"
+                Value="6" />
+            <Setter
+                Property="Padding"
+                Value="6" />
+            <Setter
+                Property="CornerRadius"
+                Value="4" />
+            <Setter
+                Property="IsEnabled"
+                Value="true" />
+            <Setter
+                Property="Background"
+                Value="Transparent" />
+            <Setter
+                Property="BorderThickness"
+                Value="0" />
+            <Setter
+                Property="Foreground"
+                Value="{ThemeResource Foreground}" />
+            <Setter
+                Property="Template"
+                Value="{StaticResource IconButtonTemplate}" />
+        </Style.Setters>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region ListBox & ComboBox -->
+
+    <Style
+        TargetType="ComboBox"
+        x:Key="BaseComboBoxStyle">
+        <Setter
+            Property="FontFamily"
+            Value="Segoe UI" />
+        <Setter
+            Property="FontSize"
+            Value="12" />
+        <Setter
+            Property="Height"
+            Value="32" />
+        <Setter
+            Property="MinWidth"
+            Value="160" />
+        <Setter
+            Property="Background"
+            Value="{ThemeResource SecondaryBackground}" />
+        <Setter
+            Property="BorderBrush"
+            Value="{ThemeResource Border}" />
+        <Setter
+            Property="Foreground"
+            Value="{ThemeResource ForegroundColor}" />
+    </Style>
+
+    <!--#endregion-->
+
+    
+</ResourceDictionary>

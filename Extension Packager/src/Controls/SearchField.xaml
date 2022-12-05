@@ -1,0 +1,30 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<UserControl
+    x:Class="Extension_Packager.src.Controls.SearchField"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Extension_Packager.src.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Orientation="Horizontal" Style="{StaticResource BaseStackPanelStyle}" Padding="0" Margin="0">
+        <TextBox
+            x:Name="SearchFieldTextBox"
+            x:Uid="SearchFieldTextBox"
+            MinWidth="200"
+            Margin="0"
+            PlaceholderForeground="{ThemeResource PrimaryForegroundHover}"
+            Style="{StaticResource BaseTextboxStyle}"/>
+        <Button
+            x:Name="SearchFieldButton"
+            Width="32"
+            Height="32"
+            Margin="6,0,0,0"
+            Padding="4,2,8,8"
+            Content="{StaticResource SearchIconData}"
+            Style="{StaticResource IconButtonStyle}"/>
+    </StackPanel>
+</UserControl>

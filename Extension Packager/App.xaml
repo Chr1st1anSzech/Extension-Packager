@@ -1,0 +1,36 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Application
+    x:Class="Extension_Packager.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Extension_Packager">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources
+                    xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary
+                            x:Key="Dark"
+                            Source="ms-appx:///src/Themes/Dark.xaml" />
+                        <ResourceDictionary
+                            x:Key="Light"
+                            Source="ms-appx:///src/Themes/Light.xaml" />
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+
+                <ResourceDictionary
+                    Source="ms-appx:///src/Resources/Styles.xaml" />
+                <ResourceDictionary
+                    Source="ms-appx:///src/Resources/Templates.xaml" />
+                <ResourceDictionary
+                    Source="ms-appx:///src/Resources/Icons.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

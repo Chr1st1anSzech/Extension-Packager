@@ -1,0 +1,191 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="Extension_Packager.src.Views.ManifestEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Extension_Packager.src.Views"
+    xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
+    xmlns:converter="using:Extension_Packager.src.Converter"
+    xmlns:controls="using:Extension_Packager.src.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <viewmodels:ManifestEditPageViewModel />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <converter:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
+        <converter:InverseBoolConverter
+            x:Key="InverseBoolConverter" />
+    </Page.Resources>
+
+    <Grid
+        Padding="0"
+        HorizontalAlignment="Stretch"
+        x:Name="MainGrid"
+        Style="{StaticResource BaseGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer
+            Padding="0"
+            Grid.Row="0">
+            <Grid
+                Style="{StaticResource BaseGridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*"
+                        MinWidth="312"
+                        MaxWidth="512" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    AutomationProperties.HeadingLevel="Level2"
+                    x:Uid="EditManifestTitle"
+                    Style="{StaticResource Header01Style}" />
+
+                <TextBlock
+                    AutomationProperties.LiveSetting="Polite"
+                    Grid.Row="1"
+                    MinWidth="300"
+                    MinHeight="32"
+                    Margin="0,0,0,6"
+                    Style="{StaticResource WarningTextBlockStyle}"
+                    Text="{Binding ErrorMessage}"
+                    TextWrapping="WrapWholeWords"
+                    Visibility="{Binding Path=ErrorOccured,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
+
+                <TextBox
+                    x:Uid="ExtensionNameTextBox"
+                    AutomationProperties.IsRequiredForForm="True"
+                    AutomationProperties.AccessKey="N"
+                    AutomationProperties.IsDataValidForForm="{Binding IsNameInvalide, Converter={StaticResource InverseBoolConverter}}"
+                    Grid.Row="2"
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
+                    Text="{Binding Path=Name, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox
+                    x:Uid="ExtensionShortNameTextBox"
+                    AutomationProperties.IsRequiredForForm="True"
+                    AutomationProperties.AccessKey="S"
+                    AutomationProperties.IsDataValidForForm="{Binding IsShortNameInvalide, Converter={StaticResource InverseBoolConverter}}"
+                    Grid.Row="3"
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
+                    Text="{Binding Path=ShortName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox
+                    x:Uid="ExtensionVersionTextBox"
+                    AutomationProperties.IsRequiredForForm="True"
+                    AutomationProperties.AccessKey="V"
+                    Grid.Row="4"
+                    HorizontalAlignment="Stretch"
+                    IsReadOnly="True"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
+                    Text="{Binding Path=Version, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
+                <StackPanel
+                    Style="{StaticResource BaseStackPanelStyle}"
+                    Grid.Row="5"
+                    Spacing="24"
+                    Orientation="Horizontal">
+                    
+                    <Button
+                        x:Uid="ResetValuesButton"
+                        Width="108"
+                        Command="{Binding Path=ResetValuesCommand}"
+                        Style="{StaticResource HighlightedButtonStyle}" />
+
+                    <Button
+                        x:Uid="ManifestPreviewButton"
+                        Width="96"
+                        Command="{Binding Path=ManifestPreviewCommand}"
+                        Style="{StaticResource HighlightedButtonStyle}" />
+
+                </StackPanel>
+
+                <RichEditBox
+                    x:Uid="ExtensionManifestTextBox"
+                    x:Name="ExtensionManifestTextBox"
+                    Grid.Row="6"
+                    Margin="0,12,0,12"
+                    IsReadOnly="{Binding Path=IsEditBoxReadOnly,UpdateSourceTrigger=PropertyChanged}"
+                    Height="300" />
+
+            </Grid>
+
+        </ScrollViewer>
+
+        <StackPanel
+            Style="{StaticResource BaseStackPanelStyle}"
+            Grid.Row="1"
+            Spacing="24"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+
+            <Button
+                x:Uid="CancelButton"
+                Width="96"
+                Command="{Binding Path=CancelCommand}"
+                Style="{StaticResource HighlightedButtonStyle}" />
+
+            <Button
+                x:Uid="PackExtensionButton"
+                Width="96"
+                Command="{Binding Path=NextPageCommand}"
+                Style="{StaticResource HighlightedButtonStyle}" />
+
+        </StackPanel>
+
+        <Grid
+            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter}}"
+            Style="{StaticResource BaseGridStyle}"
+            Grid.RowSpan="2"
+            Background="{ThemeResource PrimaryBackgroundSemiTransparent}"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+            <Grid
+                Style="{StaticResource BaseGridStyle}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <StackPanel
+                    Style="{StaticResource BaseStackPanelStyle}">
+                    <ProgressRing
+                        IsActive="True" />
+                    <TextBlock
+                        Style="{StaticResource BaseTextBlockStyle}"
+                        x:Uid="PackExtensionMessage" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+    </Grid>
+
+</Page>

@@ -1,0 +1,144 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="Extension_Packager.src.Views.ImprintPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Extension_Packager.src.Views"
+    xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <viewmodels:ImprintPageViewModel />
+    </Page.DataContext>
+
+
+    <Grid
+        Padding="0"
+        HorizontalAlignment="Stretch"
+        x:Name="MainGrid"
+        Style="{StaticResource BaseGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer
+            Padding="0"
+            Grid.Row="0">
+            <Grid
+                Style="{StaticResource BaseGridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*"
+                        MinWidth="312"
+                        MaxWidth="512" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    AutomationProperties.HeadingLevel="Level2"
+                    x:Uid="ImprintTitle"
+                    Style="{StaticResource Header01Style}" />
+
+                <TextBlock
+                    Grid.Row="1"
+                    AutomationProperties.HeadingLevel="Level3"
+                    x:Uid="AboutTitle"
+                    Style="{StaticResource Header02Style}" />
+
+                <RichTextBlock
+                    Grid.Row="2"
+                    Style="{StaticResource BaseRichTextStyle}">
+                    <Paragraph
+                        Margin="0,10,0,0">
+                        <Run
+                            x:Uid="AboutText" />
+                    </Paragraph>
+                    <Paragraph
+                        Margin="0,10,0,0">
+                        <Run
+                            x:Uid="SourceCodeText" />
+                        <Hyperlink
+                            NavigateUri="">GitHub</Hyperlink>
+                    </Paragraph>
+                    <Paragraph
+                        Margin="0,10,0,0">
+                        <Run
+                            x:Uid="VersionText" />
+                        <Run
+                            FontWeight="SemiBold"
+                            Text="{Binding Path=Version}" />
+                    </Paragraph>
+                </RichTextBlock>
+
+                <TextBlock
+                    Grid.Row="3"
+                    Margin="0,32,0,12"
+                    AutomationProperties.HeadingLevel="Level3"
+                    x:Uid="DependenciesTitle"
+                    Style="{StaticResource Header02Style}" />
+
+                <RichTextBlock
+                    Grid.Row="4"
+                    Style="{StaticResource BaseRichTextStyle}">
+                    <Paragraph
+                        Margin="0,10,0,0">
+                        <Hyperlink
+                            NavigateUri="https://logging.apache.org/log4net/">log4net</Hyperlink>
+                    </Paragraph>
+                    <Paragraph
+                        Margin="0,10,0,0">
+                        <Hyperlink
+                            NavigateUri="https://www.nuget.org/packages/Microsoft.Windows.SDK.Contracts">Microsoft.Windows.SDK.BuildTools</Hyperlink>
+                    </Paragraph>
+                    <Paragraph
+                        Margin="0,10,0,0">
+                        <Hyperlink
+                            NavigateUri="https://github.com/microsoft/windowsappsdk">Microsoft.WindowsAppSDK</Hyperlink>
+                    </Paragraph>
+                    <Paragraph
+                        Margin="0,10,0,0">
+                        <Hyperlink
+                            NavigateUri="https://www.newtonsoft.com/json">Newtonsoft.Json</Hyperlink>
+                    </Paragraph>
+                    <Paragraph
+                        Margin="0,10,0,0">
+                        <Hyperlink
+                            NavigateUri="https://github.com/Rob--W/crxviewer">crxviewer</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+
+                <RichEditBox
+                    Grid.Row="5"
+                    Style="{StaticResource DefaultRichEditBoxStyle}"
+                    x:Name="LicenseEditBox"
+                    Margin="0,12,0,12"
+                    IsReadOnly="{Binding Path=IsEditBoxReadOnly,UpdateSourceTrigger=PropertyChanged}"
+                    Height="500" />
+
+            </Grid>
+        </ScrollViewer>
+
+    </Grid>
+</Page>

@@ -1,0 +1,102 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="Extension_Packager.src.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Extension_Packager.src.Views"
+    xmlns:controls="using:Extension_Packager.src.Controls"
+    xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    
+    <Page.DataContext>
+        <viewmodels:MainPageViewModel />
+    </Page.DataContext>
+
+    <Grid
+        Padding="0"
+        x:Name="MainPageGrid"
+        Style="{StaticResource BaseGridStyle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="*" />
+            <ColumnDefinition
+                Width="auto" />
+            <ColumnDefinition
+                Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            AutomationProperties.HeadingLevel="Level2"
+            Grid.ColumnSpan="2"
+            x:Uid="StartPageTitle"
+            Style="{StaticResource Header01Style}" />
+
+        <StackPanel
+            Grid.Column="0"
+            Grid.Row="1"
+            Style="{StaticResource ColumnStackPanelStyle}">
+            <TextBlock
+                Grid.ColumnSpan="2"
+                x:Uid="ActionsTitle"
+                Style="{StaticResource Header02Style}" />
+            <Button
+                x:Uid="CreateNewExtensionButton"
+                x:Name="CreateNewExtensionButton"
+                Command="{Binding CreateExtensionCommand}"
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="{Binding ElementName=UpdateExtensionButton, Path=ActualWidth}" />
+            <Button
+                x:Uid="UpdateExtensionButton"
+                x:Name="UpdateExtensionButton"
+                Command="{Binding ModifyExtensionCommand}"
+                Style="{StaticResource HighlightedButtonStyle}"/>
+        </StackPanel>
+
+        <Line
+            Grid.Column="1"
+            Grid.Row="1"
+            Margin="24"
+            Y1="0"
+            Y2="{Binding ElementName=MainPageGrid, Path=ActualHeight}" X1="0" X2="0" Stroke="{ThemeResource Border}"/>
+        
+        <StackPanel
+            Grid.Column="2"
+            Grid.Row="1"
+            Style="{StaticResource ColumnStackPanelStyle}">
+            <TextBlock
+                Grid.ColumnSpan="2"
+                x:Uid="LastUsedTitle"
+                Style="{StaticResource Header02Style}" />
+            
+            <StackPanel Orientation="Horizontal" Style="{StaticResource BaseStackPanelStyle}" Padding="0,12,0,6">
+                
+                <ComboBox
+                    x:Name="BrowserFilterComboBox"
+                    Margin="0,0,16,0"
+                    SelectedIndex="0"
+                    Style="{StaticResource BaseComboBoxStyle}" ItemsSource="{Binding BrowserFilterList}"/>
+                
+                <controls:SearchField/>
+                
+            </StackPanel>
+            
+            <ListView
+                x:Name="LastUsedExtensionListView">
+                <ListView.Items>
+                    <ListViewItem>halao</ListViewItem>
+                </ListView.Items>
+            </ListView>
+        </StackPanel>
+    
+    </Grid>
+</Page>

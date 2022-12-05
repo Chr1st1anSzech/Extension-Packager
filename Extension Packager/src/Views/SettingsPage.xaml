@@ -1,0 +1,212 @@
+<!-- Copyright (c) Christian Szech. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="Extension_Packager.src.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Extension_Packager.src.Views"
+    xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
+    xmlns:controls="using:Extension_Packager.src.Controls"
+    xmlns:converter="using:Extension_Packager.src.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="MySettingsPage">
+
+    <Page.DataContext>
+        <viewmodels:SettingsViewModel />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <converter:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
+        <converter:InverseBoolConverter
+            x:Key="InverseBoolConverter" />
+    </Page.Resources>
+
+    <Grid
+        Padding="0"
+        Style="{StaticResource BaseGridStyle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="4*" />
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer>
+
+            <Grid
+                Padding="0"
+                Grid.Row="0"
+                Style="{StaticResource BaseGridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*"
+                        MinWidth="312"
+                        MaxWidth="512" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    x:Uid="SettingsTitle"
+                    AutomationProperties.HeadingLevel="Level2"
+                    Grid.Row="0"
+                    Style="{StaticResource Header01Style}" />
+
+                <TextBlock
+                    x:Uid="FirstRunInfo"
+                    Grid.Row="1"
+                    MinWidth="300"
+                    MinHeight="32"
+                    Style="{StaticResource InfoTextBlockStyle}"
+                    TextWrapping="WrapWholeWords"
+                    Visibility="{Binding Settings.IsFirstRun,Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                <controls:PathTextBox
+                    x:Uid="BrowserPathTextBox"
+                    x:Name="BrowserPathTextBox"
+                    Grid.Row="2"
+                    PickerType="File"
+                    Value="{Binding Path=ViewModel.Settings.BrowserPath,Mode=TwoWay,ElementName=MySettingsPage}"
+                    PickerFileTypes=".exe" />
+
+                <TextBox
+                    x:Uid="OutputUrlTextBox"
+                    x:Name="OutputUrlTextBox"
+                    Grid.Row="3"
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding Path=Settings.OutputURL,Mode=TwoWay}"
+                    Style="{StaticResource TextboxWithHeaderStyle}" />
+
+                <controls:PathTextBox
+                    x:Uid="BackupPathTextBox"
+                    Grid.Row="4"
+                    PickerType="Folder"
+                    Value="{Binding Path=ViewModel.Settings.BackupDirectory,Mode=TwoWay,ElementName=MySettingsPage}"
+                    PickerFileTypes="*" />
+
+                <controls:PathTextBox
+                    x:Uid="OutputPathTextBox"
+                    Grid.Row="5"
+                    PickerType="Folder"
+                    Value="{Binding Path=ViewModel.Settings.OutputPath,Mode=TwoWay,ElementName=MySettingsPage}"
+                    PickerFileTypes="*" />
+
+                
+                
+                <TextBlock
+                    x:Uid="AdvancedSettingsTitle"
+                    Grid.Row="6"
+                    Style="{StaticResource Header02Style}" />
+
+                <TextBox
+                    x:Uid="ExtensionPathParameterTextBox"
+                    x:Name="ExtensionPathParameterTextBox"
+                    Grid.Row="7"
+                    HorizontalAlignment="Stretch"
+                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
+                    Text="{Binding Path=Settings.ExtensionPathParameter,Mode=TwoWay}"
+                    Style="{StaticResource TextboxWithHeaderStyle}" />
+
+                <TextBox
+                    x:Uid="ExtensionKeyParameterTextBox"
+                    Grid.Row="8"
+                    HorizontalAlignment="Stretch"
+                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
+                    Text="{Binding Path=Settings.ExtensionKeyParameter,Mode=TwoWay}"
+                    Style="{StaticResource TextboxWithHeaderStyle}" />
+
+                <TextBox
+                    x:Uid="AppXmlTextBox"
+                    Grid.Row="9"
+                    HorizontalAlignment="Stretch"
+                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
+                    Text="{Binding Path=Settings.XmlManifestName,Mode=TwoWay}"
+                    Style="{StaticResource TextboxWithHeaderStyle}" />
+
+                <TextBox
+                    x:Uid="AppCrxTextBox"
+                    Grid.Row="10"
+                    HorizontalAlignment="Stretch"
+                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
+                    Text="{Binding Path=Settings.CrxName,Mode=TwoWay}"
+                    Style="{StaticResource TextboxWithHeaderStyle}" />
+
+                <TextBox
+                    x:Uid="PrivatKeyTextBox"
+                    Grid.Row="11"
+                    HorizontalAlignment="Stretch"
+                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
+                    Text="{Binding Path=Settings.PrivateKeyName,Mode=TwoWay}"
+                    Style="{StaticResource TextboxWithHeaderStyle}" />
+
+                <controls:PathTextBox
+                    x:Uid="WorkPathTextBox"
+                    Grid.Row="12"
+                    PickerType="Folder"
+                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
+                    Value="{Binding Path=ViewModel.Settings.WorkingAreaPath,Mode=TwoWay,ElementName=MySettingsPage}"
+                    PickerFileTypes="*" />
+
+            </Grid>
+
+        </ScrollViewer>
+ 
+        <StackPanel
+            Grid.Column="1"
+            Style="{StaticResource BaseStackPanelStyle}">
+            <ToggleSwitch
+                Grid.Column="1"
+                Margin="0,12,0,0"
+                FontSize="12"
+                FontFamily="Segoe UI"
+                x:Uid="ExpertModeToggle"
+                x:Name="ExpertModeToggle"
+                IsOn="False" />
+        </StackPanel>
+
+        <Button
+            x:Uid="ConfirmSettingsButton"
+            x:Name="ConfirmSettingsButton"
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Command="{Binding ConfirmSettingsCommand}"
+            Style="{StaticResource HighlightedButtonStyle}" />
+
+    </Grid>
+
+</Page>
