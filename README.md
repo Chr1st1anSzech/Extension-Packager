@@ -14,3 +14,6 @@ The following functions are offered by the application or are planned.
   - Creating the XML manifest
   - Generating the string for use in a group policy
   - Managing the extensions in the defined output directory
+
+## Contribution
+Feel free to help with the project and also me. You never stop learning and I grow with every project and valuable contribution!
