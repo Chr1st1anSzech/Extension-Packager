@@ -243,6 +243,9 @@
   <data name="FirstRunInfo.Text" xml:space="preserve">
     <value>Die Standardeinstellungen wurden geladen. Bitte konfigurieren Sie die Vorgaben.</value>
   </data>
+  <data name="GoBackButton.Content" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
   <data name="ImprintTitle.Text" xml:space="preserve">
     <value>Impressum und Info</value>
   </data>

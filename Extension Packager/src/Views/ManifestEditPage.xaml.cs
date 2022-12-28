@@ -4,6 +4,7 @@
 using Extension_Packager.src.Navigation;
 using Extension_Packager_Library.src.Viewmodels;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace Extension_Packager.src.Views
 {
@@ -23,6 +24,14 @@ namespace Extension_Packager.src.Views
             {
                 ViewModel.ExtensionManifestDocument = ExtensionManifestTextBox.Document;
             };
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is bool isStepBack && isStepBack)
+            {
+                ViewModel.IsStepBack = true;
+            }
         }
     }
 }

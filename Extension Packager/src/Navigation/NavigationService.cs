@@ -100,7 +100,7 @@ namespace Extension_Packager.src.Navigation
                 {
                     _navView.SelectedItem = MainNavMenuItem;
                 }
-                _frame.Navigate(_pageTypes[page]);
+                _frame.Navigate(_pageTypes[page], param);
             }
         }
 

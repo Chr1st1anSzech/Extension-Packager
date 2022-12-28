@@ -8,12 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\App.xml" />
-    <None Remove="Third Party Notices.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Third Party Notices.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>

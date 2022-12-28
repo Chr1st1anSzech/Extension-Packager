@@ -9,6 +9,7 @@ using Extension_Packager_Library.src.Navigation;
 using Extension_Packager_Library.src.Settings;
 using Extension_Packager_Library.src.Validation;
 using log4net;
+using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -19,6 +20,13 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
 
         #region Public Properties
+
+        private bool _isStepBack;
+        public bool IsStepBack
+        {
+            get { return _isStepBack; }
+            set { SetField(ref _isStepBack, value); }
+        }
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
@@ -79,15 +87,15 @@ namespace Extension_Packager_Library.src.Viewmodels
         #region Commands
 
 
-        public MyCommand NextPageCommand { get; set; }
-        public MyCommand CancelCommand { get; set; }
+        public MyCommand ProcessAndContinueCommand { get; set; }
+        public MyCommand GoBackCommand { get; set; }
 
 
 
         private void SetCommands()
         {
-            NextPageCommand = new MyCommand(ProcessAndContinue);
-            CancelCommand = new MyCommand(Cancel);
+            ProcessAndContinueCommand = new MyCommand(ProcessAndContinue);
+            GoBackCommand = new MyCommand(GoBack);
         }
 
 
@@ -101,10 +109,9 @@ namespace Extension_Packager_Library.src.Viewmodels
         }
 
 
-
-        private void Cancel(object parameter = null)
+        private void GoBack(object parameter = null)
         {
-
+            _navigationService.Navigate("MainPage");
         }
 
 
@@ -116,7 +123,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             _ext = new();
             ExtensionManager.Instance.CurrentExtension = _ext;
             await UnpackAndReadExtensionAsync();
-            IsBusy = false;
+            //IsBusy = false;
             _navigationService.Navigate("ManifestEditPage");
         }
 

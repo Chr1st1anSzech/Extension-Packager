@@ -22,6 +22,13 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
         #region Public Properties
 
+        private bool _isStepBack;
+        public bool IsStepBack
+        {
+            get { return _isStepBack; }
+            set { SetField(ref _isStepBack, value); }
+        }
+
         private INavigationService _navigationService;
         public INavigationService NavigationService
         {
@@ -131,16 +138,16 @@ namespace Extension_Packager_Library.src.Viewmodels
         #region Commands
 
 
-        public MyCommand NextPageCommand { get; set; }
-        public MyCommand CancelCommand { get; set; }
+        public MyCommand ProcessAndContinueCommand { get; set; }
+        public MyCommand GoBackCommand { get; set; }
         public MyCommand ManifestPreviewCommand { get; set; }
         public MyCommand ResetValuesCommand { get; set; }
 
 
         private void SetCommands()
         {
-            NextPageCommand = new MyCommand(ProcessAndContinue);
-            CancelCommand = new MyCommand(Cancel);
+            ProcessAndContinueCommand = new MyCommand(ProcessAndContinue);
+            GoBackCommand = new MyCommand(GoBack);
             ManifestPreviewCommand = new MyCommand(ShowManifest);
             ResetValuesCommand = new MyCommand(ResetValues);
         }
@@ -164,9 +171,9 @@ namespace Extension_Packager_Library.src.Viewmodels
         }
 
 
-        private void Cancel(object parameter = null)
+        private void GoBack(object parameter = null)
         {
-
+            _navigationService.Navigate("CrxSelectPage", true);
         }
 
 

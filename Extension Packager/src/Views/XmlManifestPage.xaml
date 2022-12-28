@@ -115,21 +115,21 @@
             HorizontalAlignment="Right">
 
             <Button
-                x:Uid="CancelButton"
+                x:Uid="GoBackButton"
                 Width="96"
-                Command="{Binding Path=CancelCommand}"
+                Command="{Binding Path=GoBackCommand}"
                 Style="{StaticResource HighlightedButtonStyle}" />
 
             <Button
                 x:Uid="FinishButton"
                 Width="96"
-                Command="{Binding Path=CreateXmlManifestCommand}"
+                Command="{Binding Path=ProcessAndContinueCommand}"
                 Style="{StaticResource HighlightedButtonStyle}" />
 
         </StackPanel>
 
         <Grid
-            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter}}"
+            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
             Style="{StaticResource BaseGridStyle}"
             Grid.RowSpan="2"
             Background="{ThemeResource PrimaryBackgroundSemiTransparent}"
