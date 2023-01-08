@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Christian Szech
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Extension_Packager.src.Helpers;
 using Microsoft.UI.Text;
 using Extension_Packager_Library.src.DataModels;
 using Extension_Packager_Library.src.Extension;
@@ -14,6 +13,7 @@ using System;
 using System.Reflection;
 using Uri = Extension_Packager_Library.src.Helper.Uri;
 using Extension_Packager_Library.src.Navigation;
+using Extension_Packager_Library.src.Database;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {
@@ -149,9 +149,11 @@ namespace Extension_Packager_Library.src.Viewmodels
             if (xmlManifest == null) return;
             _ext.XmlManifest = xmlManifest;
 
-            if (!await DeployExtension()) { return; }
-            if(!await BackupExtension()) { return; }
-            
+            if (!await DeployExtensionAsync()) { return; }
+            if(!await BackupExtensionAsync()) { return; }
+
+            if (!StoreExtension()) { return; }
+
             string policyString = CreatePolicyString(_ext.ShortName);
             if (policyString == null) return;
             _ext.PolicyString = policyString;
@@ -160,8 +162,15 @@ namespace Extension_Packager_Library.src.Viewmodels
             _navigationService.Navigate("SuccessPage");
         }
 
+        private bool StoreExtension()
+        {
+            IExtensionStorage storage = new DatabaseStorage();
+            storage.SaveExtension(_ext);
+            storage.AddToLastUsedExtension(_ext);
+            return true;
+        }
 
-        private async Task<bool> DeployExtension()
+        private async Task<bool> DeployExtensionAsync()
         {
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
             DeployementInfoData deployementInfos = new()
@@ -177,7 +186,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             try
             {
-                await deployment.Deploy(deployementInfos);
+                _ext.PackedCrxFile = await deployment.DeployAsync(deployementInfos);
                 return true;
             }
             catch (Exception ex)
@@ -191,7 +200,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         }
 
 
-        private async Task<bool> BackupExtension()
+        private async Task<bool> BackupExtensionAsync()
         {
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
             BackupInfoData backupInfos = new()
@@ -208,7 +217,10 @@ namespace Extension_Packager_Library.src.Viewmodels
             IExtensionBackup backup = new ExtensionBackup();
             try
             {
-                await backup.Backup(backupInfos);
+                (string,string) destinationFiles = await backup.BackupAsync(backupInfos);
+                _ext.PackedCrxFile = destinationFiles.Item1;
+                _ext.PrivateKeyFile = destinationFiles.Item2;
+
                 return true;
             }
             catch (Exception ex)

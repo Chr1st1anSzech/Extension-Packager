@@ -4,7 +4,7 @@
 using System;
 using System.Windows.Input;
 
-namespace Extension_Packager.src.Helpers
+namespace Extension_Packager_Library.src.Helper
 {
     public class MyCommand : ICommand
     {

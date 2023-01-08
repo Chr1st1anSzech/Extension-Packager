@@ -9,7 +9,7 @@ namespace Extension_Packager.src.Views
 {
     public sealed partial class MainPage : Page
     {
-        MainPageViewModel ViewModel
+        public MainPageViewModel ViewModel
         {
             get => (MainPageViewModel)DataContext;
             set => DataContext = value;

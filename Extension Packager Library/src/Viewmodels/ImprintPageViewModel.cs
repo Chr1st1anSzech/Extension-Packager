@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Christian Szech
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Extension_Packager.src.Helpers;
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
 using Microsoft.UI.Text;

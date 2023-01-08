@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Extension_Packager.src.Helpers
+namespace Extension_Packager_Library.src.Helper
 {
     public class ViewModel : INotifyPropertyChanged
     {

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Christian Szech
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Extension_Packager.src.Helpers;
 using Extension_Packager_Library.src.DataModels;
 using Extension_Packager_Library.src.Extension;
 using Extension_Packager_Library.src.Formatter;
@@ -195,9 +194,9 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             if (!await SaveManifestAsync()) return;
 
-            string packedCryFile = PackExtension();
-            if (packedCryFile == null) return;
-            _ext.PackedCrxFile = packedCryFile;
+            string packedCrxFile = PackExtension();
+            if (packedCrxFile == null) return;
+            _ext.PackedCrxFile = packedCrxFile;
 
             string privateKeyFile = FindPrivateKeyFile(_ext.ExtensionWorkingDirectory);
             if (privateKeyFile == null) return;
@@ -279,6 +278,10 @@ namespace Extension_Packager_Library.src.Viewmodels
         }
 
 
+        /// <summary>
+        /// Packs an unpacked extension.
+        /// </summary>
+        /// <returns>Path to the newly packed extension</returns>
         private string PackExtension()
         {
             try

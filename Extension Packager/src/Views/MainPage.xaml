@@ -10,8 +10,9 @@
     xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="MyMainPage"
     mc:Ignorable="d">
-    
+
     <Page.DataContext>
         <viewmodels:MainPageViewModel />
     </Page.DataContext>
@@ -59,7 +60,7 @@
                 x:Uid="UpdateExtensionButton"
                 x:Name="UpdateExtensionButton"
                 Command="{Binding ModifyExtensionCommand}"
-                Style="{StaticResource HighlightedButtonStyle}"/>
+                Style="{StaticResource HighlightedButtonStyle}" />
         </StackPanel>
 
         <Line
@@ -67,8 +68,11 @@
             Grid.Row="1"
             Margin="24"
             Y1="0"
-            Y2="{Binding ElementName=MainPageGrid, Path=ActualHeight}" X1="0" X2="0" Stroke="{ThemeResource Border}"/>
-        
+            Y2="{Binding ElementName=MainPageGrid, Path=ActualHeight}"
+            X1="0"
+            X2="0"
+            Stroke="{ThemeResource Border}" />
+
         <StackPanel
             Grid.Column="2"
             Grid.Row="1"
@@ -77,26 +81,86 @@
                 Grid.ColumnSpan="2"
                 x:Uid="LastUsedTitle"
                 Style="{StaticResource Header02Style}" />
-            
-            <StackPanel Orientation="Horizontal" Style="{StaticResource BaseStackPanelStyle}" Padding="0,12,0,6">
-                
+
+            <StackPanel
+                Orientation="Horizontal"
+                Style="{StaticResource BaseStackPanelStyle}"
+                Padding="0,12,0,6">
+
                 <ComboBox
                     x:Name="BrowserFilterComboBox"
                     Margin="0,0,16,0"
                     SelectedIndex="0"
-                    Style="{StaticResource BaseComboBoxStyle}" ItemsSource="{Binding BrowserFilterList}"/>
-                
-                <controls:SearchField/>
-                
+                    Style="{StaticResource BaseComboBoxStyle}"
+                    ItemsSource="{Binding BrowserFilterList}" />
+
+                <controls:SearchField />
+
             </StackPanel>
-            
+
             <ListView
-                x:Name="LastUsedExtensionListView">
-                <ListView.Items>
-                    <ListViewItem>halao</ListViewItem>
-                </ListView.Items>
+                x:Name="LastUsedExtensionListView"
+                SelectionMode="None"
+                Padding="0"
+                ItemsSource="{Binding Path=ExtensionsList}">
+                <ListView.ItemContainerStyle>
+                    <Style
+                        TargetType="ListViewItem">
+                        <Setter
+                            Property="Margin"
+                            Value="0" />
+                        <Setter
+                            Property="Padding"
+                            Value="0" />
+                        <Setter
+                            Property="HorizontalContentAlignment"
+                            Value="Stretch" />
+                        <Setter
+                            Property="VerticalContentAlignment"
+                            Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Button
+                            Command="{Binding ElementName=MyMainPage, Path=ViewModel.UpdateExtensionCommand}"
+                            CommandParameter="{Binding Path=Id}"
+                            Background="Transparent"
+                            Padding="4,12"
+                            Margin="0,6"
+                            CornerRadius="4"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition
+                                        Width="*"
+                                        MaxWidth="256"
+                                        MinWidth="64" />
+                                    <ColumnDefinition
+                                        Width="*"
+                                        MinWidth="128" />
+                                    <ColumnDefinition
+                                        Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Text="{Binding Path=Id}"
+                                    Grid.Column="0" />
+                                <TextBlock
+                                    Text="{Binding Path=Name}"
+                                    Grid.Column="1"
+                                    Margin="24,0" />
+                                <TextBlock
+                                    Text="{Binding Path=Version}"
+                                    Grid.Column="2" />
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
-    
+
     </Grid>
 </Page>

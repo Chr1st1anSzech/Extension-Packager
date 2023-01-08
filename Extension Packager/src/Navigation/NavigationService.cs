@@ -31,7 +31,8 @@ namespace Extension_Packager.src.Navigation
             { "SettingsPage", typeof(SettingsPage) },
             { "SuccessPage", typeof(SuccessPage) },
             { "XmlManifestPage", typeof(XmlManifestPage) },
-            { "ImprintPage", typeof(ImprintPage) }
+            { "ImprintPage", typeof(ImprintPage) },
+            { "ExtensionListPage", typeof(ExtensionListPage) }
         };
 
         #endregion

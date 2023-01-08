@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="log4net.xml" />
+    <None Remove="src\Views\ExtensionListPage.xaml" />
     <None Remove="src\Views\ImprintPage.xaml" />
     <None Remove="src\Views\SuccessPage.xaml" />
     <None Remove="src\Views\XmlManifestPage.xaml" />
@@ -34,7 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221116.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221209.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
@@ -72,6 +73,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Remove="src\Views\XmlManifestPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="src\Views\ExtensionListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="src\Views\ImprintPage.xaml">

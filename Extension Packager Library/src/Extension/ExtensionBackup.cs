@@ -2,13 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Extension_Packager_Library.src.DataModels;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Extension
 {
     public interface IExtensionBackup
     {
-        public Task Backup(BackupInfoData infos);
+        public Task<(string,string)> BackupAsync(BackupInfoData infos);
     }
 
 
@@ -19,14 +20,20 @@ namespace Extension_Packager_Library.src.Extension
 
         }
 
-        public async Task Backup(BackupInfoData infos)
+        public async Task<(string, string)> BackupAsync(BackupInfoData infos)
         {
             _log.Info("Backup the extension and private key.");
 
             string extensionDirectory = CreateExtensionDirectory(infos.BackupDirectory, infos.Name);
             await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, extensionDirectory);
-            CopyFile(extensionDirectory, infos.CrxPath, infos.CrxName);
-            CopyFile(extensionDirectory, infos.PrivateKeyPath, infos.PrivateKeyName);
+
+            string destinationFile1 = Path.Combine(extensionDirectory, infos.CrxName);
+            CopyFile(destinationFile1, infos.CrxPath);
+
+            string destinationFile2 = Path.Combine(extensionDirectory, infos.PrivateKeyName);
+            CopyFile(destinationFile2, infos.PrivateKeyPath);
+
+            return (destinationFile1, destinationFile2);
         }
     }
 }

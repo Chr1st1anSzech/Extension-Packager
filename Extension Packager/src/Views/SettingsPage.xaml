@@ -79,6 +79,10 @@
                         Height="auto" />
                     <RowDefinition
                         Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock
@@ -181,6 +185,13 @@
                     IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
                     Value="{Binding Path=ViewModel.Settings.WorkingAreaPath,Mode=TwoWay,ElementName=MySettingsPage}"
                     PickerFileTypes="*" />
+
+                <CheckBox
+                    x:Uid="UseShortnameCheckbox"
+                    Grid.Row="13"
+                    HorizontalAlignment="Stretch"
+                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
+                    IsChecked="{Binding Path=Settings.UseShortNameAsDirectoryName,Mode=TwoWay}"/>
 
             </Grid>
 

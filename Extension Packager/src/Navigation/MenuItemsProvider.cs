@@ -48,9 +48,17 @@ namespace Extension_Packager.src.Navigation
             MainNavMenuItems.Add(new NavMenuItem()
             {
                 Content = StringResources.Get(this, 2),
-                Icon = new SymbolIcon((Symbol)0xEA86),
+                Icon = new SymbolIcon((Symbol)0xECC8),
                 Page = typeof(CrxSelectPage),
                 Tag = "CrxSelectPage"
+            });
+
+            MainNavMenuItems.Add(new NavMenuItem()
+            {
+                Content = StringResources.Get(this, 4),
+                Icon = new SymbolIcon((Symbol)0xEA86),
+                Page = typeof(ExtensionListPage),
+                Tag = "ExtensionListPage"
             });
         }
 

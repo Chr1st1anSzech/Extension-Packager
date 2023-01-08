@@ -256,10 +256,13 @@
     <value>Der Kurzname darf nur Buchstaben, Zahlen sowie Unter- und Bindestriche enthalten.</value>
   </data>
   <data name="LastUsedTitle.Text" xml:space="preserve">
-    <value>Zuletzt verwendet</value>
+    <value>Zuletzt erstellt/aktualisiert</value>
   </data>
   <data name="LicenseText.Text" xml:space="preserve">
     <value>Lizenz: </value>
+  </data>
+  <data name="ListItemEditExtButton.Content" xml:space="preserve">
+    <value>Ändern</value>
   </data>
   <data name="LoadSettings.Text" xml:space="preserve">
     <value>Lade die Konfiguration...</value>
@@ -302,6 +305,9 @@
   </data>
   <data name="MenuItemsProvider3" xml:space="preserve">
     <value>Impressum</value>
+  </data>
+  <data name="MenuItemsProvider4" xml:space="preserve">
+    <value>Alle Erweiterungen</value>
   </data>
   <data name="NewExtensionButton.Content" xml:space="preserve">
     <value>Neue Erweiterung</value>
@@ -358,7 +364,10 @@
     <value>Fertig!</value>
   </data>
   <data name="UpdateExtensionButton.Content" xml:space="preserve">
-    <value>Erweiterung ändern</value>
+    <value>Erweiterung aktualisieren</value>
+  </data>
+  <data name="UseShortnameCheckbox.Content" xml:space="preserve">
+    <value>Verwende einen Kurznamen als Verzeichnisname</value>
   </data>
   <data name="VersionText.Text" xml:space="preserve">
     <value>Version: </value>

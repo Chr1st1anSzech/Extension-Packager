@@ -19,10 +19,8 @@ namespace Extension_Packager_Library.src.Extension
             _isUpdate = isUpdate;
         }
 
-        internal void CopyFile(string destinationDirectory, string sourceFile, string fileName)
+        internal void CopyFile(string destinationFile, string sourceFile)
         {
-            string destinationFile = Path.Combine(destinationDirectory, fileName);
-
             _log.Debug($"Copy the CRX file \"{sourceFile}\" to destination \"{destinationFile}\".");
 
             if (File.Exists(destinationFile) && !_isUpdate)
