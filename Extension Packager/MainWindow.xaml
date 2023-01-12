@@ -39,6 +39,7 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top">
             <Image
+                AutomationProperties.AccessibilityView="Raw"
                 Source="ms-appx:///src/Assets/icon.ico"
                 Width="15"
                 Height="15"
@@ -54,6 +55,7 @@
 
         <NavigationView
             x:Name="MainNavigationView"
+            AutomationProperties.LandmarkType="Navigation"
             Background="{ThemeResource SecondaryBackground}"
             PaneDisplayMode="Left"
             IsTitleBarAutoPaddingEnabled="False"
@@ -67,9 +69,11 @@
             MenuItemsSource="{Binding Path=MenuItems.MainNavMenuItems,UpdateSourceTrigger=PropertyChanged}"
             Grid.Row="1">
             <Frame
+                x:Name="MainWindowFrame"
+                AutomationProperties.LandmarkType="Main"
                 Margin="24,12"
                 Background="{ThemeResource PrimaryBackground}"
-                x:Name="MainWindowFrame" />
+                />
         </NavigationView>
     </Grid>
     

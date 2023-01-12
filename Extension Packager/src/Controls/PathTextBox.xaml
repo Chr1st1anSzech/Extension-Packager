@@ -9,6 +9,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     x:Name="MyPathTextBox"
+    x:Uid="MyPathTextBox"
+    AutomationProperties.LandmarkType="Custom"
+    AutomationProperties.AutomationControlType="Edit"
     DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid
@@ -31,6 +34,7 @@
             Style="{StaticResource TextboxWithHeaderStyle}" />
 
         <Button
+            x:Uid="FileDialogButton"
             Grid.Column="1"
             Width="32"
             Height="32"

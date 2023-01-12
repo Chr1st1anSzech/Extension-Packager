@@ -11,6 +11,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="MyMainPage"
+    x:Uid="MyMainPage"
+    AutomationProperties.LabeledBy="{Binding ElementName=StartPageTitle}"
     mc:Ignorable="d">
 
     <Page.DataContext>
@@ -37,9 +39,10 @@
         </Grid.RowDefinitions>
 
         <TextBlock
+            x:Name="StartPageTitle"
+            x:Uid="StartPageTitle"
             AutomationProperties.HeadingLevel="Level2"
             Grid.ColumnSpan="2"
-            x:Uid="StartPageTitle"
             Style="{StaticResource Header01Style}" />
 
         <StackPanel
@@ -47,23 +50,32 @@
             Grid.Row="1"
             Style="{StaticResource ColumnStackPanelStyle}">
             <TextBlock
-                Grid.ColumnSpan="2"
                 x:Uid="ActionsTitle"
+                AutomationProperties.HeadingLevel="Level3"
+                Grid.ColumnSpan="2"
                 Style="{StaticResource Header02Style}" />
             <Button
-                x:Uid="CreateNewExtensionButton"
                 x:Name="CreateNewExtensionButton"
+                x:Uid="CreateNewExtensionButton"
                 Command="{Binding CreateExtensionCommand}"
                 Style="{StaticResource HighlightedButtonStyle}"
-                Width="{Binding ElementName=UpdateExtensionButton, Path=ActualWidth}" />
+                HorizontalAlignment="Stretch"
+                Margin="0,12,0,12"
+                Padding="6,12,6,12"
+                CornerRadius="0" />
             <Button
                 x:Uid="ShowExtensionsListButton"
                 x:Name="ShowExtensionsListButton"
                 Command="{Binding ShowExtensionsListCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                HorizontalAlignment="Stretch"
+                Margin="0,12,0,12"
+                Padding="6,12,6,12"
+                CornerRadius="0" />
         </StackPanel>
 
         <Line
+            AutomationProperties.AccessibilityView="Raw"
             Grid.Column="1"
             Grid.Row="1"
             Margin="24"
@@ -74,12 +86,14 @@
             Stroke="{ThemeResource Border}" />
 
         <StackPanel
+            AutomationProperties.LabeledBy="{Binding ElementName=LastUsedTitle}"
             Grid.Column="2"
             Grid.Row="1"
             Style="{StaticResource ColumnStackPanelStyle}">
             <TextBlock
-                Grid.ColumnSpan="2"
                 x:Uid="LastUsedTitle"
+                AutomationProperties.HeadingLevel="Level3"
+                Grid.ColumnSpan="2"
                 Style="{StaticResource Header02Style}" />
 
             <StackPanel
@@ -94,15 +108,17 @@
                     Style="{StaticResource BaseComboBoxStyle}"
                     ItemsSource="{Binding BrowserFilterList}" />
 
-                <controls:SearchField />
+                <controls:SearchField
+                    Command="{Binding Path=ViewModel.SearchCommand,ElementName=MyMainPage}" />
 
             </StackPanel>
 
             <ListView
                 x:Name="LastUsedExtensionListView"
+                x:Uid="LastUsedExtensionListView"
                 SelectionMode="None"
                 Padding="0"
-                ItemsSource="{Binding Path=ExtensionsList}">
+                ItemsSource="{Binding Path=LastModifiedExtensions}">
                 <ListView.ItemContainerStyle>
                     <Style
                         TargetType="ListViewItem">
@@ -123,6 +139,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Button
+                            AutomationProperties.Name="{Binding ElementName=ExtensionTitle, Path=Text}"
                             Command="{Binding ElementName=MyMainPage, Path=ViewModel.UpdateExtensionCommand}"
                             CommandParameter="{Binding Path=Id}"
                             Background="Transparent"
@@ -153,10 +170,13 @@
                                         Height="*" />
                                 </Grid.RowDefinitions>
                                 <TextBlock
+                                    x:Name="ExtensionTitle"
+                                    x:Uid="ExtensionTitle"
                                     Grid.Column="0"
                                     Text="{Binding Path=Name}"
                                     FontWeight="SemiBold" />
                                 <TextBlock
+                                    x:Uid="ExtensionId"
                                     Text="{Binding Path=Id}"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="5"
@@ -165,13 +185,16 @@
                                     Margin="0,8,0,0"
                                     FontSize="10" />
                                 <TextBlock
+                                    AutomationProperties.AccessibilityView="Raw"
                                     Grid.Column="1"
                                     Text="-"
                                     Margin="6,0" />
                                 <TextBlock
+                                    x:Uid="ExtensionVersion"
                                     Grid.Column="2"
-                                    Text="{Binding Path=Version}"/>
+                                    Text="{Binding Path=Version}" />
                                 <TextBlock
+                                    x:Uid="ExtensionUpdate"
                                     Grid.Column="3"
                                     Foreground="#d1d1d1"
                                     Text="{Binding Path=UpdateDate}"
@@ -183,6 +206,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
         </StackPanel>
 
     </Grid>

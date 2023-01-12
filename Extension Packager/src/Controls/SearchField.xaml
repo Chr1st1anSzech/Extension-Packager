@@ -8,23 +8,37 @@
     xmlns:local="using:Extension_Packager.src.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    x:Name="MySearchField"
+    x:Uid="MySearchField"
+    AutomationProperties.LandmarkType="Search"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
-    <StackPanel Orientation="Horizontal" Style="{StaticResource BaseStackPanelStyle}" Padding="0" Margin="0">
+    <StackPanel
+        Orientation="Horizontal"
+        Style="{StaticResource BaseStackPanelStyle}"
+        Padding="0"
+        Margin="0">
         <TextBox
             x:Name="SearchFieldTextBox"
             x:Uid="SearchFieldTextBox"
+            AutomationProperties.AccessKey="S"
+            KeyUp="SearchFieldTextBox_KeyUp"
+            TextChanged="SearchFieldTextBox_TextChanged"
             MinWidth="200"
             Margin="0"
             PlaceholderForeground="{ThemeResource PrimaryForegroundHover}"
-            Style="{StaticResource BaseTextboxStyle}"/>
+            Style="{StaticResource BaseTextboxStyle}" />
         <Button
             x:Name="SearchFieldButton"
+            x:Uid="SearchFieldButton"
+            Command="{Binding Path=Command,ElementName=MySearchField}"
+            CommandParameter="{Binding ElementName=SearchFieldTextBox, Path=Text}"
             Width="32"
             Height="32"
             Margin="6,0,0,0"
             Padding="4,2,8,8"
             Content="{StaticResource SearchIconData}"
-            Style="{StaticResource IconButtonStyle}"/>
+            Style="{StaticResource IconButtonStyle}" />
     </StackPanel>
 </UserControl>
