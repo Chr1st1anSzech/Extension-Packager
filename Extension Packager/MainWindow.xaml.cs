@@ -35,7 +35,7 @@ namespace Extension_Packager
         private void SetTitleBar()
         {
             ExtendsContentIntoTitleBar = true;
-            SetTitleBar(myTitleBar);
+            SetTitleBar(MyTitleBar);
         }
 
         private void SetSize(int width, int height)

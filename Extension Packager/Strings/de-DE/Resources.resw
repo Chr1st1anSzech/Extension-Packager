@@ -135,9 +135,6 @@
   <data name="AppTitle.Text" xml:space="preserve">
     <value>Extension Packager</value>
   </data>
-  <data name="AppTitle.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Anwendungsname</value>
-  </data>
   <data name="AppXmlTextBox.Header" xml:space="preserve">
     <value>Name der XML-Manifest-Datei</value>
   </data>
@@ -149,6 +146,9 @@
   </data>
   <data name="BackupPathTextBox.PlaceholderText" xml:space="preserve">
     <value>Verzeichnis auswählen</value>
+  </data>
+  <data name="BrowserFilterComboBox.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Browser filtern</value>
   </data>
   <data name="BrowserPathTextBox.Label" xml:space="preserve">
     <value>Pfad zu einem Chromium Browser</value>
@@ -339,6 +339,9 @@
   <data name="MySearchField.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Suchfeld Erweiterungen</value>
   </data>
+  <data name="MyTitleBar.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Titelleiste</value>
+  </data>
   <data name="NewExtensionButton.Content" xml:space="preserve">
     <value>Neue Erweiterung</value>
   </data>
@@ -398,9 +401,6 @@
   </data>
   <data name="StartPageTitle.Text" xml:space="preserve">
     <value>Startseite</value>
-  </data>
-  <data name="StartPageTitle.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Seitentitel</value>
   </data>
   <data name="SuccessTitle.Text" xml:space="preserve">
     <value>Fertig!</value>

@@ -20,8 +20,10 @@
     </Page.DataContext>
 
     <Grid
-        Padding="0"
         x:Name="MainPageGrid"
+        AutomationProperties.LabeledBy="{Binding ElementName=StartPageTitle}"
+        AutomationProperties.LandmarkType="Main"
+        Padding="0"
         Style="{StaticResource BaseGridStyle}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition
@@ -46,10 +48,12 @@
             Style="{StaticResource Header01Style}" />
 
         <StackPanel
+            AutomationProperties.LabeledBy="{Binding ElementName=ActionsTitle}"
             Grid.Column="0"
             Grid.Row="1"
             Style="{StaticResource ColumnStackPanelStyle}">
             <TextBlock
+                x:Name="ActionsTitle"
                 x:Uid="ActionsTitle"
                 AutomationProperties.HeadingLevel="Level3"
                 Grid.ColumnSpan="2"
@@ -103,6 +107,7 @@
 
                 <ComboBox
                     x:Name="BrowserFilterComboBox"
+                    x:Uid="BrowserFilterComboBox"
                     Margin="0,0,16,0"
                     SelectedIndex="0"
                     Style="{StaticResource BaseComboBoxStyle}"
