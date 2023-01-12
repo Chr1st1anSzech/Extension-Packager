@@ -37,9 +37,9 @@ namespace Extension_Packager_Library.src.Extension
             CopyFile(crxFile, infos.CrxPath);
 
             string privateKeyFile = Path.Combine(extensionDirectory, infos.PrivateKeyName);
-            if (!_isUpdate)
+            if (File.Exists(infos.TmpPrivateKeyPath))
             {
-                CopyFile(privateKeyFile, infos.PrivateKeyPath);
+                CopyFile(privateKeyFile, infos.TmpPrivateKeyPath);
             }
 
             return (xmlManifestFile, privateKeyFile);

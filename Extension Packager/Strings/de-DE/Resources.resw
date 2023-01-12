@@ -180,6 +180,9 @@
   <data name="CrxSelectPageViewModel5" xml:space="preserve">
     <value>Das Entpacken der CRX-Datei ist fehlgeschlagen.</value>
   </data>
+  <data name="CrxSelectPageViewModel6" xml:space="preserve">
+    <value>Das Arbeitsverzeichnis konnte nicht gelöscht werden.</value>
+  </data>
   <data name="DefaultSettingsWarning.Text" xml:space="preserve">
     <value>Warnung: Die Konfiguration konnte nicht geladen werden. Es werden die Standardeinstellungen verwendet.</value>
   </data>
@@ -294,6 +297,9 @@
   <data name="ManifestEditPageViewModel8" xml:space="preserve">
     <value>Der Kurzname darf nur Buchstaben, Zahlen, Unter- und Bindestriche enthalten und nicht länger als 64 Zeichen lang sein.</value>
   </data>
+  <data name="ManifestEditPageViewModel9" xml:space="preserve">
+    <value>Die CRX Datei oder Schlüsseldatei konnten nicht gelöscht werden.</value>
+  </data>
   <data name="ManifestPreviewButton.Content" xml:space="preserve">
     <value>Vorschau</value>
   </data>
@@ -389,6 +395,9 @@
   </data>
   <data name="XmlManifestPageViewModel4" xml:space="preserve">
     <value>Der Richtlinienwert konnte nicht erstellt werden, weil der Name invalide ist.</value>
+  </data>
+  <data name="XmlManifestPageViewModel5" xml:space="preserve">
+    <value>Das Arbeitsverzeichnis konnte nicht gelöscht werden.</value>
   </data>
   <data name="XmlManifestPreviewButton.Content" xml:space="preserve">
     <value>Vorschau</value>

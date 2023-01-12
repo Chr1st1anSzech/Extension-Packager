@@ -21,6 +21,14 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
         #region Public Properties
 
+        private bool _isPageBack;
+        public bool IsPageBack
+        {
+            get { return _isPageBack; }
+            set { SetField(ref _isPageBack, value); }
+        }
+
+
         private bool _isUpdate;
         public bool IsUpdate
         {
@@ -174,7 +182,8 @@ namespace Extension_Packager_Library.src.Viewmodels
             PageParameter param = new()
             {
                 Extension = Extension,
-                IsUpdate = IsUpdate
+                IsUpdate = IsUpdate,
+                IsPageBack = true
             };
             _navigationService.Navigate("CrxSelectPage", param);
         }
@@ -184,9 +193,27 @@ namespace Extension_Packager_Library.src.Viewmodels
             PageParameter param = new()
             {
                 Extension = Extension,
-                IsUpdate = IsUpdate
+                IsUpdate = IsUpdate,
+                IsPageBack = false
             };
             _navigationService.Navigate("XmlManifestPage", param);
+        }
+
+        public void Reset()
+        {
+            if (Extension.TmpPackedCrxFile == null) return;
+            try
+            {
+                File.Delete(Extension.TmpPackedCrxFile);
+                if (Extension.TmpPrivateKeyFile != null)
+                {
+                    File.Delete(Extension.TmpPrivateKeyFile);
+                }
+            }
+            catch (Exception exception)
+            {
+                ErrorMessage = StringResources.GetWithReason(this, 9, exception.Message);
+            }
         }
 
 
@@ -213,9 +240,12 @@ namespace Extension_Packager_Library.src.Viewmodels
             if (packedCrxFile == null) return;
             Extension.TmpPackedCrxFile = packedCrxFile;
 
-            string privateKeyFile = Extension.PrivateKeyFile ?? FindPrivateKeyFile(Extension.ExtensionWorkingDirectory);
-            if (privateKeyFile == null) return;
-            Extension.TmpPrivateKeyFile = privateKeyFile;
+            if (!IsUpdate)
+            {
+                string privateKeyFile = FindPrivateKeyFile(Extension.ExtensionWorkingDirectory);
+                if (privateKeyFile == null) return;
+                Extension.TmpPrivateKeyFile = privateKeyFile;
+            }
 
             string appId = Extension.Id ?? ExtractAppId(Extension.TmpPackedCrxFile);
             if (appId == null) return;

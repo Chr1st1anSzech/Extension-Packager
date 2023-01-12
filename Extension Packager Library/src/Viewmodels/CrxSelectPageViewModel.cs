@@ -10,6 +10,7 @@ using Extension_Packager_Library.src.Validation;
 using log4net;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -19,6 +20,13 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
 
         #region Public Properties
+
+        private bool _isPageBack;
+        public bool IsPageBack
+        {
+            get { return _isPageBack; }
+            set { SetField(ref _isPageBack, value); }
+        }
 
         private bool _isUpdate;
         public bool IsUpdate
@@ -82,7 +90,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
 
         #region Static Fields
-        
+
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
@@ -132,6 +140,19 @@ namespace Extension_Packager_Library.src.Viewmodels
                 IsUpdate = IsUpdate
             };
             _navigationService.Navigate("ManifestEditPage", param);
+        }
+
+        public void Reset()
+        {
+            if (Extension.ExtensionWorkingDirectory == null) return;
+            try
+            {
+                Directory.Delete(Extension.ExtensionWorkingDirectory, true);
+            }
+            catch (Exception exception)
+            {
+                ErrorMessage = StringResources.GetWithReason(this, 6, exception.Message);
+            }
         }
 
 

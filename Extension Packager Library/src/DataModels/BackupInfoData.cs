@@ -6,7 +6,7 @@ namespace Extension_Packager_Library.src.DataModels
     public class BackupInfoData
     {
         public string BackupDirectory { get; set; }
-        public string PrivateKeyPath { get; set; }
+        public string TmpPrivateKeyPath { get; set; }
         public string PrivateKeyName { get; set; }
         public string XmlManifest { get; set; }
         public string XmlManifestName { get; set; }

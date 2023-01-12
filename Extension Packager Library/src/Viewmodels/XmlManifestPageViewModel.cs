@@ -14,12 +14,21 @@ using System.Reflection;
 using Uri = Extension_Packager_Library.src.Helper.Uri;
 using Extension_Packager_Library.src.Navigation;
 using Extension_Packager_Library.src.Database;
+using System.IO;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {
     public class XmlManifestPageViewModel : ViewModel
     {
         #region Public Properties
+
+        private bool _isPageBack;
+        public bool IsPageBack
+        {
+            get { return _isPageBack; }
+            set { SetField(ref _isPageBack, value); }
+        }
+
 
         private bool _isUpdate;
         public bool IsUpdate
@@ -148,7 +157,8 @@ namespace Extension_Packager_Library.src.Viewmodels
             PageParameter param = new()
             {
                 Extension = Extension,
-                IsUpdate = IsUpdate
+                IsUpdate = IsUpdate,
+                IsPageBack = true
             };
             _navigationService.Navigate("ManifestEditPage", param);
         }
@@ -158,7 +168,8 @@ namespace Extension_Packager_Library.src.Viewmodels
             PageParameter param = new()
             {
                 Extension = Extension,
-                IsUpdate = IsUpdate
+                IsUpdate = IsUpdate,
+                IsPageBack = false
             };
             _navigationService.Navigate("SuccessPage", param);
         }
@@ -180,9 +191,24 @@ namespace Extension_Packager_Library.src.Viewmodels
             if (policyString == null) return;
             Extension.PolicyString = policyString;
 
+            DeleteTemporaryFiles();
+
             IsBusy = false;
 
             GoForward();
+        }
+
+        private void DeleteTemporaryFiles()
+        {
+            if (Extension.ExtensionWorkingDirectory == null) return;
+            try
+            {
+                Directory.Delete(Extension.ExtensionWorkingDirectory, true);
+            }
+            catch (Exception exception)
+            {
+                ErrorMessage = StringResources.GetWithReason(this, 5, exception.Message);
+            }
         }
 
         private bool StoreExtension()
@@ -234,7 +260,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                 CrxName = settings.CrxName,
                 XmlManifest = Extension.XmlManifestContent,
                 XmlManifestName = settings.XmlManifestName,
-                PrivateKeyPath = Extension.TmpPrivateKeyFile,
+                TmpPrivateKeyPath = Extension.TmpPrivateKeyFile,
                 PrivateKeyName = settings.PrivateKeyName
             };
             IExtensionBackup backup = new ExtensionBackup(IsUpdate);

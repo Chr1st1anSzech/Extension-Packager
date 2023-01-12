@@ -4,5 +4,6 @@
     {
         public Extension Extension { get; set; }
         public bool IsUpdate { get; set; }
+        public bool IsPageBack { get; set; }
     }
 }

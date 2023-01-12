@@ -29,6 +29,10 @@ namespace Extension_Packager.src.Views
             {
                 ViewModel.Extension = param.Extension;
                 ViewModel.IsUpdate = param.IsUpdate;
+                if (param.IsPageBack)
+                {
+                    ViewModel.Reset();
+                }
             }
         }
     }

@@ -11,6 +11,14 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
         #region Public Properties
 
+        private bool _isPageBack;
+        public bool IsPageBack
+        {
+            get { return _isPageBack; }
+            set { SetField(ref _isPageBack, value); }
+        }
+
+
         private bool _isUpdate;
         public bool IsUpdate
         {
