@@ -27,7 +27,6 @@ namespace Extension_Packager_Library.src.Database
         private readonly string VERSION_COLUMN = "version";
         private readonly string ID_COLUMN = "id";
         private readonly string ID_REF_COLUMN = "ext_id";
-        private readonly string CRX_COLUMN = "crx_path";
         private readonly string PRIVATE_KEY_COLUMN = "private_key_path";
 
         #endregion
@@ -47,8 +46,22 @@ namespace Extension_Packager_Library.src.Database
             InitializeDatabase();
         }
 
+        #region Database Modification & Request
 
-        public void AddToLastUsedExtension(DataModels.Extension extension)
+        public void SetLastModified(DataModels.Extension extension)
+        {
+            if (GetLastModified(extension.Id) == null)
+            {
+                InsertLastModified(extension);
+            }
+            else
+            {
+                UpdateLastModified(extension);
+            }
+        }
+
+
+        private void InsertLastModified(DataModels.Extension extension)
         {
             ExecuteNonQueryCommand((connection) =>
             {
@@ -64,9 +77,23 @@ namespace Extension_Packager_Library.src.Database
             });
         }
 
+        private void UpdateLastModified(DataModels.Extension extension)
+        {
+            ExecuteNonQueryCommand((connection) =>
+            {
+                SqliteCommand command = connection.CreateCommand();
+                command.CommandText = @$"UPDATE {LAST_USED_TABLE}
+                SET
+                    {DATE_COLUMN} = ${DATE_COLUMN}
+                WHERE {ID_REF_COLUMN} = ${ID_REF_COLUMN}";
+                command.Parameters.AddWithValue($"${DATE_COLUMN}", DateTime.Now);
+                command.Parameters.AddWithValue($"${ID_REF_COLUMN}", extension.Id);
+                return command;
+            });
+        }
 
 
-        public List<DataModels.Extension> ReadLastUsedExtensions()
+        public List<DataModels.Extension> GetAllLastModified()
         {
             List<DataModels.Extension> extensions = new();
 
@@ -75,10 +102,10 @@ namespace Extension_Packager_Library.src.Database
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = @$"SELECT 
                     {EXTENSION_TABLE}.{ID_COLUMN},
+                    {LAST_USED_TABLE}.{DATE_COLUMN},
                     {NAME_COLUMN},
                     {SHORTNAME_COLUMN},
                     {VERSION_COLUMN},
-                    {CRX_COLUMN},
                     {PRIVATE_KEY_COLUMN}
                 FROM {EXTENSION_TABLE}
                 JOIN {LAST_USED_TABLE}
@@ -89,7 +116,11 @@ namespace Extension_Packager_Library.src.Database
             {
                 while (dataReader.Read())
                 {
-                    DataModels.Extension extension = CreateExtensionFromRow(dataReader);
+                    DataModels.Extension extension = ParseRow(dataReader, (dataReader, ext) =>
+                    {
+                        ext.UpdateDate = dataReader.GetDateTime(DATE_COLUMN);
+                    });
+
                     if (extension != null)
                     {
                         extensions.Add(extension);
@@ -100,9 +131,57 @@ namespace Extension_Packager_Library.src.Database
             return extensions;
         }
 
+        public DataModels.Extension GetLastModified(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                _log.Warn($"\"{nameof(id)}\" must not be NULL or a space character.");
+                return null;
+            }
 
+            DataModels.Extension extension = null;
 
-        public void SaveExtension(DataModels.Extension extension)
+            ExecuteReaderCommand((connection) =>
+            {
+                SqliteCommand command = connection.CreateCommand();
+                command.CommandText = @$"SELECT 
+                    {EXTENSION_TABLE}.{ID_COLUMN},
+                    {LAST_USED_TABLE}.{DATE_COLUMN},
+                    {NAME_COLUMN},
+                    {SHORTNAME_COLUMN},
+                    {VERSION_COLUMN},
+                    {PRIVATE_KEY_COLUMN}
+                FROM {EXTENSION_TABLE}
+                JOIN {LAST_USED_TABLE}
+                ON {EXTENSION_TABLE}.{ID_COLUMN} = {LAST_USED_TABLE}.{ID_REF_COLUMN}
+                WHERE {ID_REF_COLUMN} = ${ID_COLUMN}";
+                command.Parameters.AddWithValue($"${ID_COLUMN}", id);
+                return command;
+            },
+            (dataReader) =>
+            {
+                if (dataReader.Read())
+                {
+                    extension = ParseRow(dataReader);
+                }
+            });
+
+            return extension;
+        }
+
+        public void Set(DataModels.Extension extension)
+        {
+            if( Get(extension.Id) == null)
+            {
+                Insert(extension);
+            }
+            else
+            {
+                Update(extension);
+            }
+        }
+
+        private void Insert(DataModels.Extension extension)
         {
             ExecuteNonQueryCommand((connection) =>
             {
@@ -112,7 +191,6 @@ namespace Extension_Packager_Library.src.Database
                         {NAME_COLUMN},
                         {SHORTNAME_COLUMN},
                         {VERSION_COLUMN},
-                        {CRX_COLUMN},
                         {PRIVATE_KEY_COLUMN}
                 )
                 VALUES (
@@ -120,22 +198,33 @@ namespace Extension_Packager_Library.src.Database
                     ${NAME_COLUMN},
                     ${SHORTNAME_COLUMN},
                     ${VERSION_COLUMN},
-                    ${CRX_COLUMN},
                     ${PRIVATE_KEY_COLUMN}
                 )";
                 command.Parameters.AddWithValue($"${ID_COLUMN}", extension.Id);
                 command.Parameters.AddWithValue($"${NAME_COLUMN}", extension.Name);
                 command.Parameters.AddWithValue($"${SHORTNAME_COLUMN}", extension.ShortName);
                 command.Parameters.AddWithValue($"${VERSION_COLUMN}", extension.Version);
-                command.Parameters.AddWithValue($"${CRX_COLUMN}", extension.PackedCrxFile);
                 command.Parameters.AddWithValue($"${PRIVATE_KEY_COLUMN}", extension.PrivateKeyFile);
                 return command;
             });
         }
 
+        private void Update(DataModels.Extension extension)
+        {
+            ExecuteNonQueryCommand((connection) =>
+            {
+                SqliteCommand command = connection.CreateCommand();
+                command.CommandText = @$"UPDATE {EXTENSION_TABLE}
+                SET
+                    {VERSION_COLUMN} = ${VERSION_COLUMN}
+                WHERE {ID_COLUMN} = ${ID_COLUMN}";
+                command.Parameters.AddWithValue($"${VERSION_COLUMN}", extension.Version);
+                command.Parameters.AddWithValue($"${ID_COLUMN}", extension.Id);
+                return command;
+            });
+        }
 
-
-        public List<DataModels.Extension> ReadExtensions()
+        public List<DataModels.Extension> GetAll()
         {
             List<DataModels.Extension> extensions = new();
 
@@ -149,7 +238,7 @@ namespace Extension_Packager_Library.src.Database
             {
                 while (dataReader.Read())
                 {
-                    DataModels.Extension extension = CreateExtensionFromRow(dataReader);
+                    DataModels.Extension extension = ParseRow(dataReader);
                     if (extension != null)
                     {
                         extensions.Add(extension);
@@ -161,7 +250,7 @@ namespace Extension_Packager_Library.src.Database
         }
 
 
-        public DataModels.Extension ReadExtension(string id)
+        public DataModels.Extension Get(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -175,14 +264,15 @@ namespace Extension_Packager_Library.src.Database
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = @$"SELECT * FROM {EXTENSION_TABLE}
-                    WHERE {ID_COLUMN} = '{id}'";
+                    WHERE {ID_COLUMN} = ${ID_COLUMN}";
+                command.Parameters.AddWithValue($"${ID_COLUMN}", id);
                 return command;
             },
             (dataReader) =>
             {
                 if (dataReader.Read())
                 {
-                    extension = CreateExtensionFromRow(dataReader);
+                    extension = ParseRow(dataReader);
                 }
             });
 
@@ -190,8 +280,7 @@ namespace Extension_Packager_Library.src.Database
         }
 
 
-
-        private DataModels.Extension CreateExtensionFromRow(SqliteDataReader dataReader)
+        private DataModels.Extension ParseRow(SqliteDataReader dataReader, Action<SqliteDataReader, DataModels.Extension> parseAdditionalData = null)
         {
             try
             {
@@ -201,9 +290,13 @@ namespace Extension_Packager_Library.src.Database
                     Name = dataReader.GetString(NAME_COLUMN),
                     ShortName = dataReader.GetString(SHORTNAME_COLUMN),
                     Version = dataReader.GetString(VERSION_COLUMN),
-                    PackedCrxFile = dataReader.GetString(CRX_COLUMN),
                     PrivateKeyFile = dataReader.GetString(PRIVATE_KEY_COLUMN)
                 };
+
+                if (parseAdditionalData != null)
+                {
+                    parseAdditionalData(dataReader, ext);
+                }
 
                 return ext;
             }
@@ -215,7 +308,11 @@ namespace Extension_Packager_Library.src.Database
             return null;
         }
 
+        #endregion
 
+
+
+        #region Database Initialization
 
         private void InitializeDatabase()
         {
@@ -241,7 +338,6 @@ namespace Extension_Packager_Library.src.Database
                     {NAME_COLUMN} TEXT,
                     {SHORTNAME_COLUMN} TEXT,
                     {VERSION_COLUMN} TEXT,
-                    {CRX_COLUMN} TEXT,
                     {PRIVATE_KEY_COLUMN} TEXT
                 )";
                 return command;
@@ -286,6 +382,7 @@ namespace Extension_Packager_Library.src.Database
             });
         }
 
+        #endregion
 
 
         private (bool, string) TryGetDatabaseFile()

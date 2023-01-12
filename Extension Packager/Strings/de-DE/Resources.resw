@@ -354,6 +354,9 @@
   <data name="SettingsViewModel2" xml:space="preserve">
     <value>Fehler beim Laden der Resourcen</value>
   </data>
+  <data name="ShowExtensionsListButton.Content" xml:space="preserve">
+    <value>Erweiterungen anzeigen</value>
+  </data>
   <data name="SourceCodeText.Text" xml:space="preserve">
     <value>Quelltext: </value>
   </data>
@@ -362,9 +365,6 @@
   </data>
   <data name="SuccessTitle.Text" xml:space="preserve">
     <value>Fertig!</value>
-  </data>
-  <data name="UpdateExtensionButton.Content" xml:space="preserve">
-    <value>Erweiterung aktualisieren</value>
   </data>
   <data name="UseShortnameCheckbox.Content" xml:space="preserve">
     <value>Verwende einen Kurznamen als Verzeichnisname</value>

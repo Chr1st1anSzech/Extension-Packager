@@ -21,12 +21,13 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
         #region Public Properties
 
-        private bool _isStepBack;
-        public bool IsStepBack
+        private bool _isUpdate;
+        public bool IsUpdate
         {
-            get { return _isStepBack; }
-            set { SetField(ref _isStepBack, value); }
+            get { return _isUpdate; }
+            set { SetField(ref _isUpdate, value); }
         }
+
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
@@ -34,6 +35,15 @@ namespace Extension_Packager_Library.src.Viewmodels
             get { return _navigationService; }
             set { SetField(ref _navigationService, value); }
         }
+
+
+        private DataModels.Extension _extension;
+        public DataModels.Extension Extension
+        {
+            get { return _extension; }
+            set { SetField(ref _extension, value); }
+        }
+
 
         private bool _isBusy = false;
         public bool IsBusy
@@ -60,7 +70,6 @@ namespace Extension_Packager_Library.src.Viewmodels
             set { SetField(ref _errorOccured, value); }
 
         }
-
 
 
         private bool _isEditBoxReadOnly = true;
@@ -122,8 +131,6 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         #region Private Fields
 
-        private readonly DataModels.Extension _ext = ExtensionManager.Instance.CurrentExtension;
-
         #endregion
 
 
@@ -148,38 +155,46 @@ namespace Extension_Packager_Library.src.Viewmodels
             ProcessAndContinueCommand = new MyCommand(ProcessAndContinue);
             GoBackCommand = new MyCommand(GoBack);
             ManifestPreviewCommand = new MyCommand(ShowManifest);
-            ResetValuesCommand = new MyCommand(ResetValues);
+            ResetValuesCommand = new MyCommand(SetProperties);
         }
 
 
         #endregion
 
 
-        public ManifestEditPageViewModel()
+        public void Init()
         {
             SetCommands();
             SetProperties();
         }
 
 
-        private void SetProperties()
-        {
-            Name = _ext.Name;
-            ShortName = _ext.ShortName;
-            Version = _ext.Version;
-        }
-
-
         private void GoBack(object parameter = null)
         {
-            _navigationService.Navigate("CrxSelectPage", true);
+            PageParameter param = new()
+            {
+                Extension = Extension,
+                IsUpdate = IsUpdate
+            };
+            _navigationService.Navigate("CrxSelectPage", param);
+        }
+
+        private void GoForward()
+        {
+            PageParameter param = new()
+            {
+                Extension = Extension,
+                IsUpdate = IsUpdate
+            };
+            _navigationService.Navigate("XmlManifestPage", param);
         }
 
 
-        private void ResetValues(object parameter = null)
+        private void SetProperties(object parameter = null)
         {
-            Name = _ext.Name;
-            ShortName = _ext.ShortName;
+            Name = Extension.Name ?? string.Empty;
+            ShortName = Extension.ShortName ?? string.Empty;
+            Version = Extension.Version ?? string.Empty;
         }
 
 
@@ -196,18 +211,19 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             string packedCrxFile = PackExtension();
             if (packedCrxFile == null) return;
-            _ext.PackedCrxFile = packedCrxFile;
+            Extension.TmpPackedCrxFile = packedCrxFile;
 
-            string privateKeyFile = FindPrivateKeyFile(_ext.ExtensionWorkingDirectory);
+            string privateKeyFile = Extension.PrivateKeyFile ?? FindPrivateKeyFile(Extension.ExtensionWorkingDirectory);
             if (privateKeyFile == null) return;
-            _ext.PrivateKeyFile = privateKeyFile;
+            Extension.TmpPrivateKeyFile = privateKeyFile;
 
-            string appId = ExtractAppId(_ext.PackedCrxFile);
+            string appId = Extension.Id ?? ExtractAppId(Extension.TmpPackedCrxFile);
             if (appId == null) return;
-            _ext.Id = appId;
+            Extension.Id = appId;
 
             IsBusy = false;
-            _navigationService.Navigate("XmlManifestPage");
+
+            GoForward();
         }
 
 
@@ -235,8 +251,8 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetExtensionValues()
         {
-            _ext.Name = Name;
-            _ext.ShortName = ShortName;
+            Extension.Name ??= Name;
+            Extension.ShortName ??= ShortName;
         }
 
 
@@ -246,7 +262,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             string updateUrl = Helper.Uri.Combine(settings.OutputURL, ShortName, settings.XmlManifestName);
             try
             {
-                _ext.ManifestContent = Manifest.ChangeUpdateUrl(_ext.ManifestContent, updateUrl);
+                Extension.ManifestContent = Manifest.ChangeUpdateUrl(Extension.ManifestContent, updateUrl);
             }
             catch (Exception ex)
             {
@@ -264,7 +280,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             try
             {
-                await File.WriteAllTextAsync(_ext.ManifestFile, _ext.ManifestContent);
+                await File.WriteAllTextAsync(Extension.ManifestFile, Extension.ManifestContent);
                 return true;
             }
             catch (Exception ex)
@@ -288,7 +304,9 @@ namespace Extension_Packager_Library.src.Viewmodels
             {
                 DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
                 IExtensionPacker packer = new ExtensionPacker();
-                return packer.Pack(settings.BrowserPath, settings.ExtensionPathParameter, _ext.UnpackedCrxDirectory);
+                return packer.Pack(settings.BrowserPath, 
+                    settings.ExtensionPathParameter, Extension.UnpackedCrxDirectory,
+                    settings.ExtensionKeyParameter, Extension.PrivateKeyFile);
             }
             catch (Exception ex)
             {
@@ -364,7 +382,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             ChangeManifest();
 
-            ExtensionManifestDocument.SetText(TextSetOptions.FormatRtf, _ext.ManifestContent);
+            ExtensionManifestDocument.SetText(TextSetOptions.FormatRtf, Extension.ManifestContent);
 
             Formatter.Formatter formatter = new JSONFormatter()
             {

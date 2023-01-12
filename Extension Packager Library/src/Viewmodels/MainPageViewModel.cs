@@ -32,14 +32,14 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         public MyCommand SettingsCommand { get; set; }
         public MyCommand CreateExtensionCommand { get; set; }
-        public MyCommand ModifyExtensionCommand { get; set; }
+        public MyCommand ShowExtensionsListCommand { get; set; }
         public MyCommand UpdateExtensionCommand { get; set; }
 
         private void SetCommands()
         {
             SettingsCommand = new MyCommand(OpenSettings);
             CreateExtensionCommand = new MyCommand(CreateExtension);
-            ModifyExtensionCommand = new MyCommand(ModifyExtension);
+            ShowExtensionsListCommand = new MyCommand(ShowExtensionsList);
             UpdateExtensionCommand = new MyCommand(UpdateExtension);
         }
 
@@ -55,7 +55,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         private void LoadExtensions()
         {
             IExtensionStorage extensionStorage = new DatabaseStorage();
-            ExtensionsList = extensionStorage.ReadLastUsedExtensions();
+            ExtensionsList = extensionStorage.GetAllLastModified();
         }
 
         private void OpenSettings(object parameter = null)
@@ -69,8 +69,12 @@ namespace Extension_Packager_Library.src.Viewmodels
             if (parameter != null && parameter is string id)
             {
                 IExtensionStorage storage = new DatabaseStorage();
-                DataModels.Extension extension = storage.ReadExtension(id);
-                _navigationService.Navigate("CrxSelectPage", extension);
+                PageParameter param = new()
+                {
+                    Extension = storage.Get(id),
+                    IsUpdate= true
+                };
+                _navigationService.Navigate("CrxSelectPage", param);
             }
         }
 
@@ -79,9 +83,9 @@ namespace Extension_Packager_Library.src.Viewmodels
             _navigationService.Navigate("CrxSelectPage");
         }
 
-        private void ModifyExtension(object parameter = null)
+        private void ShowExtensionsList(object parameter = null)
         {
-
+            _navigationService.Navigate("ExtensionListPage");
         }
     }
 }

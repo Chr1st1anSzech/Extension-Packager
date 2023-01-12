@@ -85,9 +85,9 @@
                     x:Uid="ExtensionNameTextBox"
                     AutomationProperties.IsRequiredForForm="True"
                     AutomationProperties.AccessKey="N"
-                    AutomationProperties.IsDataValidForForm="{Binding IsNameInvalide, Converter={StaticResource InverseBoolConverter}}"
                     Grid.Row="2"
                     HorizontalAlignment="Stretch"
+                    IsReadOnly="{Binding Path=IsUpdate}"
                     Style="{StaticResource TextboxWithHeaderStyle}"
                     Text="{Binding Path=Name, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
@@ -95,9 +95,9 @@
                     x:Uid="ExtensionShortNameTextBox"
                     AutomationProperties.IsRequiredForForm="True"
                     AutomationProperties.AccessKey="S"
-                    AutomationProperties.IsDataValidForForm="{Binding IsShortNameInvalide, Converter={StaticResource InverseBoolConverter}}"
                     Grid.Row="3"
                     HorizontalAlignment="Stretch"
+                    IsReadOnly="{Binding Path=IsUpdate}"
                     Style="{StaticResource TextboxWithHeaderStyle}"
                     Text="{Binding Path=ShortName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 

@@ -11,12 +11,28 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
         #region Public Properties
 
+        private bool _isUpdate;
+        public bool IsUpdate
+        {
+            get { return _isUpdate; }
+            set { SetField(ref _isUpdate, value); }
+        }
+
         private INavigationService _navigationService;
         public INavigationService NavigationService
         {
             get { return _navigationService; }
             set { SetField(ref _navigationService, value); }
         }
+
+
+        private DataModels.Extension _extension;
+        public DataModels.Extension Extension
+        {
+            get { return _extension; }
+            set { SetField(ref _extension, value); }
+        }
+
 
         private string _policyString = string.Empty;
         public string PolicyString
@@ -30,8 +46,6 @@ namespace Extension_Packager_Library.src.Viewmodels
 
 
         #region Private Fields
-
-        private readonly DataModels.Extension _ext = ExtensionManager.Instance.CurrentExtension;
 
         #endregion
 
@@ -53,7 +67,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         #endregion
 
 
-        public SuccessPageViewModel()
+        public void Init()
         {
             SetCommands();
             SetProperties();
@@ -62,7 +76,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetProperties()
         {
-            PolicyString= _ext.PolicyString;
+            PolicyString= Extension.PolicyString ?? string.Empty;
         }
 
         private void NewExtension(object parameter = null)

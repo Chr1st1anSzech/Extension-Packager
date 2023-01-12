@@ -9,7 +9,7 @@ namespace Extension_Packager_Library.src.Extension
 {
     public interface IExtensionBackup
     {
-        public Task<(string,string)> BackupAsync(BackupInfoData infos);
+        public Task<(string, string)> BackupAsync(BackupInfoData infos);
     }
 
 
@@ -20,20 +20,29 @@ namespace Extension_Packager_Library.src.Extension
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="infos"></param>
+        /// <returns></returns>
         public async Task<(string, string)> BackupAsync(BackupInfoData infos)
         {
             _log.Info("Backup the extension and private key.");
 
             string extensionDirectory = CreateExtensionDirectory(infos.BackupDirectory, infos.Name);
-            await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, extensionDirectory);
 
-            string destinationFile1 = Path.Combine(extensionDirectory, infos.CrxName);
-            CopyFile(destinationFile1, infos.CrxPath);
+            string xmlManifestFile = await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, extensionDirectory);
 
-            string destinationFile2 = Path.Combine(extensionDirectory, infos.PrivateKeyName);
-            CopyFile(destinationFile2, infos.PrivateKeyPath);
+            string crxFile = Path.Combine(extensionDirectory, infos.CrxName);
+            CopyFile(crxFile, infos.CrxPath);
 
-            return (destinationFile1, destinationFile2);
+            string privateKeyFile = Path.Combine(extensionDirectory, infos.PrivateKeyName);
+            if (!_isUpdate)
+            {
+                CopyFile(privateKeyFile, infos.PrivateKeyPath);
+            }
+
+            return (xmlManifestFile, privateKeyFile);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
-        public DataModels.Extension CurrentExtension { get; set; }
+        //public DataModels.Extension CurrentExtension { get; set; }
 
         private ExtensionManager() { }
 

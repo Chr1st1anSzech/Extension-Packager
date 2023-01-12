@@ -16,7 +16,7 @@
         <viewmodels:ExtensionListPageViewModel />
     </Page.DataContext>
     
-    <Grid>
+    <Grid Style="{StaticResource BaseGridStyle}">
 
     </Grid>
 </Page>

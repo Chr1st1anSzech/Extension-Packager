@@ -32,9 +32,12 @@ namespace Extension_Packager_Library.src.Extension
         /// <returns>Path to the newly packed extension</returns>
         public string Pack(string browserPath, string pathParam, string extensionPath, string keyParam = null, string keyPath = null)
         {
+            string privateKeyParameter = (string.IsNullOrWhiteSpace(keyParam)
+                || string.IsNullOrWhiteSpace(keyPath)) ? "" : $"{keyParam}=\"{keyPath}\"";
+
             Process p = new();
             p.StartInfo.FileName = browserPath;
-            p.StartInfo.Arguments = $"{pathParam}={extensionPath} {keyParam}={keyPath}";
+            p.StartInfo.Arguments = $"{pathParam}=\"{extensionPath}\" {privateKeyParameter}";
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardOutput = true;
             p.Start();

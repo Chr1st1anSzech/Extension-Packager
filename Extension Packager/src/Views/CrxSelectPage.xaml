@@ -34,52 +34,53 @@
             <RowDefinition
                 Height="auto" />
         </Grid.RowDefinitions>
-        
-        <Grid
+
+        <ScrollViewer
             Padding="0"
-            Grid.Row="0"
-            Style="{StaticResource BaseGridStyle}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    Width="*"
-                    MinWidth="312"
-                    MaxWidth="512" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="auto" />
-                <RowDefinition
-                    Height="auto" />
-                <RowDefinition
-                    Height="auto" />
-            </Grid.RowDefinitions>
+            Grid.Row="0">
+            <Grid
+                Style="{StaticResource BaseGridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*"
+                        MinWidth="312"
+                        MaxWidth="512" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                </Grid.RowDefinitions>
 
-            <TextBlock
-                AutomationProperties.HeadingLevel="Level2"
-                Grid.Row="0"
-                x:Uid="CreatePageTitle"
-                Style="{StaticResource Header01Style}" />
+                <TextBlock
+                    AutomationProperties.HeadingLevel="Level2"
+                    Grid.Row="0"
+                    x:Uid="CreatePageTitle"
+                    Style="{StaticResource Header01Style}" />
 
-            <TextBlock
-                x:Uid="InvalideCrxPathWarning"
-                Grid.Row="1"
-                MinWidth="300"
-                MinHeight="32"
-                Style="{StaticResource WarningTextBlockStyle}"
-                TextWrapping="WrapWholeWords"
-                Text="{Binding Path=ErrorMessage}"
-                Visibility="{Binding Path=ErrorOccurred,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
+                <TextBlock
+                    x:Uid="InvalideCrxPathWarning"
+                    Grid.Row="1"
+                    MinWidth="300"
+                    MinHeight="32"
+                    Style="{StaticResource WarningTextBlockStyle}"
+                    TextWrapping="WrapWholeWords"
+                    Text="{Binding Path=ErrorMessage}"
+                    Visibility="{Binding Path=ErrorOccurred,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
 
-            <controls:PathTextBox
-                Grid.Row="2"
-                x:Uid="ExtensionPathTextBox"
-                x:Name="ExtensionPathTextBox"
-                PickerType="File"
-                Value="{Binding Path=ViewModel.ExtensionPath,Mode=TwoWay,ElementName=MyCrxSelectPage}"
-                PickerFileTypes=".crx" />
-        </Grid>
-        
-        
+                <controls:PathTextBox
+                    Grid.Row="2"
+                    x:Uid="ExtensionPathTextBox"
+                    x:Name="ExtensionPathTextBox"
+                    PickerType="File"
+                    Value="{Binding Path=ViewModel.ExtensionPath,Mode=TwoWay,ElementName=MyCrxSelectPage}"
+                    PickerFileTypes=".crx" />
+            </Grid>
+
+        </ScrollViewer>
 
         <StackPanel
             Style="{StaticResource BaseStackPanelStyle}"
@@ -87,13 +88,13 @@
             Spacing="24"
             Orientation="Horizontal"
             HorizontalAlignment="Right">
-            
+
             <Button
                 x:Uid="GoBackButton"
                 Width="96"
                 Command="{Binding Path=GoBackCommand}"
                 Style="{StaticResource HighlightedButtonStyle}" />
-            
+
             <Button
                 x:Uid="NextStepButton"
                 Width="96"
@@ -124,7 +125,7 @@
             </Grid>
         </Grid>
 
-        
+
 
     </Grid>
 </Page>

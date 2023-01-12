@@ -57,9 +57,9 @@
                 Style="{StaticResource HighlightedButtonStyle}"
                 Width="{Binding ElementName=UpdateExtensionButton, Path=ActualWidth}" />
             <Button
-                x:Uid="UpdateExtensionButton"
-                x:Name="UpdateExtensionButton"
-                Command="{Binding ModifyExtensionCommand}"
+                x:Uid="ShowExtensionsListButton"
+                x:Name="ShowExtensionsListButton"
+                Command="{Binding ShowExtensionsListCommand}"
                 Style="{StaticResource HighlightedButtonStyle}" />
         </StackPanel>
 
@@ -126,7 +126,7 @@
                             Command="{Binding ElementName=MyMainPage, Path=ViewModel.UpdateExtensionCommand}"
                             CommandParameter="{Binding Path=Id}"
                             Background="Transparent"
-                            Padding="4,12"
+                            Padding="12"
                             Margin="0,6"
                             CornerRadius="4"
                             HorizontalAlignment="Stretch"
@@ -136,25 +136,48 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition
-                                        Width="*"
-                                        MaxWidth="256"
-                                        MinWidth="64" />
+                                        Width="auto" />
                                     <ColumnDefinition
-                                        Width="*"
-                                        MinWidth="128" />
+                                        Width="auto" />
+                                    <ColumnDefinition
+                                        Width="*" />
+                                    <ColumnDefinition
+                                        Width="auto" />
                                     <ColumnDefinition
                                         Width="auto" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition
+                                        Height="*" />
+                                    <RowDefinition
+                                        Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Text="{Binding Path=Name}"
+                                    FontWeight="SemiBold" />
                                 <TextBlock
                                     Text="{Binding Path=Id}"
-                                    Grid.Column="0" />
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="5"
+                                    Grid.Row="1"
+                                    Foreground="#d1d1d1"
+                                    Margin="0,8,0,0"
+                                    FontSize="10" />
                                 <TextBlock
-                                    Text="{Binding Path=Name}"
                                     Grid.Column="1"
-                                    Margin="24,0" />
+                                    Text="-"
+                                    Margin="6,0" />
                                 <TextBlock
-                                    Text="{Binding Path=Version}"
-                                    Grid.Column="2" />
+                                    Grid.Column="2"
+                                    Text="{Binding Path=Version}"/>
+                                <TextBlock
+                                    Grid.Column="3"
+                                    Foreground="#d1d1d1"
+                                    Text="{Binding Path=UpdateDate}"
+                                    VerticalAlignment="Bottom"
+                                    FontSize="10" />
+
                             </Grid>
                         </Button>
                     </DataTemplate>

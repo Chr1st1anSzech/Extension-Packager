@@ -20,11 +20,11 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         #region Public Properties
 
-        private bool _isStepBack;
-        public bool IsStepBack
+        private bool _isUpdate;
+        public bool IsUpdate
         {
-            get { return _isStepBack; }
-            set { SetField(ref _isStepBack, value); }
+            get { return _isUpdate; }
+            set { SetField(ref _isUpdate, value); }
         }
 
         private INavigationService _navigationService;
@@ -32,6 +32,13 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             get { return _navigationService; }
             set { SetField(ref _navigationService, value); }
+        }
+
+        private DataModels.Extension _extension;
+        public DataModels.Extension Extension
+        {
+            get { return _extension; }
+            set { SetField(ref _extension, value); }
         }
 
         private bool _isBusy;
@@ -71,8 +78,6 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         #region Private Fields
 
-        private DataModels.Extension _ext = ExtensionManager.Instance.CurrentExtension;
-
         #endregion
 
 
@@ -110,7 +115,23 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void GoBack(object parameter = null)
         {
-            _navigationService.Navigate("MainPage");
+
+            PageParameter param = new()
+            {
+                Extension = Extension,
+                IsUpdate = IsUpdate
+            };
+            _navigationService.Navigate("MainPage", param);
+        }
+
+        private void GoForward()
+        {
+            PageParameter param = new()
+            {
+                Extension = Extension,
+                IsUpdate = IsUpdate
+            };
+            _navigationService.Navigate("ManifestEditPage", param);
         }
 
 
@@ -119,11 +140,19 @@ namespace Extension_Packager_Library.src.Viewmodels
             IsBusy = true;
             if (!IsInputValide()) return;
 
-            _ext = new();
-            ExtensionManager.Instance.CurrentExtension = _ext;
-            await UnpackAndReadExtensionAsync();
-            //IsBusy = false;
-            _navigationService.Navigate("ManifestEditPage");
+            Extension ??= new();
+
+            bool directoriesCreated = CreateDirectories();
+            if (!directoriesCreated) return;
+
+            bool isSuccess = await UnpackAsync(ExtensionPath, Extension.UnpackedCrxDirectory);
+            if (!isSuccess) return;
+
+            Manifest manifest = ReadManifest(Extension.UnpackedCrxDirectory);
+            if (manifest == null) return;
+
+            SetExtensionValues(manifest);
+            GoForward();
         }
 
         private bool IsInputValide()
@@ -140,42 +169,34 @@ namespace Extension_Packager_Library.src.Viewmodels
             return true;
         }
 
-        private async Task UnpackAndReadExtensionAsync()
-        {
-            (string, string) directories = CreateDirectories();
-            if (directories.Item1 == null || directories.Item2 == null) return;
 
-            _ext.ExtensionWorkingDirectory = directories.Item1;
-            _ext.UnpackedCrxDirectory = directories.Item2;
 
-            bool isSuccess = await UnpackExtensionAsync(ExtensionPath, _ext.UnpackedCrxDirectory);
-            if (!isSuccess) return;
-
-            Manifest manifest = ReadManifest(_ext.UnpackedCrxDirectory);
-            if (manifest == null) return;
-
-            SetExtensionValues(manifest);
-        }
-
-        private (string, string) CreateDirectories()
+        private bool CreateDirectories()
         {
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
             try
             {
                 string workingDirectory = FileHelper.CreateRandomDirectory(settings.WorkingAreaPath);
                 string unpackedCrxDirectory = FileHelper.CreateRandomDirectory(workingDirectory);
-                return (workingDirectory, unpackedCrxDirectory);
+
+                Extension.ExtensionWorkingDirectory = workingDirectory;
+                Extension.UnpackedCrxDirectory = unpackedCrxDirectory;
+
+                return true;
             }
             catch (Exception exception)
             {
                 ErrorMessage = StringResources.GetWithReason(this, 4, exception.Message);
                 ErrorOccurred = true;
                 _log.Error(exception);
-                return (null, null);
+
+                return false;
             }
         }
 
-        private async Task<bool> UnpackExtensionAsync(string sourceCrxFile, string unpackedCrxDirectory)
+
+
+        private async Task<bool> UnpackAsync(string sourceCrxFile, string unpackedCrxDirectory)
         {
             IExtensionDepackager depackager = new ExtensionDepackager();
             try
@@ -191,6 +212,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                 return false;
             }
         }
+
 
         private Manifest ReadManifest(string unpackedCrxDirectory)
         {
@@ -211,11 +233,11 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetExtensionValues(Manifest manifest)
         {
-            _ext.ManifestContent = manifest.RawContent;
-            _ext.Name = manifest.Name;
-            _ext.Version = manifest.Version;
-            _ext.ShortName = new ShortNameFormatter().Format(manifest.Name);
-            _ext.ManifestFile = manifest.File;
+            Extension.ManifestContent = manifest.RawContent;
+            Extension.Name = Extension.Name ?? manifest.Name;
+            Extension.Version = manifest.Version;
+            Extension.ShortName = Extension.ShortName ?? new ShortNameFormatter().Format(manifest.Name);
+            Extension.ManifestFile = manifest.File;
         }
     }
 }

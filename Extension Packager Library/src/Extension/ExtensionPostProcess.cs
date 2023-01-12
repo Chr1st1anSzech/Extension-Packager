@@ -64,7 +64,7 @@ namespace Extension_Packager_Library.src.Extension
             return newDirectory;
         }
 
-        internal async Task WriteXmlManifestAsync(string xmlManifest, string xmlManifestFile, string destinationDirectory)
+        internal async Task<string> WriteXmlManifestAsync(string xmlManifest, string xmlManifestFile, string destinationDirectory)
         {
             string destinationFile = Path.Combine(destinationDirectory, xmlManifestFile);
 
@@ -73,6 +73,7 @@ namespace Extension_Packager_Library.src.Extension
             try
             {
                 await File.WriteAllTextAsync(destinationFile, xmlManifest);
+                return destinationFile;
             }
             catch (Exception ex)
             {
