@@ -109,7 +109,8 @@ namespace Extension_Packager_Library.src.Database
                     {PRIVATE_KEY_COLUMN}
                 FROM {EXTENSION_TABLE}
                 JOIN {LAST_USED_TABLE}
-                ON {EXTENSION_TABLE}.{ID_COLUMN} = {LAST_USED_TABLE}.{ID_REF_COLUMN}";
+                ON {EXTENSION_TABLE}.{ID_COLUMN} = {LAST_USED_TABLE}.{ID_REF_COLUMN}
+                ORDER BY {LAST_USED_TABLE}.{DATE_COLUMN} DESC";
                 return command;
             },
             (dataReader) =>

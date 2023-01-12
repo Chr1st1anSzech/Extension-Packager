@@ -281,8 +281,8 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetExtensionValues()
         {
-            Extension.Name ??= Name;
-            Extension.ShortName ??= ShortName;
+            Extension.Name = Name;
+            Extension.ShortName = ShortName;
         }
 
 
