@@ -23,11 +23,11 @@ namespace Extension_Packager_Library.src.Extension
         {
             _log.Info("Deploy the extension.");
 
-            string extensionDirectory = CreateExtensionDirectory(infos.DestinationDirectory, infos.Name);
-            await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, extensionDirectory);
-            string destinationFile = Path.Combine(extensionDirectory, infos.CrxName);
+            string deployementDirectory = CreateExtensionDirectory(infos.DestinationDirectory, infos.Name);
+            await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, deployementDirectory);
+            string destinationFile = Path.Combine(deployementDirectory, infos.CrxName);
             CopyFile(destinationFile, infos.CrxPath);
-            return destinationFile;
+            return deployementDirectory;
         }
     }
 }

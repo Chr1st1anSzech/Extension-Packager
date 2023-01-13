@@ -9,14 +9,19 @@ namespace Extension_Packager_Library.src.Database
 {
     public interface IExtensionStorage
     {
-        public void Set(DataModels.Extension extension);
-
-        public void SetLastModified(DataModels.Extension extension);
-
-        public List<DataModels.Extension> GetAll();
+        public DataModels.Extension GetLastModified(string id);
 
         public List<DataModels.Extension> GetAllLastModified();
 
+        public void SetLastModified(DataModels.Extension extension);
+
+
         public DataModels.Extension Get(string id);
+
+        public List<DataModels.Extension> GetAll();
+
+        public void Set(DataModels.Extension extension);
+
+        public void Delete(string id);
     }
 }

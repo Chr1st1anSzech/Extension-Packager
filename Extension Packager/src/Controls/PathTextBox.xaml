@@ -11,6 +11,7 @@
     x:Name="MyPathTextBox"
     x:Uid="MyPathTextBox"
     AutomationProperties.LandmarkType="Custom"
+    AutomationProperties.AutomationControlType="Custom"
     DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid

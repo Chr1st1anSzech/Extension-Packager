@@ -1,0 +1,14 @@
+﻿using Extension_Packager_Library.src.Helper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Extension_Packager_Library.src.Viewmodels
+{
+    public class AddExtensionPageViewModel : ViewModel
+    {
+
+    }
+}

@@ -88,6 +88,22 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         }
 
+        private bool _isNameValide = true;
+        public bool IsNameValid
+        {
+            get { return _isNameValide; }
+            set { SetField(ref _isNameValide, value); }
+
+        }
+
+        private bool _isShortNameValide = true;
+        public bool IsShortNameValid
+        {
+            get { return _isShortNameValide; }
+            set { SetField(ref _isShortNameValide, value); }
+
+        }
+
 
         private string _name = string.Empty;
         public string Name
@@ -236,15 +252,22 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             if (!await SaveManifestAsync()) return;
 
+            if (IsUpdate)
+            {
+                string privateKeyFile = FindPrivateKeyFile(Extension.BackupDir);
+                if (privateKeyFile == null) return;
+                Extension.PrivateKeyFile = privateKeyFile;
+            }
+
             string packedCrxFile = PackExtension();
             if (packedCrxFile == null) return;
             Extension.TmpPackedCrxFile = packedCrxFile;
 
             if (!IsUpdate)
             {
-                string privateKeyFile = FindPrivateKeyFile(Extension.ExtensionWorkingDirectory);
-                if (privateKeyFile == null) return;
-                Extension.TmpPrivateKeyFile = privateKeyFile;
+                string tmpPrivateKeyFile = FindPrivateKeyFile(Extension.ExtensionWorkingDirectory);
+                if (tmpPrivateKeyFile == null) return;
+                Extension.TmpPrivateKeyFile = tmpPrivateKeyFile;
             }
 
             string appId = Extension.Id ?? ExtractAppId(Extension.TmpPackedCrxFile);
@@ -259,8 +282,9 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private bool IsInputValide()
         {
-            if (!InputValidator.IsNameValide(Name))
+            if (!InputValidator.IsNameValid(Name))
             {
+                IsNameValid= false;
                 IsBusy = false;
                 ErrorMessage = StringResources.Get(this, 7);
                 ErrorOccured = true;
@@ -269,11 +293,15 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             if (!InputValidator.IsShortNameValide(ShortName))
             {
+                IsShortNameValid = false;
                 IsBusy = false;
                 ErrorMessage = StringResources.Get(this, 8);
                 ErrorOccured = true;
                 return false;
             }
+
+            IsNameValid = true;
+            IsShortNameValid = true;
             ErrorOccured = false;
             return true;
         }

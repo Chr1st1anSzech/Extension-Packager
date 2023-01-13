@@ -50,12 +50,6 @@ namespace Extension_Packager_Library.src.DataModels
 
 
         /// <summary>
-        /// Path to the XML manifest file in the backup directory.
-        /// </summary>
-        public string XmlManifestFile { get; set; }
-
-
-        /// <summary>
         /// Character string that can be used for the group policy.
         /// </summary>
         public string PolicyString { get; set; }
@@ -94,6 +88,18 @@ namespace Extension_Packager_Library.src.DataModels
         /// The date when the extension was created or updated.
         /// </summary>
         public DateTime UpdateDate { get; set; }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string DeployementDir { get; set; }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string BackupDir { get; set; }
 
     }
 }

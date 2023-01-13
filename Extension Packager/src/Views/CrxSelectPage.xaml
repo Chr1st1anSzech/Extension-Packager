@@ -24,9 +24,10 @@
     </Page.Resources>
 
     <Grid
+        x:Name="MainGrid"
+        AutomationProperties.AccessibilityView="Raw"
         Padding="0"
         HorizontalAlignment="Stretch"
-        x:Name="MainGrid"
         Style="{StaticResource BaseGridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition
@@ -36,9 +37,12 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer
+            AutomationProperties.LabeledBy="{Binding ElementName=EditManifestTitle}"
+            AutomationProperties.LandmarkType="Main"
             Padding="0"
             Grid.Row="0">
             <Grid
+                AutomationProperties.AccessibilityView="Raw"
                 Style="{StaticResource BaseGridStyle}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -56,9 +60,10 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock
+                    x:Name="CreatePageTitle"
+                    x:Uid="CreatePageTitle"
                     AutomationProperties.HeadingLevel="Level2"
                     Grid.Row="0"
-                    x:Uid="CreatePageTitle"
                     Style="{StaticResource Header01Style}" />
 
                 <TextBlock
@@ -83,6 +88,7 @@
         </ScrollViewer>
 
         <StackPanel
+            AutomationProperties.LandmarkType="Navigation"
             Style="{StaticResource BaseStackPanelStyle}"
             Grid.Row="1"
             Spacing="24"
@@ -124,8 +130,6 @@
                 </StackPanel>
             </Grid>
         </Grid>
-
-
 
     </Grid>
 </Page>

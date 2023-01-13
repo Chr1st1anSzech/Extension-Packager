@@ -12,9 +12,11 @@
     x:Name="MySearchField"
     x:Uid="MySearchField"
     AutomationProperties.LandmarkType="Search"
+    AutomationProperties.AutomationControlType="Custom"
     DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <StackPanel
+        AutomationProperties.AccessibilityView="Raw"
         Orientation="Horizontal"
         Style="{StaticResource BaseStackPanelStyle}"
         Padding="0"
@@ -37,8 +39,8 @@
             Width="32"
             Height="32"
             Margin="6,0,0,0"
-            Padding="4,2,8,8"
-            Content="{StaticResource SearchIconData}"
+            Padding="0"
+            Content="&#xE721;"
             Style="{StaticResource IconButtonStyle}" />
     </StackPanel>
 </UserControl>

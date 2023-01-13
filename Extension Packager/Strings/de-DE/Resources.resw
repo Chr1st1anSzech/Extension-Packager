@@ -126,8 +126,26 @@
   <data name="ActionsTitle.Text" xml:space="preserve">
     <value>Los geht's</value>
   </data>
+  <data name="ActionsTitle.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Aktionen</value>
+  </data>
+  <data name="AddExtButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="AddExtDescriptionButton.Text" xml:space="preserve">
+    <value>Vorhandene Erweiterung hinzufügen</value>
+  </data>
+  <data name="AddExtTitleButton.Text" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
   <data name="AdvancedSettingsTitle.Text" xml:space="preserve">
     <value>Erweiterte Einstellungen</value>
+  </data>
+  <data name="AllExtensionsListView.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Alle Erweiterungen</value>
+  </data>
+  <data name="AllExtensionsTitle.Text" xml:space="preserve">
+    <value>Alle Erweiterungen</value>
   </data>
   <data name="AppCrxTextBox.Header" xml:space="preserve">
     <value>Name der CRX-Datei</value>
@@ -159,11 +177,23 @@
   <data name="CancelButton.Content" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="ChangeExtButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Ändern</value>
+  </data>
+  <data name="ChangeExtensionButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Erweiterung ändern</value>
+  </data>
   <data name="ConfirmSettingsButton.Content" xml:space="preserve">
     <value>Bestätigen</value>
   </data>
-  <data name="CreateNewExtensionButton.Content" xml:space="preserve">
-    <value>Neue Erweiterung</value>
+  <data name="CreateExtButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="CreateExtDescriptionButton.Text" xml:space="preserve">
+    <value>Neue Erweiterung erstellen</value>
+  </data>
+  <data name="CreateExtTitleButton.Text" xml:space="preserve">
+    <value>Erstellen</value>
   </data>
   <data name="CreatePageTitle.Text" xml:space="preserve">
     <value>Neue Erweiterung erstellen</value>
@@ -188,6 +218,9 @@
   </data>
   <data name="DefaultSettingsWarning.Text" xml:space="preserve">
     <value>Warnung: Die Konfiguration konnte nicht geladen werden. Es werden die Standardeinstellungen verwendet.</value>
+  </data>
+  <data name="DeleteExtButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Löschen</value>
   </data>
   <data name="DependenciesTitle.Text" xml:space="preserve">
     <value>Abhängigkeiten und Referenzen</value>
@@ -219,8 +252,32 @@
   <data name="ExtensionKeyParameterTextBox.PlaceholderText" xml:space="preserve">
     <value>Parameternamen eingeben</value>
   </data>
-  <data name="ExtensionManifestTextBox.Header" xml:space="preserve">
-    <value>Manifest</value>
+  <data name="ExtensionListPageViewModel1" xml:space="preserve">
+    <value>Das Verzeichnis konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="ExtensionListPageViewModel2" xml:space="preserve">
+    <value>Die Erweiterung konnte nicht aus dem Speicher entfernt werden.</value>
+  </data>
+  <data name="ExtensionListPageViewModel3" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="ExtensionListPageViewModel4" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="ExtensionListPageViewModel5" xml:space="preserve">
+    <value>Wollen Sie die Erweiterung "{0}" wirklich löschen?</value>
+  </data>
+  <data name="ExtensionListPageViewModel6" xml:space="preserve">
+    <value>Die Erweiterung wird aus dem Speicher entfernt. Die Verzeichnisse
+"{0}" und
+"{1}"
+werden gelöscht.</value>
+  </data>
+  <data name="ExtensionListPageViewModel7" xml:space="preserve">
+    <value>Die Erweiterung konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="ExtensionManifestTextBox.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Vorschau</value>
   </data>
   <data name="ExtensionNameTextBox.Header" xml:space="preserve">
     <value>Name</value>
@@ -251,6 +308,9 @@
   </data>
   <data name="ExtensionVersionTextBox.Header" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="ExtListToolbar.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Werkzeugleiste</value>
   </data>
   <data name="ExtractCrx.Text" xml:space="preserve">
     <value>Entpacke Erweiterung...</value>
@@ -321,20 +381,29 @@
   <data name="ManifestEditPageViewModel9" xml:space="preserve">
     <value>Die CRX Datei oder Schlüsseldatei konnten nicht gelöscht werden.</value>
   </data>
+  <data name="ManifestGroupHeader.Text" xml:space="preserve">
+    <value>Manifestvorschau</value>
+  </data>
   <data name="ManifestPreviewButton.Content" xml:space="preserve">
-    <value>Vorschau</value>
+    <value>Anzeigen</value>
   </data>
   <data name="MenuItemsProvider1" xml:space="preserve">
     <value>Startseite</value>
   </data>
   <data name="MenuItemsProvider2" xml:space="preserve">
-    <value>Neue Erweiterung</value>
+    <value>Erstellen</value>
   </data>
   <data name="MenuItemsProvider3" xml:space="preserve">
     <value>Impressum</value>
   </data>
   <data name="MenuItemsProvider4" xml:space="preserve">
-    <value>Alle Erweiterungen</value>
+    <value>Übersicht</value>
+  </data>
+  <data name="MenuItemsProvider5" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="MyPathTextBox.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Dateiauswahl</value>
   </data>
   <data name="MySearchField.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Suchfeld Erweiterungen</value>
@@ -343,7 +412,7 @@
     <value>Titelleiste</value>
   </data>
   <data name="NewExtensionButton.Content" xml:space="preserve">
-    <value>Neue Erweiterung</value>
+    <value>Erstellen</value>
   </data>
   <data name="NextStepButton.Content" xml:space="preserve">
     <value>Weiter</value>
@@ -393,8 +462,11 @@
   <data name="SettingsViewModel2" xml:space="preserve">
     <value>Fehler beim Laden der Resourcen</value>
   </data>
-  <data name="ShowExtensionsListButton.Content" xml:space="preserve">
-    <value>Erweiterungen anzeigen</value>
+  <data name="ShowExtDescriptionButton.Text" xml:space="preserve">
+    <value>Alle Erweiterungen anzeigen</value>
+  </data>
+  <data name="ShowExtTitleButton.Text" xml:space="preserve">
+    <value>Anzeigen</value>
   </data>
   <data name="SourceCodeText.Text" xml:space="preserve">
     <value>Quelltext: </value>

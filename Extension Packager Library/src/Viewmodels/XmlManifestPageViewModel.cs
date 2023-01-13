@@ -235,7 +235,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             try
             {
-                await deployment.DeployAsync(deployementInfos);
+                Extension.DeployementDir = await deployment.DeployAsync(deployementInfos);
                 return true;
             }
             catch (Exception ex)
@@ -266,9 +266,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             IExtensionBackup backup = new ExtensionBackup(IsUpdate);
             try
             {
-                (string,string) destinationFiles = await backup.BackupAsync(backupInfos);
-                Extension.XmlManifestFile = destinationFiles.Item1;
-                Extension.PrivateKeyFile = destinationFiles.Item2;
+                Extension.BackupDir = await backup.BackupAsync(backupInfos);
 
                 return true;
             }

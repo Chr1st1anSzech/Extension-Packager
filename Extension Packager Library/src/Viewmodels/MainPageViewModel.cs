@@ -43,17 +43,19 @@ namespace Extension_Packager_Library.src.Viewmodels
         #region Commands
 
         public MyCommand SettingsCommand { get; set; }
-        public MyCommand CreateExtensionCommand { get; set; }
-        public MyCommand ShowExtensionsListCommand { get; set; }
-        public MyCommand UpdateExtensionCommand { get; set; }
+        public MyCommand CreateCommand { get; set; }
+        public MyCommand ShowCommand { get; set; }
+        public MyCommand UpdateCommand { get; set; }
+        public MyCommand AddCommand { get; set; }
         public MyCommand SearchCommand { get; set; }
 
         private void SetCommands()
         {
             SettingsCommand = new MyCommand(OpenSettings);
-            CreateExtensionCommand = new MyCommand(CreateExtension);
-            ShowExtensionsListCommand = new MyCommand(ShowExtensionsList);
-            UpdateExtensionCommand = new MyCommand(UpdateExtension);
+            ShowCommand = new MyCommand(Show);
+            CreateCommand = new MyCommand(Create);
+            AddCommand = new MyCommand(Add);
+            UpdateCommand = new MyCommand(Update);
             SearchCommand = new MyCommand(Search);
         }
 
@@ -77,6 +79,36 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         }
 
+        private void Show(object parameter = null)
+        {
+            _navigationService.Navigate("ExtensionListPage");
+        }
+
+        private void Create(object parameter = null)
+        {
+            _navigationService.Navigate("CrxSelectPage");
+        }
+
+        private void Add(object parameter = null)
+        {
+
+        }
+
+        private void Update(object parameter = null)
+        {
+            // parameter = CommandParameter (ext id)
+            if (parameter != null && parameter is string id)
+            {
+                IExtensionStorage storage = new DatabaseStorage();
+                PageParameter param = new()
+                {
+                    Extension = storage.Get(id),
+                    IsUpdate = true
+                };
+                _navigationService.Navigate("CrxSelectPage", param);
+            }
+        }
+
         private void Search(object parameter = null)
         {
             if (parameter is string searchText && searchText != null)
@@ -94,31 +126,6 @@ namespace Extension_Packager_Library.src.Viewmodels
                     return extension.Name.ToLower().Contains(searchText.ToLower());
                 }).ToList();
             }
-        }
-
-        private void UpdateExtension(object parameter = null)
-        {
-            // parameter = CommandParameter (ext id)
-            if (parameter != null && parameter is string id)
-            {
-                IExtensionStorage storage = new DatabaseStorage();
-                PageParameter param = new()
-                {
-                    Extension = storage.Get(id),
-                    IsUpdate = true
-                };
-                _navigationService.Navigate("CrxSelectPage", param);
-            }
-        }
-
-        private void CreateExtension(object parameter = null)
-        {
-            _navigationService.Navigate("CrxSelectPage");
-        }
-
-        private void ShowExtensionsList(object parameter = null)
-        {
-            _navigationService.Navigate("ExtensionListPage");
         }
     }
 }

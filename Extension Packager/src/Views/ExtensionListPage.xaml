@@ -7,16 +7,151 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Extension_Packager.src.Views"
     xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
+    xmlns:converter="using:Extension_Packager.src.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    
+
     <Page.DataContext>
         <viewmodels:ExtensionListPageViewModel />
     </Page.DataContext>
+
+    <Page.Resources>
+        <converter:ExtToStringConverter
+            x:Key="ExtToStringConverter" />
+        <converter:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
+    </Page.Resources>
     
-    <Grid Style="{StaticResource BaseGridStyle}">
+    <Grid
+        x:Name="MainPageGrid"
+        AutomationProperties.LabeledBy="{Binding ElementName=AllExtensionsTitle}"
+        AutomationProperties.LandmarkType="Main"
+        Padding="0"
+        Style="{StaticResource BaseGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            x:Name="AllExtensionsTitle"
+            x:Uid="AllExtensionsTitle"
+            AutomationProperties.HeadingLevel="Level2"
+            Style="{StaticResource Header01Style}" />
+
+        <TextBlock
+            AutomationProperties.LiveSetting="Polite"
+            Grid.Row="1"
+            MinWidth="300"
+            MinHeight="32"
+            Margin="0,0,0,6"
+            Style="{StaticResource WarningTextBlockStyle}"
+            Text="{Binding ErrorMessage}"
+            TextWrapping="WrapWholeWords"
+            Visibility="{Binding Path=ErrorOccured,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
+
+        <StackPanel
+            x:Uid="ExtListToolbar"
+            Grid.Row="2"
+            Orientation="Horizontal"
+            Padding="0"
+            Style="{StaticResource BaseStackPanelStyle}">
+            <Button
+                x:Name="CreateExtButton"
+                x:Uid="CreateExtButton"
+                Command="{Binding CreateCommand}"
+                Content="&#xE7C3;"
+                Style="{StaticResource IconButtonStyle}" />
+            <Button
+                x:Name="AddExtButton"
+                x:Uid="AddExtButton"
+                Command="{Binding AddCommand}"
+                Content="&#xE8E5;"
+                Style="{StaticResource IconButtonStyle}" />
+            <Button
+                x:Name="DeleteExtButton"
+                x:Uid="DeleteExtButton"
+                Command="{Binding AskDeleteCommand}"
+                Content="&#xE74D;"
+                Style="{StaticResource IconButtonStyle}" />
+            <Button
+                x:Name="ChangeExtButton"
+                x:Uid="ChangeExtButton"
+                Command="{Binding ChangeCommand}"
+                Content="&#xE70F;"
+                Style="{StaticResource IconButtonStyle}" />
+        </StackPanel>
+
+        <ListView
+            x:Name="AllExtensionsListView"
+            x:Uid="AllExtensionsListView"
+            SelectedItem="{Binding SelectedExtension, Mode=TwoWay}"
+            Grid.Row="3"
+            SelectionMode="Single"
+            Padding="0"
+            ItemsSource="{Binding Path=AllExtensions}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid
+                        AutomationProperties.AccessibilityView="Raw"
+                        AutomationProperties.Name="{Binding Converter={StaticResource ExtToStringConverter}}"
+                        Padding="12"
+                        Margin="0,6"
+                        CornerRadius="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="auto" />
+                            <ColumnDefinition
+                                Width="auto" />
+                            <ColumnDefinition
+                                Width="*" />
+                            <ColumnDefinition
+                                Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="*" />
+                            <RowDefinition
+                                Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            x:Name="ExtensionTitle"
+                            x:Uid="ExtensionTitle"
+                            Grid.Column="0"
+                            Text="{Binding Path=Name}"
+                            FontWeight="SemiBold" />
+                        <TextBlock
+                            x:Uid="ExtensionId"
+                            Text="{Binding Path=Id}"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="5"
+                            Grid.Row="1"
+                            Foreground="#d1d1d1"
+                            Margin="0,8,0,0"
+                            FontSize="10" />
+                        <TextBlock
+                            AutomationProperties.AccessibilityView="Raw"
+                            Grid.Column="1"
+                            Text="-"
+                            Margin="6,0" />
+                        <TextBlock
+                            x:Uid="ExtensionVersion"
+                            Grid.Column="2"
+                            Text="{Binding Path=Version}" />
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
     </Grid>
 </Page>

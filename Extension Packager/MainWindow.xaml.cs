@@ -27,7 +27,6 @@ namespace Extension_Packager
             MainNavigationView.Loaded += async (object sender, RoutedEventArgs e) =>
             {
                 ViewModel.MenuItems = new MenuItemsProvider();
-                ExtensionManager.Initialize();
                 NavigationService.Initialize(MainWindowFrame, MainNavigationView, ViewModel.MenuItems);
                 await PrepareView();
             };

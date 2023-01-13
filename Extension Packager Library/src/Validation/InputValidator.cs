@@ -8,7 +8,7 @@ namespace Extension_Packager_Library.src.Validation
 {
     public class InputValidator
     {
-        public static bool IsNameValide(string name)
+        public static bool IsNameValid(string name)
         {
             return Regex.IsMatch(name, "^.{1,64}$");
         }

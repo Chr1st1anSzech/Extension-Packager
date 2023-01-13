@@ -25,9 +25,10 @@
     </Page.Resources>
 
     <Grid
+        AutomationProperties.AccessibilityView="Raw"
+        x:Name="MainGrid"
         Padding="0"
         HorizontalAlignment="Stretch"
-        x:Name="MainGrid"
         Style="{StaticResource BaseGridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition
@@ -37,9 +38,12 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer
+            AutomationProperties.LabeledBy="{Binding ElementName=EditManifestTitle}"
+            AutomationProperties.LandmarkType="Main"
             Padding="0"
             Grid.Row="0">
             <Grid
+                AutomationProperties.AccessibilityView="Raw"
                 Style="{StaticResource BaseGridStyle}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
@@ -60,14 +64,13 @@
                         Height="auto" />
                     <RowDefinition
                         Height="auto" />
-                    <RowDefinition
-                        Height="auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock
-                    Grid.Row="0"
-                    AutomationProperties.HeadingLevel="Level2"
+                    x:Name="EditManifestTitle"
                     x:Uid="EditManifestTitle"
+                    AutomationProperties.HeadingLevel="Level2"
+                    Grid.Row="0"
                     Style="{StaticResource Header01Style}" />
 
                 <TextBlock
@@ -85,6 +88,7 @@
                     x:Uid="ExtensionNameTextBox"
                     AutomationProperties.IsRequiredForForm="True"
                     AutomationProperties.AccessKey="N"
+                    AutomationProperties.IsDataValidForForm="{Binding IsNameValid}"
                     Grid.Row="2"
                     HorizontalAlignment="Stretch"
                     IsReadOnly="{Binding Path=IsUpdate}"
@@ -95,6 +99,7 @@
                     x:Uid="ExtensionShortNameTextBox"
                     AutomationProperties.IsRequiredForForm="True"
                     AutomationProperties.AccessKey="S"
+                    AutomationProperties.IsDataValidForForm="{Binding IsShortNameValid}"
                     Grid.Row="3"
                     HorizontalAlignment="Stretch"
                     IsReadOnly="{Binding Path=IsUpdate}"
@@ -103,7 +108,6 @@
 
                 <TextBox
                     x:Uid="ExtensionVersionTextBox"
-                    AutomationProperties.IsRequiredForForm="True"
                     AutomationProperties.AccessKey="V"
                     Grid.Row="4"
                     HorizontalAlignment="Stretch"
@@ -111,39 +115,46 @@
                     Style="{StaticResource TextboxWithHeaderStyle}"
                     Text="{Binding Path=Version, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
-                <StackPanel
-                    Style="{StaticResource BaseStackPanelStyle}"
-                    Grid.Row="5"
-                    Spacing="24"
-                    Orientation="Horizontal">
+                <Grid
+                    AutomationProperties.LabeledBy="{Binding ElementName=ManifestGroupHeader}"
+                    Margin="0,18,0,0"
+                    Grid.Row="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="auto" />
+                        <RowDefinition
+                            Height="auto" />
+                        <RowDefinition
+                            Height="auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        x:Name="ManifestGroupHeader"
+                        x:Uid="ManifestGroupHeader"
+                        AutomationProperties.HeadingLevel="Level3"
+                        Style="{StaticResource Header02Style}" />
                     
                     <Button
-                        x:Uid="ResetValuesButton"
-                        Width="108"
-                        Command="{Binding Path=ResetValuesCommand}"
-                        Style="{StaticResource HighlightedButtonStyle}" />
-
-                    <Button
                         x:Uid="ManifestPreviewButton"
+                        Grid.Row="1"
                         Width="96"
                         Command="{Binding Path=ManifestPreviewCommand}"
                         Style="{StaticResource HighlightedButtonStyle}" />
 
-                </StackPanel>
-
-                <RichEditBox
-                    x:Uid="ExtensionManifestTextBox"
-                    x:Name="ExtensionManifestTextBox"
-                    Grid.Row="6"
-                    Margin="0,12,0,12"
-                    IsReadOnly="{Binding Path=IsEditBoxReadOnly,UpdateSourceTrigger=PropertyChanged}"
-                    Height="300" />
+                    <RichEditBox
+                        x:Uid="ExtensionManifestTextBox"
+                        x:Name="ExtensionManifestTextBox"
+                        Grid.Row="2"
+                        Margin="0,12,0,12"
+                        IsReadOnly="{Binding Path=IsEditBoxReadOnly,UpdateSourceTrigger=PropertyChanged}"
+                        Height="300" />
+                </Grid>
 
             </Grid>
 
         </ScrollViewer>
 
         <StackPanel
+            AutomationProperties.LandmarkType="Navigation"
             Style="{StaticResource BaseStackPanelStyle}"
             Grid.Row="1"
             Spacing="24"
@@ -151,14 +162,20 @@
             HorizontalAlignment="Right">
 
             <Button
+                x:Uid="ResetValuesButton"
+                Width="110"
+                Command="{Binding Path=ResetValuesCommand}"
+                Style="{StaticResource HighlightedButtonStyle}" />
+
+            <Button
                 x:Uid="GoBackButton"
-                Width="96"
+                Width="110"
                 Command="{Binding Path=GoBackCommand}"
                 Style="{StaticResource HighlightedButtonStyle}" />
 
             <Button
                 x:Uid="PackExtensionButton"
-                Width="96"
+                Width="110"
                 Command="{Binding Path=ProcessAndContinueCommand}"
                 Style="{StaticResource HighlightedButtonStyle}" />
 

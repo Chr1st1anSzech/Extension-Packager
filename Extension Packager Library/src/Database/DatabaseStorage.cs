@@ -27,7 +27,9 @@ namespace Extension_Packager_Library.src.Database
         private readonly string VERSION_COLUMN = "version";
         private readonly string ID_COLUMN = "id";
         private readonly string ID_REF_COLUMN = "ext_id";
-        private readonly string PRIVATE_KEY_COLUMN = "private_key_path";
+        private readonly string DEPLOYEMENT_DIR_COLUMN = "deployement_dir";
+        private readonly string BACKUP_DIR_COLUMN = "backup_dir";
+        //private readonly string PRIVATE_KEY_COLUMN = "private_key_path";
 
         #endregion
 
@@ -106,7 +108,8 @@ namespace Extension_Packager_Library.src.Database
                     {NAME_COLUMN},
                     {SHORTNAME_COLUMN},
                     {VERSION_COLUMN},
-                    {PRIVATE_KEY_COLUMN}
+                    {DEPLOYEMENT_DIR_COLUMN},
+                    {BACKUP_DIR_COLUMN}
                 FROM {EXTENSION_TABLE}
                 JOIN {LAST_USED_TABLE}
                 ON {EXTENSION_TABLE}.{ID_COLUMN} = {LAST_USED_TABLE}.{ID_REF_COLUMN}
@@ -151,7 +154,8 @@ namespace Extension_Packager_Library.src.Database
                     {NAME_COLUMN},
                     {SHORTNAME_COLUMN},
                     {VERSION_COLUMN},
-                    {PRIVATE_KEY_COLUMN}
+                    {DEPLOYEMENT_DIR_COLUMN},
+                    {BACKUP_DIR_COLUMN}
                 FROM {EXTENSION_TABLE}
                 JOIN {LAST_USED_TABLE}
                 ON {EXTENSION_TABLE}.{ID_COLUMN} = {LAST_USED_TABLE}.{ID_REF_COLUMN}
@@ -192,20 +196,23 @@ namespace Extension_Packager_Library.src.Database
                         {NAME_COLUMN},
                         {SHORTNAME_COLUMN},
                         {VERSION_COLUMN},
-                        {PRIVATE_KEY_COLUMN}
+                        {DEPLOYEMENT_DIR_COLUMN},
+                        {BACKUP_DIR_COLUMN}
                 )
                 VALUES (
                     ${ID_COLUMN},
                     ${NAME_COLUMN},
                     ${SHORTNAME_COLUMN},
                     ${VERSION_COLUMN},
-                    ${PRIVATE_KEY_COLUMN}
+                    ${DEPLOYEMENT_DIR_COLUMN},
+                    ${BACKUP_DIR_COLUMN}
                 )";
                 command.Parameters.AddWithValue($"${ID_COLUMN}", extension.Id);
                 command.Parameters.AddWithValue($"${NAME_COLUMN}", extension.Name);
                 command.Parameters.AddWithValue($"${SHORTNAME_COLUMN}", extension.ShortName);
                 command.Parameters.AddWithValue($"${VERSION_COLUMN}", extension.Version);
-                command.Parameters.AddWithValue($"${PRIVATE_KEY_COLUMN}", extension.PrivateKeyFile);
+                command.Parameters.AddWithValue($"${DEPLOYEMENT_DIR_COLUMN}", extension.DeployementDir);
+                command.Parameters.AddWithValue($"${BACKUP_DIR_COLUMN}", extension.BackupDir);
                 return command;
             });
         }
@@ -250,7 +257,6 @@ namespace Extension_Packager_Library.src.Database
             return extensions;
         }
 
-
         public DataModels.Extension Get(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -280,6 +286,32 @@ namespace Extension_Packager_Library.src.Database
             return extension;
         }
 
+        public void Delete(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                _log.Warn($"\"{nameof(id)}\" must not be NULL or a space character.");
+                return;
+            }
+
+            ExecuteNonQueryCommand((connection) =>
+            {
+                SqliteCommand command = connection.CreateCommand();
+                command.CommandText = @$"DELETE FROM {LAST_USED_TABLE}
+                    WHERE {ID_REF_COLUMN} = ${ID_REF_COLUMN}";
+                command.Parameters.AddWithValue($"${ID_REF_COLUMN}", id);
+                return command;
+            });
+
+            ExecuteNonQueryCommand((connection) =>
+            {
+                SqliteCommand command = connection.CreateCommand();
+                command.CommandText = @$"DELETE FROM {EXTENSION_TABLE}
+                    WHERE {ID_COLUMN} = ${ID_COLUMN}";
+                command.Parameters.AddWithValue($"${ID_COLUMN}", id);
+                return command;
+            });
+        }
 
         private DataModels.Extension ParseRow(SqliteDataReader dataReader, Action<SqliteDataReader, DataModels.Extension> parseAdditionalData = null)
         {
@@ -291,7 +323,8 @@ namespace Extension_Packager_Library.src.Database
                     Name = dataReader.GetString(NAME_COLUMN),
                     ShortName = dataReader.GetString(SHORTNAME_COLUMN),
                     Version = dataReader.GetString(VERSION_COLUMN),
-                    PrivateKeyFile = dataReader.GetString(PRIVATE_KEY_COLUMN)
+                    DeployementDir = dataReader.GetString(DEPLOYEMENT_DIR_COLUMN),
+                    BackupDir = dataReader.GetString(BACKUP_DIR_COLUMN)
                 };
 
                 if (parseAdditionalData != null)
@@ -336,10 +369,11 @@ namespace Extension_Packager_Library.src.Database
                 command.CommandText =
                 @$"CREATE TABLE {EXTENSION_TABLE}(
                     {ID_COLUMN} TEXT NOT NULL PRIMARY KEY,
-                    {NAME_COLUMN} TEXT,
-                    {SHORTNAME_COLUMN} TEXT,
-                    {VERSION_COLUMN} TEXT,
-                    {PRIVATE_KEY_COLUMN} TEXT
+                    {NAME_COLUMN} TEXT NOT NULL,
+                    {SHORTNAME_COLUMN} TEXT NOT NULL,
+                    {VERSION_COLUMN} TEXT NOT NULL,
+                    {DEPLOYEMENT_DIR_COLUMN} TEXT NOT NULL,
+                    {BACKUP_DIR_COLUMN} TEXT NOT NULL
                 )";
                 return command;
             });
