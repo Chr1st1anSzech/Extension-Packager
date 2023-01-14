@@ -85,7 +85,7 @@
             <Button
                 x:Name="ChangeExtButton"
                 x:Uid="ChangeExtButton"
-                Command="{Binding ChangeCommand}"
+                Command="{Binding UpdateCommand}"
                 Content="&#xE70F;"
                 Style="{StaticResource IconButtonStyle}" />
         </StackPanel>

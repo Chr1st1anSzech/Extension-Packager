@@ -1,13 +1,10 @@
-﻿using Extension_Packager_Library.src.DataModels;
-using Extension_Packager_Library.src.Helper;
+﻿using Extension_Packager_Library.src.Helper;
 using log4net;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Database
 {
@@ -41,15 +38,19 @@ namespace Extension_Packager_Library.src.Database
         #endregion
 
 
-
-
         public DatabaseStorage()
         {
             InitializeDatabase();
         }
 
-        #region Database Modification & Request
 
+        #region Table Last Modified
+
+
+        /// <summary>
+        /// Inserts or updates an extension in the table of the last created/updated ones.
+        /// </summary>
+        /// <param name="extension">The extension to be inserted or updated.</param>
         public void SetLastModified(DataModels.Extension extension)
         {
             if (GetLastModified(extension.Id) == null)
@@ -63,6 +64,10 @@ namespace Extension_Packager_Library.src.Database
         }
 
 
+        /// <summary>
+        /// Inserts an extension in the table of the last created/updated ones.
+        /// </summary>
+        /// <param name="extension">The extension to be inserted.</param>
         private void InsertLastModified(DataModels.Extension extension)
         {
             ExecuteNonQueryCommand((connection) =>
@@ -79,6 +84,11 @@ namespace Extension_Packager_Library.src.Database
             });
         }
 
+
+        /// <summary>
+        /// Updates an extension in the table of the last created/updated ones.
+        /// </summary>
+        /// <param name="extension">The extension to be updated.</param>
         private void UpdateLastModified(DataModels.Extension extension)
         {
             ExecuteNonQueryCommand((connection) =>
@@ -95,6 +105,10 @@ namespace Extension_Packager_Library.src.Database
         }
 
 
+        /// <summary>
+        /// Queries all the most recently created/updated extensions.
+        /// </summary>
+        /// <returns>All the most recently created/updated extensions.</returns>
         public List<DataModels.Extension> GetAllLastModified()
         {
             List<DataModels.Extension> extensions = new();
@@ -135,6 +149,12 @@ namespace Extension_Packager_Library.src.Database
             return extensions;
         }
 
+
+        /// <summary>
+        /// Queries the extension with the passed ID.
+        /// </summary>
+        /// <param name="id">The ID of the extension.</param>
+        /// <returns>The extension with the specified ID or NULL if no extension was found.</returns>
         public DataModels.Extension GetLastModified(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -174,9 +194,42 @@ namespace Extension_Packager_Library.src.Database
             return extension;
         }
 
+
+        /// <summary>
+        /// Deletes the extension from the table of last created/updated extensions.
+        /// </summary>
+        /// <param name="id">The ID of the extension to be deleted.</param>
+        public void DeleteLastModified(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                _log.Warn($"\"{nameof(id)}\" must not be NULL or a space character.");
+                return;
+            }
+
+            ExecuteNonQueryCommand((connection) =>
+            {
+                SqliteCommand command = connection.CreateCommand();
+                command.CommandText = @$"DELETE FROM {LAST_USED_TABLE}
+                    WHERE {ID_REF_COLUMN} = ${ID_REF_COLUMN}";
+                command.Parameters.AddWithValue($"${ID_REF_COLUMN}", id);
+                return command;
+            });
+        }
+
+
+        #endregion
+
+
+        #region Table All Extensions
+
+        /// <summary>
+        /// Inserts or updates an extension in the table of all extensions.
+        /// </summary>
+        /// <param name="extension">The extension to be inserted or updated.</param>
         public void Set(DataModels.Extension extension)
         {
-            if( Get(extension.Id) == null)
+            if (Get(extension.Id) == null)
             {
                 Insert(extension);
             }
@@ -186,6 +239,11 @@ namespace Extension_Packager_Library.src.Database
             }
         }
 
+
+        /// <summary>
+        /// Inserts an extension in the table of all extensions.
+        /// </summary>
+        /// <param name="extension">The extension to be inserted.</param>
         private void Insert(DataModels.Extension extension)
         {
             ExecuteNonQueryCommand((connection) =>
@@ -217,6 +275,11 @@ namespace Extension_Packager_Library.src.Database
             });
         }
 
+
+        /// <summary>
+        /// Updates an extension in the table of all extensions.
+        /// </summary>
+        /// <param name="extension">The extension to be updated.</param>
         private void Update(DataModels.Extension extension)
         {
             ExecuteNonQueryCommand((connection) =>
@@ -232,6 +295,11 @@ namespace Extension_Packager_Library.src.Database
             });
         }
 
+
+        /// <summary>
+        /// Queries all extensions from the storage.
+        /// </summary>
+        /// <returns>All extensions from the storage.</returns>
         public List<DataModels.Extension> GetAll()
         {
             List<DataModels.Extension> extensions = new();
@@ -257,6 +325,12 @@ namespace Extension_Packager_Library.src.Database
             return extensions;
         }
 
+
+        /// <summary>
+        /// Queries an extension with the passed ID.
+        /// </summary>
+        /// <param name="id">The ID of the extension that is being requested.</param>
+        /// <returns>The extension with the passed ID.</returns>
         public DataModels.Extension Get(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -286,6 +360,11 @@ namespace Extension_Packager_Library.src.Database
             return extension;
         }
 
+
+        /// <summary>
+        /// Deletes the extension with the passed ID from the storage.
+        /// </summary>
+        /// <param name="id">The ID of the extension to be deleted.</param>
         public void Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -297,15 +376,6 @@ namespace Extension_Packager_Library.src.Database
             ExecuteNonQueryCommand((connection) =>
             {
                 SqliteCommand command = connection.CreateCommand();
-                command.CommandText = @$"DELETE FROM {LAST_USED_TABLE}
-                    WHERE {ID_REF_COLUMN} = ${ID_REF_COLUMN}";
-                command.Parameters.AddWithValue($"${ID_REF_COLUMN}", id);
-                return command;
-            });
-
-            ExecuteNonQueryCommand((connection) =>
-            {
-                SqliteCommand command = connection.CreateCommand();
                 command.CommandText = @$"DELETE FROM {EXTENSION_TABLE}
                     WHERE {ID_COLUMN} = ${ID_COLUMN}";
                 command.Parameters.AddWithValue($"${ID_COLUMN}", id);
@@ -313,10 +383,19 @@ namespace Extension_Packager_Library.src.Database
             });
         }
 
+
+        /// <summary>
+        /// Reads a data set and creates an extension object from it.
+        /// </summary>
+        /// <param name="dataReader">The DataReader object of an SQL query.</param>
+        /// <param name="parseAdditionalData">The function to read out further properties.</param>
+        /// <returns>The extension object or NULL if no record was found or the connection is already closed./returns>
         private DataModels.Extension ParseRow(SqliteDataReader dataReader, Action<SqliteDataReader, DataModels.Extension> parseAdditionalData = null)
         {
             try
             {
+                if (!dataReader.HasRows || dataReader.IsClosed) return null;
+
                 DataModels.Extension ext = new()
                 {
                     Id = dataReader.GetString(ID_COLUMN),
@@ -345,9 +424,12 @@ namespace Extension_Packager_Library.src.Database
         #endregion
 
 
-
         #region Database Initialization
 
+
+        /// <summary>
+        /// Checks the existence of the database file and otherwise creates the database and tables.
+        /// </summary>
         private void InitializeDatabase()
         {
             (bool, string) result = TryGetDatabaseFile();
@@ -360,7 +442,9 @@ namespace Extension_Packager_Library.src.Database
         }
 
 
-
+        /// <summary>
+        /// Creates the table in which all extensions are inserted.
+        /// </summary>
         private void CreateExtensionTable()
         {
             ExecuteNonQueryCommand((connection) =>
@@ -380,7 +464,9 @@ namespace Extension_Packager_Library.src.Database
         }
 
 
-
+        /// <summary>
+        /// Creates the table in which all recently updated extensions are inserted.
+        /// </summary>
         private void CreateLastUsedTable()
         {
             ExecuteNonQueryCommand((connection) =>
@@ -420,6 +506,11 @@ namespace Extension_Packager_Library.src.Database
         #endregion
 
 
+        /// <summary>
+        /// Links the file name of the database file with the application path.
+        /// Checks whether the file exists and returns the result and the complete file path.
+        /// </summary>
+        /// <returns>The result whether the database file exists and the full file path.</returns>
         private (bool, string) TryGetDatabaseFile()
         {
             bool result = ResourceFile.TryGetFullPath(DATABASE_FILE_NAME, out string databaseFile);

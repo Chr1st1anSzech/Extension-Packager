@@ -82,18 +82,19 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         public MyCommand CreateCommand { get; set; }
         public MyCommand AddCommand { get; set; }
-        public MyCommand ChangeCommand { get; set; }
+        public MyCommand UpdateCommand { get; set; }
         public MyCommand AskDeleteCommand { get; set; }
 
         private void SetCommands()
         {
             CreateCommand = new MyCommand(Create);
             AddCommand = new MyCommand(Add);
-            ChangeCommand = new MyCommand(Change);
+            UpdateCommand = new MyCommand(Update);
             AskDeleteCommand = new MyCommand(AskDelete);
         }
 
         #endregion
+
 
         public ExtensionListPageViewModel()
         {
@@ -101,23 +102,47 @@ namespace Extension_Packager_Library.src.Viewmodels
             LoadExtensions();
         }
 
+
+        /// <summary>
+        /// Loads all stored extensions.
+        /// </summary>
         private void LoadExtensions()
         {
-            IExtensionStorage extensionStorage = new DatabaseStorage();
-            AllExtensions = extensionStorage.GetAll();
+            try
+            {
+                IExtensionStorage extensionStorage = new DatabaseStorage();
+                AllExtensions = extensionStorage.GetAll();
+            }
+            catch (Exception exception)
+            {
+                ErrorMessage = StringResources.GetWithReason(this, 8, exception.Message);
+                _log.Warn(exception);
+            }
         }
 
+
+        /// <summary>
+        /// Navigates to the page for adding an existing extension.
+        /// </summary>
         private void Add(object parameter = null)
         {
             _navigationService.Navigate("AddExtensionPage");
         }
 
+
+        /// <summary>
+        /// Navigates to the page for creating a new extension.
+        /// </summary>
         private void Create(object parameter = null)
         {
             _navigationService.Navigate("CrxSelectPage");
         }
 
-        private void Change(object parameter = null)
+
+        /// <summary>
+        /// Navigates to the page for updating the extension.
+        /// </summary>
+        private void Update(object parameter = null)
         {
             if (SelectedExtension == null) return;
 
@@ -128,6 +153,10 @@ namespace Extension_Packager_Library.src.Viewmodels
             });
         }
 
+
+        /// <summary>
+        /// Asks whether the extension should be deleted and triggers the deletion after confirmation.
+        /// </summary>
         private async void AskDelete(object parameter = null)
         {
             if(XamlRoot == null)
@@ -151,6 +180,10 @@ namespace Extension_Packager_Library.src.Viewmodels
             
         }
 
+
+        /// <summary>
+        /// Removes the extension from the storage and deletes the associated directories.
+        /// </summary>
         private void Delete(object parameter = null)
         {
             if (!RemoveFromStorage()) return;
@@ -161,11 +194,17 @@ namespace Extension_Packager_Library.src.Viewmodels
             LoadExtensions();
         }
 
+
+        /// <summary>
+        /// Removes the extension from the storage.
+        /// </summary>
+        /// <returns>The result of whether the action was carried out successfully.</returns>
         private bool RemoveFromStorage()
         {
             try
             {
                 IExtensionStorage storage = new DatabaseStorage();
+                storage.DeleteLastModified(SelectedExtension.Id);
                 storage.Delete(SelectedExtension.Id);
                 return true;
             }
@@ -177,6 +216,12 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
         }
 
+
+        /// <summary>
+        /// Deletes the directory recursively.
+        /// </summary>
+        /// <param name="dir">The directory to be deleted.</param>
+        /// <returns>The result of whether the action was carried out successfully.</returns>
         private bool DeleteDir(string dir)
         {
             try

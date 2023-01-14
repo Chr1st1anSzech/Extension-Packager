@@ -276,6 +276,9 @@ werden gelöscht.</value>
   <data name="ExtensionListPageViewModel7" xml:space="preserve">
     <value>Die Erweiterung konnte nicht gelöscht werden.</value>
   </data>
+  <data name="ExtensionListPageViewModel8" xml:space="preserve">
+    <value>Die Erweiterungen konnten nicht aus dem Speicher geladen werden.</value>
+  </data>
   <data name="ExtensionManifestTextBox.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Vorschau</value>
   </data>
