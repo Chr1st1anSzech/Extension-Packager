@@ -31,8 +31,7 @@ namespace Extension_Packager.src.Views
         {
             if (e.Parameter is PageParameter param)
             {
-                ViewModel.Extension = param.Extension;
-                ViewModel.IsUpdate = param.IsUpdate;
+                ViewModel.PageParameter = param;
                 if (param.IsPageBack)
                 {
                     ViewModel.Reset();

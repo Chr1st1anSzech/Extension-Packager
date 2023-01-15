@@ -17,14 +17,14 @@
                 x:Key="NavigationViewMenuItem">
                 <NavigationViewItem
                     Content="{Binding Content}"
-                    Icon="{Binding Icon}"/>
+                    Icon="{Binding Icon}" />
             </DataTemplate>
         </Grid.Resources>
-        
+
         <Grid.DataContext>
             <viewmodels:MainWindowViewModel />
         </Grid.DataContext>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="40" />
@@ -57,24 +57,24 @@
 
         <NavigationView
             x:Name="MainNavigationView"
-            Background="{ThemeResource SecondaryBackground}"
-            PaneDisplayMode="Left"
-            IsTitleBarAutoPaddingEnabled="False"
-            IsBackButtonVisible="Collapsed"
+            x:Uid="MainWindowNavigationView"
+            Grid.Row="1"
             AlwaysShowHeader="False"
-            IsPaneOpen="False"
-            OpenPaneLength="200"
-            SelectionChanged="NavigationView_SelectionChanged"
+            Background="{ThemeResource SecondaryBackground}"
             FooterMenuItemsSource="{Binding Path=MenuItems.FooterNavMenuItems,UpdateSourceTrigger=PropertyChanged}"
-            MenuItemTemplate="{StaticResource NavigationViewMenuItem}"
+            IsBackButtonVisible="Collapsed"
+            IsPaneOpen="False"
+            IsTitleBarAutoPaddingEnabled="False"
             MenuItemsSource="{Binding Path=MenuItems.MainNavMenuItems,UpdateSourceTrigger=PropertyChanged}"
-            Grid.Row="1">
+            MenuItemTemplate="{StaticResource NavigationViewMenuItem}"
+            OpenPaneLength="200"
+            PaneDisplayMode="Left"
+            SelectionChanged="NavigationView_SelectionChanged">
             <Frame
                 x:Name="MainWindowFrame"
-                Margin="24,12"
                 Background="{ThemeResource PrimaryBackground}"
-                />
+                Margin="24,12" />
         </NavigationView>
     </Grid>
-    
+
 </Window>

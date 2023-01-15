@@ -26,9 +26,9 @@
     <Grid
         x:Name="MainGrid"
         AutomationProperties.AccessibilityView="Raw"
-        Padding="0"
+        Style="{StaticResource BaseGridStyle}"
         HorizontalAlignment="Stretch"
-        Style="{StaticResource BaseGridStyle}">
+        Padding="0">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="*" />
@@ -36,11 +36,18 @@
                 Height="auto" />
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="3*" />
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
+
         <ScrollViewer
-            AutomationProperties.LabeledBy="{Binding ElementName=EditManifestTitle}"
+            AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
             AutomationProperties.LandmarkType="Main"
-            Padding="0"
-            Grid.Row="0">
+            Grid.Row="0"
+            Padding="0">
             <Grid
                 AutomationProperties.AccessibilityView="Raw"
                 Style="{StaticResource BaseGridStyle}">
@@ -57,65 +64,110 @@
                         Height="auto" />
                     <RowDefinition
                         Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock
-                    x:Name="CreatePageTitle"
-                    x:Uid="CreatePageTitle"
+                    x:Name="PageTitle"
+                    x:Uid="CrxSelectPageTitle"
                     AutomationProperties.HeadingLevel="Level2"
                     Grid.Row="0"
                     Style="{StaticResource Header01Style}" />
 
                 <TextBlock
-                    x:Uid="InvalideCrxPathWarning"
+                    x:Uid="CrxSelectPageWarning"
                     Grid.Row="1"
+                    Style="{StaticResource WarningTextBlockStyle}"
                     MinWidth="300"
                     MinHeight="32"
-                    Style="{StaticResource WarningTextBlockStyle}"
                     TextWrapping="WrapWholeWords"
                     Text="{Binding Path=ErrorMessage}"
                     Visibility="{Binding Path=ErrorOccurred,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
 
                 <controls:PathTextBox
+                    x:Uid="CrxSelectPageCrxFileTextBox"
+                    AutomationProperties.IsDataValidForForm="{Binding Path=ViewModel.IsCrxFileValid,ElementName=MyCrxSelectPage}"
                     Grid.Row="2"
-                    x:Uid="ExtensionPathTextBox"
-                    x:Name="ExtensionPathTextBox"
+                    PickerFileTypes=".crx"
                     PickerType="File"
-                    Value="{Binding Path=ViewModel.ExtensionPath,Mode=TwoWay,ElementName=MyCrxSelectPage}"
-                    PickerFileTypes=".crx" />
+                    Value="{Binding Path=ViewModel.CrxFile,Mode=TwoWay,ElementName=MyCrxSelectPage}" />
+
+                <controls:PathTextBox
+                    x:Uid="CrxSelectPagePrivateKeyFileTextBox"
+                    AutomationProperties.IsDataValidForForm="{Binding Path=ViewModel.IsPrivateKeyFileValid,ElementName=MyCrxSelectPage}"
+                    Grid.Row="4"
+                    PickerFileTypes=".pem"
+                    PickerType="File"
+                    Value="{Binding Path=ViewModel.PrivateKeyFile,Mode=TwoWay,ElementName=MyCrxSelectPage}"
+                    Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=ViewModel.PageParameter.IsAddition,ElementName=MyCrxSelectPage}" />
             </Grid>
 
         </ScrollViewer>
 
         <StackPanel
-            AutomationProperties.LandmarkType="Navigation"
+            Grid.Column="1"
             Style="{StaticResource BaseStackPanelStyle}"
+            MinWidth="500">
+            <TextBlock
+                x:Uid="CrxSelectPageOperationTitle"
+                AutomationProperties.HeadingLevel="Level3"
+                Style="{StaticResource Header02Style}"
+                Margin="0,0,0,6" />
+
+            <ToggleSwitch
+                x:Uid="CrxSelectPageOperationToggle"
+                Grid.Column="1"
+                FontFamily="Segoe UI"
+                FontSize="12"
+                IsOn="{Binding Path=ViewModel.PageParameter.IsAddition,ElementName=MyCrxSelectPage, Mode=TwoWay}"
+                Margin="0" />
+
+            <TextBlock
+                x:Uid="CrxSelectPageAdditionInfoTitle"
+                AutomationProperties.HeadingLevel="Level3"
+                Style="{StaticResource Header02Style}"
+                Margin="0,24,0,6"
+                Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=ViewModel.PageParameter.IsAddition,ElementName=MyCrxSelectPage}" />
+
+            <TextBlock
+                x:Uid="CrxSelectPageAdditionInfoDescription"
+                Style="{StaticResource BaseTextBlockStyle}"
+                FontSize="10"
+                Foreground="#c1c1c1"
+                Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=ViewModel.PageParameter.IsAddition,ElementName=MyCrxSelectPage}" />
+        </StackPanel>
+
+        <StackPanel
+            AutomationProperties.LandmarkType="Navigation"
+            Grid.ColumnSpan="2"
             Grid.Row="1"
-            Spacing="24"
+            Style="{StaticResource BaseStackPanelStyle}"
+            HorizontalAlignment="Right"
             Orientation="Horizontal"
-            HorizontalAlignment="Right">
+            Spacing="24">
 
             <Button
-                x:Uid="GoBackButton"
-                Width="96"
+                x:Uid="AllPagesGoBackButton"
                 Command="{Binding Path=GoBackCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="110" />
 
             <Button
-                x:Uid="NextStepButton"
-                Width="96"
+                x:Uid="CrxSelectPageUnpackButton"
                 Command="{Binding Path=ProcessAndContinueCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="96" />
 
         </StackPanel>
 
         <Grid
-            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-            Style="{StaticResource BaseGridStyle}"
             Grid.RowSpan="2"
+            Style="{StaticResource BaseGridStyle}"
             Background="{ThemeResource PrimaryBackgroundSemiTransparent}"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
+            VerticalAlignment="Stretch"
+            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
             <Grid
                 Style="{StaticResource BaseGridStyle}"
                 HorizontalAlignment="Center"
@@ -125,8 +177,8 @@
                     <ProgressRing
                         IsActive="True" />
                     <TextBlock
-                        Style="{StaticResource BaseTextBlockStyle}"
-                        x:Uid="ExtractCrx" />
+                        x:Uid="CrxSelectPageExtractCrxMessage"
+                        Style="{StaticResource BaseTextBlockStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

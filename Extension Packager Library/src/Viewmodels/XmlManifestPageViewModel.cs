@@ -22,35 +22,18 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
         #region Public Properties
 
-        private bool _isPageBack;
-        public bool IsPageBack
+        private PageParameter _pageParameter;
+        public PageParameter PageParameter
         {
-            get { return _isPageBack; }
-            set { SetField(ref _isPageBack, value); }
+            get { return _pageParameter; }
+            set { SetField(ref _pageParameter, value); }
         }
-
-
-        private bool _isUpdate;
-        public bool IsUpdate
-        {
-            get { return _isUpdate; }
-            set { SetField(ref _isUpdate, value); }
-        }
-
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
         {
             get { return _navigationService; }
             set { SetField(ref _navigationService, value); }
-        }
-
-
-        private DataModels.Extension _extension;
-        public DataModels.Extension Extension
-        {
-            get { return _extension; }
-            set { SetField(ref _extension, value); }
         }
 
 
@@ -140,7 +123,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetProperties()
         {
-            AppId = Extension.Id;
+            AppId = PageParameter.Extension.Id;
         }
 
 
@@ -154,24 +137,12 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void GoBack(object parameter = null)
         {
-            PageParameter param = new()
-            {
-                Extension = Extension,
-                IsUpdate = IsUpdate,
-                IsPageBack = true
-            };
-            _navigationService.Navigate("ManifestEditPage", param);
+            _navigationService.Navigate("ManifestEditPage", PageParameter);
         }
 
         private void GoForward()
         {
-            PageParameter param = new()
-            {
-                Extension = Extension,
-                IsUpdate = IsUpdate,
-                IsPageBack = false
-            };
-            _navigationService.Navigate("SuccessPage", param);
+            _navigationService.Navigate("SuccessPage", PageParameter);
         }
 
 
@@ -180,16 +151,16 @@ namespace Extension_Packager_Library.src.Viewmodels
             IsBusy = true;
             string xmlManifest = CreateXmlManifest();
             if (xmlManifest == null) return;
-            Extension.XmlManifestContent = xmlManifest;
+            PageParameter.Extension.XmlManifestContent = xmlManifest;
 
             if (!await DeployExtensionAsync()) { return; }
             if(!await BackupExtensionAsync()) { return; }
 
             if (!StoreExtension()) { return; }
 
-            string policyString = CreatePolicyString(Extension.ShortName);
+            string policyString = CreatePolicyString(PageParameter.Extension.ShortName);
             if (policyString == null) return;
-            Extension.PolicyString = policyString;
+            PageParameter.Extension.PolicyString = policyString;
 
             DeleteTemporaryFiles();
 
@@ -200,10 +171,10 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void DeleteTemporaryFiles()
         {
-            if (Extension.ExtensionWorkingDirectory == null) return;
+            if (PageParameter.Extension.ExtensionWorkingDirectory == null) return;
             try
             {
-                Directory.Delete(Extension.ExtensionWorkingDirectory, true);
+                Directory.Delete(PageParameter.Extension.ExtensionWorkingDirectory, true);
             }
             catch (Exception exception)
             {
@@ -214,8 +185,8 @@ namespace Extension_Packager_Library.src.Viewmodels
         private bool StoreExtension()
         {
             IExtensionStorage storage = new DatabaseStorage();
-            storage.Set(Extension);
-            storage.SetLastModified(Extension);
+            storage.Set(PageParameter.Extension);
+            storage.SetLastModified(PageParameter.Extension);
             return true;
         }
 
@@ -225,17 +196,17 @@ namespace Extension_Packager_Library.src.Viewmodels
             DeployementInfoData deployementInfos = new()
             {
                 CrxName = settings.CrxName,
-                Name = Extension.ShortName,
-                XmlManifest = Extension.XmlManifestContent,
+                Name = PageParameter.Extension.ShortName,
+                XmlManifest = PageParameter.Extension.XmlManifestContent,
                 XmlManifestName = settings.XmlManifestName,
                 DestinationDirectory = settings.OutputPath,
-                CrxPath = Extension.TmpPackedCrxFile
+                CrxPath = PageParameter.Extension.TmpPackedCrxFile
             };
-            IExtensionDeployement deployment = new ExtensionDeployement(IsUpdate);
+            IExtensionDeployement deployment = new ExtensionDeployement(PageParameter.IsUpdate);
 
             try
             {
-                Extension.DeployementDir = await deployment.DeployAsync(deployementInfos);
+                PageParameter.Extension.DeployementDir = await deployment.DeployAsync(deployementInfos);
                 return true;
             }
             catch (Exception ex)
@@ -255,18 +226,18 @@ namespace Extension_Packager_Library.src.Viewmodels
             BackupInfoData backupInfos = new()
             {
                 BackupDirectory = settings.BackupDirectory,
-                Name = Extension.ShortName,
-                CrxPath = Extension.TmpPackedCrxFile,
+                Name = PageParameter.Extension.ShortName,
+                CrxPath = PageParameter.Extension.TmpPackedCrxFile,
                 CrxName = settings.CrxName,
-                XmlManifest = Extension.XmlManifestContent,
+                XmlManifest = PageParameter.Extension.XmlManifestContent,
                 XmlManifestName = settings.XmlManifestName,
-                TmpPrivateKeyPath = Extension.TmpPrivateKeyFile,
+                TmpPrivateKeyPath = PageParameter.Extension.TmpPrivateKeyFile,
                 PrivateKeyName = settings.PrivateKeyName
             };
-            IExtensionBackup backup = new ExtensionBackup(IsUpdate);
+            IExtensionBackup backup = new ExtensionBackup(PageParameter.IsUpdate);
             try
             {
-                Extension.BackupDir = await backup.BackupAsync(backupInfos);
+                PageParameter.Extension.BackupDir = await backup.BackupAsync(backupInfos);
 
                 return true;
             }
@@ -292,17 +263,17 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
             string xmlManifestFileUrl = Uri.Combine(settings.OutputURL, name, settings.XmlManifestName);
-            return new PolicyStringGenerator().Create(Extension.Id, xmlManifestFileUrl);
+            return new PolicyStringGenerator().Create(PageParameter.Extension.Id, xmlManifestFileUrl);
         }
 
         private string CreateXmlManifest()
         {
             XmlManifest xmlManifest = new();
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-            string crxFileUrl = Uri.Combine(settings.OutputURL, Extension.ShortName, settings.CrxName);
+            string crxFileUrl = Uri.Combine(settings.OutputURL, PageParameter.Extension.ShortName, settings.CrxName);
             try
             {
-                return xmlManifest.Create(crxFileUrl, Extension.Version, Extension.Id);
+                return xmlManifest.Create(crxFileUrl, PageParameter.Extension.Version, PageParameter.Extension.Id);
             }
             catch (Exception ex)
             {

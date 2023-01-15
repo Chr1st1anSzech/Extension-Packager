@@ -6,11 +6,10 @@ using System;
 
 namespace Extension_Packager_Library.src.DataModels
 {
-    public class NavMenuItem
+    public class NavMenuItem : ListViewItem
     {
-        public string Content { get; set; }
         public SymbolIcon Icon { get; set; }
         public Type Page { get; set; }
-        public string Tag { get; set; }
+        public PageParameter PageParameter { get; set; }
     }
 }

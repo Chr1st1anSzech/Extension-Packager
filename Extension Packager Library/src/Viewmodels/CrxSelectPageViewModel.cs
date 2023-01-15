@@ -21,18 +21,11 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         #region Public Properties
 
-        private bool _isPageBack;
-        public bool IsPageBack
+        private PageParameter _pageParameter;
+        public PageParameter PageParameter
         {
-            get { return _isPageBack; }
-            set { SetField(ref _isPageBack, value); }
-        }
-
-        private bool _isUpdate;
-        public bool IsUpdate
-        {
-            get { return _isUpdate; }
-            set { SetField(ref _isUpdate, value); }
+            get { return _pageParameter; }
+            set { SetField(ref _pageParameter, value); }
         }
 
         private INavigationService _navigationService;
@@ -40,13 +33,6 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             get { return _navigationService; }
             set { SetField(ref _navigationService, value); }
-        }
-
-        private DataModels.Extension _extension;
-        public DataModels.Extension Extension
-        {
-            get { return _extension; }
-            set { SetField(ref _extension, value); }
         }
 
         private bool _isBusy;
@@ -70,15 +56,40 @@ namespace Extension_Packager_Library.src.Viewmodels
             set { SetField(ref _errorOccurred, value); }
         }
 
+
 #if DEBUG
-        private string _extensionPath = @"E:\Downloads\extension_1_45_2_0.crx";
+        private string _crxFile = @"E:\Downloads\extension_1_45_2_0.crx";
 #else
-        private string _extensionPath = string.Empty;
+        private string _crxFile = string.Empty;
 #endif
-        public string ExtensionPath
+        public string CrxFile
         {
-            get { return _extensionPath; }
-            set { SetField(ref _extensionPath, value); }
+            get { return _crxFile; }
+            set { SetField(ref _crxFile, value); }
+        }
+
+        private string _privateKeyFile = string.Empty;
+        public string PrivateKeyFile
+        {
+            get { return _privateKeyFile; }
+            set { SetField(ref _privateKeyFile, value); }
+        }
+
+
+        private bool _isCrxFileValide = true;
+        public bool IsCrxFileValid
+        {
+            get { return _isCrxFileValide; }
+            set { SetField(ref _isCrxFileValide, value); }
+
+        }
+
+        private bool _isPrivateKeyFileValide = true;
+        public bool IsPrivateKeyFileValid
+        {
+            get { return _isPrivateKeyFileValide; }
+            set { SetField(ref _isPrivateKeyFileValide, value); }
+
         }
 
         #endregion
@@ -123,31 +134,20 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void GoBack(object parameter = null)
         {
-
-            PageParameter param = new()
-            {
-                Extension = Extension,
-                IsUpdate = IsUpdate
-            };
-            _navigationService.Navigate("MainPage", param);
+            _navigationService.Navigate("MainPage");
         }
 
         private void GoForward()
         {
-            PageParameter param = new()
-            {
-                Extension = Extension,
-                IsUpdate = IsUpdate
-            };
-            _navigationService.Navigate("ManifestEditPage", param);
+            _navigationService.Navigate("ManifestEditPage", PageParameter);
         }
 
         public void Reset()
         {
-            if (Extension.ExtensionWorkingDirectory == null) return;
+            if (PageParameter.Extension.ExtensionWorkingDirectory == null) return;
             try
             {
-                Directory.Delete(Extension.ExtensionWorkingDirectory, true);
+                Directory.Delete(PageParameter.Extension.ExtensionWorkingDirectory, true);
             }
             catch (Exception exception)
             {
@@ -159,33 +159,43 @@ namespace Extension_Packager_Library.src.Viewmodels
         private async void ProcessAndContinue(object parameter = null)
         {
             IsBusy = true;
-            if (!IsInputValide()) return;
+            if (!IsInputValid()) return;
 
-            Extension ??= new();
+            PageParameter.Extension ??= new()
+            {
+                TmpPrivateKeyFile = PrivateKeyFile
+            };
 
             bool directoriesCreated = CreateDirectories();
             if (!directoriesCreated) return;
 
-            bool isSuccess = await UnpackAsync(ExtensionPath, Extension.UnpackedCrxDirectory);
+            bool isSuccess = await UnpackAsync(CrxFile, PageParameter.Extension.UnpackedCrxDirectory);
             if (!isSuccess) return;
 
-            Manifest manifest = ReadManifest(Extension.UnpackedCrxDirectory);
+            Manifest manifest = ReadManifest(PageParameter.Extension.UnpackedCrxDirectory);
             if (manifest == null) return;
 
             SetExtensionValues(manifest);
             GoForward();
         }
 
-        private bool IsInputValide()
+        private bool IsInputValid()
         {
-            if (!InputValidator.IsCrxPathValide(ExtensionPath))
+            if (!InputValidator.IsValidCrxFile(CrxFile))
             {
                 IsBusy = false;
                 ErrorMessage = StringResources.Get(this, 1);
-                _log.Warn($"No CRX file was selected or the selected file \"{ExtensionPath}\" was not found.");
                 ErrorOccurred = true;
                 return false;
             }
+            if (PageParameter.IsAddition && !InputValidator.IsValidFile(PrivateKeyFile, ".pem"))
+            {
+                IsBusy = false;
+                ErrorMessage = StringResources.Get(this, 7);
+                ErrorOccurred = true;
+                return false;
+            }
+
             ErrorOccurred = false;
             return true;
         }
@@ -200,8 +210,8 @@ namespace Extension_Packager_Library.src.Viewmodels
                 string workingDirectory = FileHelper.CreateRandomDirectory(settings.WorkingAreaPath);
                 string unpackedCrxDirectory = FileHelper.CreateRandomDirectory(workingDirectory);
 
-                Extension.ExtensionWorkingDirectory = workingDirectory;
-                Extension.UnpackedCrxDirectory = unpackedCrxDirectory;
+                PageParameter.Extension.ExtensionWorkingDirectory = workingDirectory;
+                PageParameter.Extension.UnpackedCrxDirectory = unpackedCrxDirectory;
 
                 return true;
             }
@@ -254,11 +264,11 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetExtensionValues(Manifest manifest)
         {
-            Extension.ManifestContent = manifest.RawContent;
-            Extension.Name = Extension.Name ?? manifest.Name;
-            Extension.Version = manifest.Version;
-            Extension.ShortName = Extension.ShortName ?? new ShortNameFormatter().Format(manifest.Name);
-            Extension.ManifestFile = manifest.File;
+            PageParameter.Extension.ManifestContent = manifest.RawContent;
+            PageParameter.Extension.Name = PageParameter.Extension.Name ?? manifest.Name;
+            PageParameter.Extension.Version = manifest.Version;
+            PageParameter.Extension.ShortName = PageParameter.Extension.ShortName ?? new ShortNameFormatter().Format(manifest.Name);
+            PageParameter.Extension.ManifestFile = manifest.File;
         }
     }
 }

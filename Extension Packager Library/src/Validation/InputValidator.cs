@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Christian Szech
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Extension_Packager_Library.src.Extension;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Validation
 {
@@ -18,12 +20,29 @@ namespace Extension_Packager_Library.src.Validation
             return Regex.IsMatch(shortName, "^[A-Za-z_\\-0-9]{1,64}$");
         }
 
-        public static bool IsCrxPathValide(string path)
+        public static bool IsValidFile(string file, string fileExtension)
         {
-            if (string.IsNullOrWhiteSpace(path)) return false;
+            if (string.IsNullOrWhiteSpace(file)) return false;
 
-            FileInfo file = new(path);
-            return file.Exists && file.Extension.Equals(".crx");
+            if (fileExtension[0] != '.') fileExtension = $".{fileExtension}";
+
+            FileInfo fileInfo = new(file);
+            return fileInfo.Exists && fileInfo.Extension.Equals(fileExtension);
+        }
+
+        public static bool IsValidCrxFile(string file)
+        {
+            if (!IsValidFile(file, ".crx")) return false;
+            try
+            {
+                byte[] buf = File.ReadAllBytes(file);
+                CrxInfo crxInfo = new(buf);
+                return crxInfo.MagicNumber == "Cr24";
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

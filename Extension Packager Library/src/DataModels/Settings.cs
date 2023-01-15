@@ -18,6 +18,11 @@ namespace Extension_Packager_Library.src.DataModels
         public string PrivateKeyName { get; set; } = "ext.pem";
         public bool IsFirstRun { get; set; } = true;
         public string BackupDirectory { get; set; } = @"C:\";
-        public bool UseShortNameAsDirectoryName { get; set; } = true;
+
+        /// <summary>
+        /// Defines whether each extension should have its own directory or 
+        /// whether all extensions should be stored in a provisioning and backup directory respectively.
+        /// </summary>
+        public bool EachExtensionOwnDirectory { get; set; } = true;
     }
 }

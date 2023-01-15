@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Christian Szech
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Extension_Packager_Library.src.DataModels;
 using Extension_Packager_Library.src.Extension;
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
@@ -11,19 +12,11 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
         #region Public Properties
 
-        private bool _isPageBack;
-        public bool IsPageBack
+        private PageParameter _pageParameter;
+        public PageParameter PageParameter
         {
-            get { return _isPageBack; }
-            set { SetField(ref _isPageBack, value); }
-        }
-
-
-        private bool _isUpdate;
-        public bool IsUpdate
-        {
-            get { return _isUpdate; }
-            set { SetField(ref _isUpdate, value); }
+            get { return _pageParameter; }
+            set { SetField(ref _pageParameter, value); }
         }
 
         private INavigationService _navigationService;
@@ -31,14 +24,6 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             get { return _navigationService; }
             set { SetField(ref _navigationService, value); }
-        }
-
-
-        private DataModels.Extension _extension;
-        public DataModels.Extension Extension
-        {
-            get { return _extension; }
-            set { SetField(ref _extension, value); }
         }
 
 
@@ -84,7 +69,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetProperties()
         {
-            PolicyString= Extension.PolicyString ?? string.Empty;
+            PolicyString= PageParameter.Extension.PolicyString ?? string.Empty;
         }
 
         private void NewExtension(object parameter = null)

@@ -4,6 +4,7 @@ using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
 using log4net;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -126,7 +127,13 @@ namespace Extension_Packager_Library.src.Viewmodels
         /// </summary>
         private void Add(object parameter = null)
         {
-            _navigationService.Navigate("AddExtensionPage");
+            _navigationService.Navigate("CrxSelectPage", new PageParameter()
+            {
+                Extension = SelectedExtension,
+                IsPageBack = false,
+                IsAddition = true,
+                IsUpdate = false
+            });
         }
 
 
@@ -135,7 +142,12 @@ namespace Extension_Packager_Library.src.Viewmodels
         /// </summary>
         private void Create(object parameter = null)
         {
-            _navigationService.Navigate("CrxSelectPage");
+            _navigationService.Navigate("CrxSelectPage", new PageParameter()
+            {
+                IsUpdate = false,
+                IsAddition = false,
+                IsPageBack = false
+            });
         }
 
 
@@ -149,6 +161,8 @@ namespace Extension_Packager_Library.src.Viewmodels
             _navigationService.Navigate("CrxSelectPage", new PageParameter()
             {
                 Extension = SelectedExtension,
+                IsPageBack = false,
+                IsAddition = false,
                 IsUpdate = true
             });
         }
@@ -159,7 +173,9 @@ namespace Extension_Packager_Library.src.Viewmodels
         /// </summary>
         private async void AskDelete(object parameter = null)
         {
-            if(XamlRoot == null)
+            if(SelectedExtension== null) return;
+
+            if (XamlRoot == null)
             {
                 ErrorMessage = StringResources.Get(this, 7);
                 _log.Warn($"{XamlRoot} must not be NULL.");
@@ -177,7 +193,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             };
             await confirmationDialog.ShowAsync();
 
-            
+
         }
 
 

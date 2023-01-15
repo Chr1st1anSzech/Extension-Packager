@@ -21,6 +21,7 @@ namespace Extension_Packager.src.Controls
         public string PickerFileTypes { get; set; } = "*";
         public PickerTypes PickerType { get; set; } = PickerTypes.File;
         public bool IsReadOnly { get; set; } = true;
+        public string InputAccessKey { get; set; } = "P";
 
 
         public string Value

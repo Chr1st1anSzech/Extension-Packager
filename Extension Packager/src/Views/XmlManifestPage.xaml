@@ -23,10 +23,10 @@
 
 
     <Grid
-        Padding="0"
-        HorizontalAlignment="Stretch"
         x:Name="MainGrid"
-        Style="{StaticResource BaseGridStyle}">
+        Style="{StaticResource BaseGridStyle}"
+        HorizontalAlignment="Stretch"
+        Padding="0">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="*" />
@@ -35,8 +35,10 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer
-            Padding="0"
-            Grid.Row="0">
+            AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
+            AutomationProperties.LandmarkType="Main"
+            Grid.Row="0"
+            Padding="0">
             <Grid
                 Style="{StaticResource BaseGridStyle}">
                 <Grid.ColumnDefinitions>
@@ -54,87 +56,103 @@
                         Height="auto" />
                     <RowDefinition
                         Height="auto" />
-                    <RowDefinition
-                        Height="auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock
-                    Grid.Row="0"
+                    x:Name="PageTitle"
+                    x:Uid="XmlManifestEditPageTitle"
                     AutomationProperties.HeadingLevel="Level2"
-                    x:Uid="EditManifestTitle"
+                    Grid.Row="0"
                     Style="{StaticResource Header01Style}" />
 
                 <TextBlock
                     AutomationProperties.LiveSetting="Polite"
                     Grid.Row="1"
-                    MinWidth="300"
-                    MinHeight="32"
-                    Margin="0,0,0,6"
                     Style="{StaticResource WarningTextBlockStyle}"
+                    Margin="0,0,0,6"
+                    MinHeight="32"
+                    MinWidth="300"
                     Text="{Binding ErrorMessage}"
                     TextWrapping="WrapWholeWords"
                     Visibility="{Binding Path=ErrorOccured,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
-                
-                
+
+
                 <TextBox
-                    x:Uid="ExtensionIdTextBox"
+                    x:Uid="XmlManifestEditPageIdTextBox"
                     AutomationProperties.IsRequiredForForm="True"
-                    AutomationProperties.AccessKey="I"
                     Grid.Row="2"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
                     IsReadOnly="True"
-                    Style="{StaticResource TextboxWithHeaderStyle}"
                     Text="{Binding Path=AppId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
-                <Button
-                    x:Uid="XmlManifestPreviewButton"
+                <Grid
+                    AutomationProperties.LabeledBy="{Binding ElementName=XmlManifestGroupTitle}"
                     Grid.Row="3"
-                    Width="96"
-                    Command="{Binding Path=PreviewXmlManifestCommand}"
-                    Style="{StaticResource HighlightedButtonStyle}" />
+                    Margin="0,18,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="auto" />
+                        <RowDefinition
+                            Height="auto" />
+                        <RowDefinition
+                            Height="auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        x:Name="XmlManifestGroupTitle"
+                        x:Uid="XmlManifestEditPageManifestGroupTitle"
+                        AutomationProperties.HeadingLevel="Level3"
+                        Style="{StaticResource Header02Style}" />
+                    <Button
+                        x:Uid="XmlManifestEditPagePreviewButton"
+                        Command="{Binding Path=PreviewXmlManifestCommand}"
+                        Grid.Row="1"
+                        Style="{StaticResource HighlightedButtonStyle}"
+                        Width="96" />
 
 
-                <RichEditBox
-                    x:Uid="ExtensionManifestTextBox"
-                    x:Name="ExtensionManifestTextBox"
-                    AutomationProperties.AccessKey="X"
-                    Grid.Row="4"
-                    Margin="0,12,0,12"
-                    IsReadOnly="{Binding Path=IsEditBoxReadOnly,UpdateSourceTrigger=PropertyChanged}"
-                    Height="300" />
+                    <RichEditBox
+                        x:Name="XmlManifestTextBox"
+                        x:Uid="XmlManifestEditPageXmlManifestTextBox"
+                        Grid.Row="2"
+                        Height="300"
+                        IsReadOnly="{Binding Path=IsEditBoxReadOnly,UpdateSourceTrigger=PropertyChanged}"
+                        Margin="0,12,0,12" />
+                </Grid>
 
             </Grid>
 
         </ScrollViewer>
 
         <StackPanel
-            Style="{StaticResource BaseStackPanelStyle}"
+            AutomationProperties.LandmarkType="Navigation"
             Grid.Row="1"
-            Spacing="24"
+            Style="{StaticResource BaseStackPanelStyle}"
+            HorizontalAlignment="Right"
             Orientation="Horizontal"
-            HorizontalAlignment="Right">
+            Spacing="24">
 
             <Button
-                x:Uid="GoBackButton"
-                Width="96"
+                x:Uid="AllPagesGoBackButton"
                 Command="{Binding Path=GoBackCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="96" />
 
             <Button
-                x:Uid="FinishButton"
-                Width="96"
+                x:Uid="XmlManifestEditPageFinishButton"
                 Command="{Binding Path=ProcessAndContinueCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="96" />
 
         </StackPanel>
 
         <Grid
-            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-            Style="{StaticResource BaseGridStyle}"
             Grid.RowSpan="2"
+            Style="{StaticResource BaseGridStyle}"
             Background="{ThemeResource PrimaryBackgroundSemiTransparent}"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
+            VerticalAlignment="Stretch"
+            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
             <Grid
                 Style="{StaticResource BaseGridStyle}"
                 HorizontalAlignment="Center"
@@ -144,8 +162,8 @@
                     <ProgressRing
                         IsActive="True" />
                     <TextBlock
-                        Style="{StaticResource BaseTextBlockStyle}"
-                        x:Uid="PostProcessMessage" />
+                        x:Uid="XmlManifestEditPageFinishMessage"
+                        Style="{StaticResource BaseTextBlockStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

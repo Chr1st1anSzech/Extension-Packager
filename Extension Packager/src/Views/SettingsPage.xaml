@@ -30,7 +30,7 @@
         Style="{StaticResource BaseGridStyle}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition
-                Width="4*" />
+                Width="3*" />
             <ColumnDefinition
                 Width="*" />
         </Grid.ColumnDefinitions>

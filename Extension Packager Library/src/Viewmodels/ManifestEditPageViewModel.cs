@@ -13,6 +13,7 @@ using Microsoft.UI.Text;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Viewmodels
@@ -21,21 +22,12 @@ namespace Extension_Packager_Library.src.Viewmodels
     {
         #region Public Properties
 
-        private bool _isPageBack;
-        public bool IsPageBack
+        private PageParameter _pageParameter;
+        public PageParameter PageParameter
         {
-            get { return _isPageBack; }
-            set { SetField(ref _isPageBack, value); }
+            get { return _pageParameter; }
+            set { SetField(ref _pageParameter, value); }
         }
-
-
-        private bool _isUpdate;
-        public bool IsUpdate
-        {
-            get { return _isUpdate; }
-            set { SetField(ref _isUpdate, value); }
-        }
-
 
         private INavigationService _navigationService;
         public INavigationService NavigationService
@@ -44,15 +36,6 @@ namespace Extension_Packager_Library.src.Viewmodels
             set { SetField(ref _navigationService, value); }
         }
 
-
-        private DataModels.Extension _extension;
-        public DataModels.Extension Extension
-        {
-            get { return _extension; }
-            set { SetField(ref _extension, value); }
-        }
-
-
         private bool _isBusy = false;
         public bool IsBusy
         {
@@ -60,7 +43,6 @@ namespace Extension_Packager_Library.src.Viewmodels
             set { SetField(ref _isBusy, value); }
 
         }
-
 
         private string _errorMessage = string.Empty;
         public string ErrorMessage
@@ -195,35 +177,23 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void GoBack(object parameter = null)
         {
-            PageParameter param = new()
-            {
-                Extension = Extension,
-                IsUpdate = IsUpdate,
-                IsPageBack = true
-            };
-            _navigationService.Navigate("CrxSelectPage", param);
+            _navigationService.Navigate("CrxSelectPage", PageParameter);
         }
 
         private void GoForward()
         {
-            PageParameter param = new()
-            {
-                Extension = Extension,
-                IsUpdate = IsUpdate,
-                IsPageBack = false
-            };
-            _navigationService.Navigate("XmlManifestPage", param);
+            _navigationService.Navigate("XmlManifestPage", PageParameter);
         }
 
         public void Reset()
         {
-            if (Extension.TmpPackedCrxFile == null) return;
+            if (PageParameter.Extension.TmpPackedCrxFile == null) return;
             try
             {
-                File.Delete(Extension.TmpPackedCrxFile);
-                if (Extension.TmpPrivateKeyFile != null)
+                File.Delete(PageParameter.Extension.TmpPackedCrxFile);
+                if (PageParameter.Extension.TmpPrivateKeyFile != null)
                 {
-                    File.Delete(Extension.TmpPrivateKeyFile);
+                    File.Delete(PageParameter.Extension.TmpPrivateKeyFile);
                 }
             }
             catch (Exception exception)
@@ -235,9 +205,9 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetProperties(object parameter = null)
         {
-            Name = Extension.Name ?? string.Empty;
-            ShortName = Extension.ShortName ?? string.Empty;
-            Version = Extension.Version ?? string.Empty;
+            Name = PageParameter.Extension.Name ?? string.Empty;
+            ShortName = PageParameter.Extension.ShortName ?? string.Empty;
+            Version = PageParameter.Extension.Version ?? string.Empty;
         }
 
 
@@ -252,27 +222,27 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             if (!await SaveManifestAsync()) return;
 
-            if (IsUpdate)
+            if (PageParameter.IsUpdate)
             {
-                string privateKeyFile = FindPrivateKeyFile(Extension.BackupDir);
+                string privateKeyFile = FindPrivateKeyFile(PageParameter.Extension.BackupDir);
                 if (privateKeyFile == null) return;
-                Extension.PrivateKeyFile = privateKeyFile;
+                PageParameter.Extension.PrivateKeyFile = privateKeyFile;
             }
 
-            string packedCrxFile = PackExtension();
+            string packedCrxFile = PackExtension(PageParameter.Extension.UnpackedCrxDirectory, PageParameter.Extension.PrivateKeyFile);
             if (packedCrxFile == null) return;
-            Extension.TmpPackedCrxFile = packedCrxFile;
+            PageParameter.Extension.TmpPackedCrxFile = packedCrxFile;
 
-            if (!IsUpdate)
+            if (!PageParameter.IsUpdate && !PageParameter.IsAddition)
             {
-                string tmpPrivateKeyFile = FindPrivateKeyFile(Extension.ExtensionWorkingDirectory);
+                string tmpPrivateKeyFile = FindPrivateKeyFile(PageParameter.Extension.ExtensionWorkingDirectory);
                 if (tmpPrivateKeyFile == null) return;
-                Extension.TmpPrivateKeyFile = tmpPrivateKeyFile;
+                PageParameter.Extension.TmpPrivateKeyFile = tmpPrivateKeyFile;
             }
 
-            string appId = Extension.Id ?? ExtractAppId(Extension.TmpPackedCrxFile);
+            string appId = PageParameter.Extension.Id ?? ExtractAppId(PageParameter.Extension.TmpPackedCrxFile);
             if (appId == null) return;
-            Extension.Id = appId;
+            PageParameter.Extension.Id = appId;
 
             IsBusy = false;
 
@@ -284,7 +254,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             if (!InputValidator.IsNameValid(Name))
             {
-                IsNameValid= false;
+                IsNameValid = false;
                 IsBusy = false;
                 ErrorMessage = StringResources.Get(this, 7);
                 ErrorOccured = true;
@@ -309,8 +279,8 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetExtensionValues()
         {
-            Extension.Name = Name;
-            Extension.ShortName = ShortName;
+            PageParameter.Extension.Name = Name;
+            PageParameter.Extension.ShortName = ShortName;
         }
 
 
@@ -320,7 +290,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             string updateUrl = Helper.Uri.Combine(settings.OutputURL, ShortName, settings.XmlManifestName);
             try
             {
-                Extension.ManifestContent = Manifest.ChangeUpdateUrl(Extension.ManifestContent, updateUrl);
+                PageParameter.Extension.ManifestContent = Manifest.ChangeUpdateUrl(PageParameter.Extension.ManifestContent, updateUrl);
             }
             catch (Exception ex)
             {
@@ -338,7 +308,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             try
             {
-                await File.WriteAllTextAsync(Extension.ManifestFile, Extension.ManifestContent);
+                await File.WriteAllTextAsync(PageParameter.Extension.ManifestFile, PageParameter.Extension.ManifestContent);
                 return true;
             }
             catch (Exception ex)
@@ -356,15 +326,15 @@ namespace Extension_Packager_Library.src.Viewmodels
         /// Packs an unpacked extension.
         /// </summary>
         /// <returns>Path to the newly packed extension</returns>
-        private string PackExtension()
+        private string PackExtension(string unpackedCrxDirectory, string privateKeyFile)
         {
             try
             {
                 DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
                 IExtensionPacker packer = new ExtensionPacker();
-                return packer.Pack(settings.BrowserPath, 
-                    settings.ExtensionPathParameter, Extension.UnpackedCrxDirectory,
-                    settings.ExtensionKeyParameter, Extension.PrivateKeyFile);
+                return packer.Pack(settings.BrowserPath,
+                    settings.ExtensionPathParameter, unpackedCrxDirectory,
+                    settings.ExtensionKeyParameter, privateKeyFile);
             }
             catch (Exception ex)
             {
@@ -379,28 +349,18 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private string FindPrivateKeyFile(string searchDirectory)
         {
-            string[] pemFiles;
-            try
-            {
-                pemFiles = Directory.GetFiles(searchDirectory, "*.pem");
-            }
-            catch (Exception ex)
-            {
-                IsBusy = false;
-                ErrorMessage = StringResources.GetWithReason(this, 5,ex.Message);
-                ErrorOccured = true;
-                _log.Error(ex);
-                return null;
-            }
+            FileFinder fileFinder = new();
+            string[] files = fileFinder.FindFiles(searchDirectory, ".pem");
 
-            if (pemFiles.Length != 1)
+            if (files.Length != 1)
             {
                 IsBusy = false;
                 ErrorMessage = StringResources.Get(this, 6);
                 ErrorOccured = true;
                 return null;
             }
-            return pemFiles[0];
+
+            return files[0];
         }
 
 
@@ -440,7 +400,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             ChangeManifest();
 
-            ExtensionManifestDocument.SetText(TextSetOptions.FormatRtf, Extension.ManifestContent);
+            ExtensionManifestDocument.SetText(TextSetOptions.FormatRtf, PageParameter.Extension.ManifestContent);
 
             Formatter.Formatter formatter = new JSONFormatter()
             {

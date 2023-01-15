@@ -13,7 +13,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="MyMainPage"
     x:Uid="MyMainPage"
-    AutomationProperties.LabeledBy="{Binding ElementName=StartPageTitle}"
+    AutomationProperties.LabeledBy="{Binding ElementName=MainPageTitle}"
     mc:Ignorable="d">
 
     <Page.DataContext>
@@ -24,10 +24,10 @@
         <converter:ExtToStringConverter
             x:Key="ExtToStringConverter" />
     </Page.Resources>
-    
+
     <Grid
         x:Name="MainPageGrid"
-        AutomationProperties.LabeledBy="{Binding ElementName=StartPageTitle}"
+        AutomationProperties.LabeledBy="{Binding ElementName=Title}"
         AutomationProperties.LandmarkType="Main"
         Padding="0"
         Style="{StaticResource BaseGridStyle}">
@@ -47,8 +47,8 @@
         </Grid.RowDefinitions>
 
         <TextBlock
-            x:Name="StartPageTitle"
-            x:Uid="StartPageTitle"
+            x:Name="Title"
+            x:Uid="MainPageTitle"
             AutomationProperties.HeadingLevel="Level2"
             Grid.ColumnSpan="2"
             Style="{StaticResource Header01Style}" />
@@ -60,14 +60,13 @@
             Style="{StaticResource ColumnStackPanelStyle}">
             <TextBlock
                 x:Name="ActionsTitle"
-                x:Uid="ActionsTitle"
+                x:Uid="MainPageActionsTitle"
                 AutomationProperties.HeadingLevel="Level3"
                 Grid.ColumnSpan="2"
                 Style="{StaticResource Header02Style}" />
             <Button
-                AutomationProperties.LabeledBy="{Binding ElementName=ShowExtDescriptionButton}"
-                x:Uid="ShowExtensionsListButton"
-                x:Name="ShowExtensionsListButton"
+                x:Uid="MainPageShowExtButton"
+                AutomationProperties.LabeledBy="{Binding ElementName=ShowExtButtonDescription}"
                 Command="{Binding ShowCommand}"
                 Style="{StaticResource HighlightedButtonStyle}"
                 HorizontalContentAlignment="Left"
@@ -77,21 +76,21 @@
                 CornerRadius="2">
                 <StackPanel>
                     <TextBlock
+                        x:Uid="MainPageShowExtButtonTitle"
                         AutomationProperties.AccessibilityView="Raw"
-                        x:Name="ShowExtTitleButton"
-                        x:Uid="ShowExtTitleButton"
                         FontWeight="SemiBold"
                         FontSize="16" />
                     <TextBlock
+                        x:Name="ShowExtButtonDescription"
+                        x:Uid="MainPageShowExtButtonDescription"
                         AutomationProperties.AccessibilityView="Raw"
-                        x:Name="ShowExtDescriptionButton"
-                        x:Uid="ShowExtDescriptionButton"
                         Margin="0,2,0,0"
                         FontSize="10" />
                 </StackPanel>
             </Button>
             <Button
-                AutomationProperties.LabeledBy="{Binding ElementName=CreateExtDescriptionButton}"
+                x:Uid="MainPageCreateExtButton"
+                AutomationProperties.LabeledBy="{Binding ElementName=CreateExtButtonDescription}"
                 Command="{Binding CreateCommand}"
                 Style="{StaticResource HighlightedButtonStyle}"
                 HorizontalContentAlignment="Left"
@@ -101,20 +100,20 @@
                 CornerRadius="2">
                 <StackPanel>
                     <TextBlock
+                        x:Uid="MainPageCreateExtButtonTitle"
                         AutomationProperties.AccessibilityView="Raw"
-                        x:Name="CreateExtTitleButton"
-                        x:Uid="CreateExtTitleButton"
                         FontWeight="SemiBold"
                         FontSize="16" />
                     <TextBlock
+                        x:Name="CreateExtButtonDescription"
+                        x:Uid="MainPageCreateExtButtonDescription"
                         AutomationProperties.AccessibilityView="Raw"
-                        x:Name="CreateExtDescriptionButton"
-                        x:Uid="CreateExtDescriptionButton"
                         Margin="0,2,0,0"
                         FontSize="10" />
                 </StackPanel>
             </Button>
             <Button
+                x:Uid="MainPageAddExtButton"
                 AutomationProperties.LabeledBy="{Binding ElementName=AddExtDescriptionButton}"
                 Command="{Binding AddCommand}"
                 Style="{StaticResource HighlightedButtonStyle}"
@@ -125,15 +124,14 @@
                 CornerRadius="2">
                 <StackPanel>
                     <TextBlock
+                        x:Uid="MainPageAddExtTitleButton"
                         AutomationProperties.AccessibilityView="Raw"
-                        x:Name="AddExtTitleButton"
-                        x:Uid="AddExtTitleButton"
                         FontWeight="SemiBold"
                         FontSize="16" />
                     <TextBlock
-                        AutomationProperties.AccessibilityView="Raw"
                         x:Name="AddExtDescriptionButton"
-                        x:Uid="AddExtDescriptionButton"
+                        x:Uid="MainPageAddExtDescriptionButton"
+                        AutomationProperties.AccessibilityView="Raw"
                         Margin="0,2,0,0"
                         FontSize="10" />
                 </StackPanel>
@@ -152,14 +150,14 @@
             Stroke="{ThemeResource Border}" />
 
         <StackPanel
-            AutomationProperties.LabeledBy="{Binding ElementName=LastUsedTitle}"
+            AutomationProperties.LabeledBy="{Binding ElementName=LastModTitle}"
             Grid.Column="2"
             Grid.Row="1"
             MinWidth="420"
             Style="{StaticResource ColumnStackPanelStyle}">
             <TextBlock
-                x:Name="LastUsedTitle"
-                x:Uid="LastUsedTitle"
+                x:Name="LastModTitle"
+                x:Uid="MainPageLastModTitle"
                 AutomationProperties.HeadingLevel="Level3"
                 Grid.ColumnSpan="2"
                 Style="{StaticResource Header02Style}" />
@@ -170,21 +168,20 @@
                 Padding="0,12,0,6">
 
                 <ComboBox
-                    x:Name="BrowserFilterComboBox"
-                    x:Uid="BrowserFilterComboBox"
+                    x:Uid="MainPageBrowserFilterComboBox"
                     Margin="0,0,16,0"
                     SelectedIndex="0"
                     Style="{StaticResource BaseComboBoxStyle}"
                     ItemsSource="{Binding BrowserFilterList}" />
 
                 <controls:SearchField
+                    x:Uid="MainPageSearchField"
                     Command="{Binding Path=ViewModel.SearchCommand,ElementName=MyMainPage}" />
 
             </StackPanel>
 
             <ListView
-                x:Name="LastUsedExtensionListView"
-                x:Uid="LastUsedExtensionListView"
+                x:Uid="MainPageLastModExtListView"
                 SelectionMode="None"
                 Padding="0"
                 ItemsSource="{Binding Path=LastModifiedExtensions}">
@@ -211,7 +208,7 @@
                             AutomationProperties.AccessibilityView="Raw"
                             AutomationProperties.Name="{Binding Converter={StaticResource ExtToStringConverter}}">
                             <Button
-                                x:Uid="ChangeExtensionButton"
+                                x:Uid="MainPageChangeExtButton"
                                 Command="{Binding ElementName=MyMainPage, Path=ViewModel.UpdateCommand}"
                                 CommandParameter="{Binding Path=Id}"
                                 Background="Transparent"
@@ -242,36 +239,39 @@
                                             Height="*" />
                                     </Grid.RowDefinitions>
                                     <TextBlock
-                                        x:Name="ExtensionTitle"
-                                        x:Uid="ExtensionTitle"
+                                        x:Uid="MainPageExtTitle"
                                         Grid.Column="0"
+                                        FontWeight="SemiBold" 
                                         Text="{Binding Path=Name}"
-                                        FontWeight="SemiBold" />
+                                        />
                                     <TextBlock
-                                        x:Uid="ExtensionId"
-                                        Text="{Binding Path=Id}"
+                                        x:Uid="MainPageExtId"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="5"
                                         Grid.Row="1"
+                                        FontSize="10" 
                                         Foreground="#d1d1d1"
                                         Margin="0,8,0,0"
-                                        FontSize="10" />
+                                        Text="{Binding Path=Id}"
+                                        />
                                     <TextBlock
                                         AutomationProperties.AccessibilityView="Raw"
                                         Grid.Column="1"
+                                        Margin="6,0" 
                                         Text="-"
-                                        Margin="6,0" />
+                                        />
                                     <TextBlock
-                                        x:Uid="ExtensionVersion"
+                                        x:Uid="MainPageExtVersion"
                                         Grid.Column="2"
                                         Text="{Binding Path=Version}" />
                                     <TextBlock
-                                        x:Uid="ExtensionUpdate"
+                                        x:Uid="MainPageExtUpdate"
                                         Grid.Column="3"
+                                        FontSize="10" 
                                         Foreground="#d1d1d1"
                                         Text="{Binding Path=UpdateDate}"
                                         VerticalAlignment="Bottom"
-                                        FontSize="10" />
+                                        />
 
                                 </Grid>
                             </Button>

@@ -25,11 +25,11 @@
     </Page.Resources>
 
     <Grid
-        AutomationProperties.AccessibilityView="Raw"
         x:Name="MainGrid"
-        Padding="0"
+        AutomationProperties.AccessibilityView="Raw"
+        Style="{StaticResource BaseGridStyle}"
         HorizontalAlignment="Stretch"
-        Style="{StaticResource BaseGridStyle}">
+        Padding="0">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="*" />
@@ -38,10 +38,10 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer
-            AutomationProperties.LabeledBy="{Binding ElementName=EditManifestTitle}"
+            AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
             AutomationProperties.LandmarkType="Main"
-            Padding="0"
-            Grid.Row="0">
+            Grid.Row="0"
+            Padding="0">
             <Grid
                 AutomationProperties.AccessibilityView="Raw"
                 Style="{StaticResource BaseGridStyle}">
@@ -67,8 +67,8 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock
-                    x:Name="EditManifestTitle"
-                    x:Uid="EditManifestTitle"
+                    x:Name="PageTitle"
+                    x:Uid="ManifestEditPageTitle"
                     AutomationProperties.HeadingLevel="Level2"
                     Grid.Row="0"
                     Style="{StaticResource Header01Style}" />
@@ -76,49 +76,46 @@
                 <TextBlock
                     AutomationProperties.LiveSetting="Polite"
                     Grid.Row="1"
-                    MinWidth="300"
-                    MinHeight="32"
-                    Margin="0,0,0,6"
                     Style="{StaticResource WarningTextBlockStyle}"
+                    Margin="0,0,0,6"
+                    MinHeight="32"
+                    MinWidth="300"
                     Text="{Binding ErrorMessage}"
                     TextWrapping="WrapWholeWords"
                     Visibility="{Binding Path=ErrorOccured,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
 
                 <TextBox
-                    x:Uid="ExtensionNameTextBox"
-                    AutomationProperties.IsRequiredForForm="True"
-                    AutomationProperties.AccessKey="N"
+                    x:Uid="ManifestEditPageNameTextBox"
                     AutomationProperties.IsDataValidForForm="{Binding IsNameValid}"
+                    AutomationProperties.IsRequiredForForm="True"
                     Grid.Row="2"
-                    HorizontalAlignment="Stretch"
-                    IsReadOnly="{Binding Path=IsUpdate}"
                     Style="{StaticResource TextboxWithHeaderStyle}"
+                    IsReadOnly="{Binding Path=PageParameter.IsUpdate}"
+                    HorizontalAlignment="Stretch"
                     Text="{Binding Path=Name, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBox
-                    x:Uid="ExtensionShortNameTextBox"
-                    AutomationProperties.IsRequiredForForm="True"
-                    AutomationProperties.AccessKey="S"
+                    x:Uid="ManifestEditPageShortNameTextBox"
                     AutomationProperties.IsDataValidForForm="{Binding IsShortNameValid}"
+                    AutomationProperties.IsRequiredForForm="True"
                     Grid.Row="3"
-                    HorizontalAlignment="Stretch"
-                    IsReadOnly="{Binding Path=IsUpdate}"
                     Style="{StaticResource TextboxWithHeaderStyle}"
+                    HorizontalAlignment="Stretch"
+                    IsReadOnly="{Binding Path=PageParameter.IsUpdate}"
                     Text="{Binding Path=ShortName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
                 <TextBox
-                    x:Uid="ExtensionVersionTextBox"
-                    AutomationProperties.AccessKey="V"
+                    x:Uid="ManifestEditPageVersionTextBox"
                     Grid.Row="4"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
                     IsReadOnly="True"
-                    Style="{StaticResource TextboxWithHeaderStyle}"
                     Text="{Binding Path=Version, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
                 <Grid
-                    AutomationProperties.LabeledBy="{Binding ElementName=ManifestGroupHeader}"
-                    Margin="0,18,0,0"
-                    Grid.Row="5">
+                    AutomationProperties.LabeledBy="{Binding ElementName=ManifestGroupTitle}"
+                    Grid.Row="5"
+                    Margin="0,18,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition
                             Height="auto" />
@@ -128,25 +125,25 @@
                             Height="auto" />
                     </Grid.RowDefinitions>
                     <TextBlock
-                        x:Name="ManifestGroupHeader"
-                        x:Uid="ManifestGroupHeader"
+                        x:Name="ManifestGroupTitle"
+                        x:Uid="ManifestEditPageManifestGroupTitle"
                         AutomationProperties.HeadingLevel="Level3"
                         Style="{StaticResource Header02Style}" />
-                    
+
                     <Button
-                        x:Uid="ManifestPreviewButton"
-                        Grid.Row="1"
-                        Width="96"
+                        x:Uid="ManifestEditPageManifestPreviewButton"
                         Command="{Binding Path=ManifestPreviewCommand}"
-                        Style="{StaticResource HighlightedButtonStyle}" />
+                        Grid.Row="1"
+                        Style="{StaticResource HighlightedButtonStyle}"
+                        Width="96" />
 
                     <RichEditBox
-                        x:Uid="ExtensionManifestTextBox"
                         x:Name="ExtensionManifestTextBox"
+                        x:Uid="ManifestEditPageManifestTextBox"
                         Grid.Row="2"
-                        Margin="0,12,0,12"
+                        Height="300"
                         IsReadOnly="{Binding Path=IsEditBoxReadOnly,UpdateSourceTrigger=PropertyChanged}"
-                        Height="300" />
+                        Margin="0,12,0,12" />
                 </Grid>
 
             </Grid>
@@ -155,39 +152,39 @@
 
         <StackPanel
             AutomationProperties.LandmarkType="Navigation"
-            Style="{StaticResource BaseStackPanelStyle}"
             Grid.Row="1"
-            Spacing="24"
+            Style="{StaticResource BaseStackPanelStyle}"
+            HorizontalAlignment="Right"
             Orientation="Horizontal"
-            HorizontalAlignment="Right">
+            Spacing="24">
 
             <Button
-                x:Uid="ResetValuesButton"
-                Width="110"
+                x:Uid="AllPagesResetValuesButton"
                 Command="{Binding Path=ResetValuesCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="110" />
 
             <Button
-                x:Uid="GoBackButton"
-                Width="110"
+                x:Uid="AllPagesGoBackButton"
                 Command="{Binding Path=GoBackCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="110" />
 
             <Button
-                x:Uid="PackExtensionButton"
-                Width="110"
+                x:Uid="ManifestEditPagePackButton"
                 Command="{Binding Path=ProcessAndContinueCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="110" />
 
         </StackPanel>
 
         <Grid
-            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-            Style="{StaticResource BaseGridStyle}"
             Grid.RowSpan="2"
+            Style="{StaticResource BaseGridStyle}"
             Background="{ThemeResource PrimaryBackgroundSemiTransparent}"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
+            VerticalAlignment="Stretch"
+            Visibility="{Binding Path=IsBusy,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
             <Grid
                 Style="{StaticResource BaseGridStyle}"
                 HorizontalAlignment="Center"
@@ -197,8 +194,8 @@
                     <ProgressRing
                         IsActive="True" />
                     <TextBlock
-                        Style="{StaticResource BaseTextBlockStyle}"
-                        x:Uid="PackExtensionMessage" />
+                        x:Uid="ManifestEditPagePackMessage"
+                        Style="{StaticResource BaseTextBlockStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

@@ -86,12 +86,24 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void Create(object parameter = null)
         {
-            _navigationService.Navigate("CrxSelectPage");
+            PageParameter param = new()
+            {
+                IsUpdate = false,
+                IsPageBack= false,
+                IsAddition = false
+            };
+            _navigationService.Navigate("CrxSelectPage", param);
         }
 
         private void Add(object parameter = null)
         {
-
+            PageParameter param = new()
+            {
+                IsUpdate = false,
+                IsPageBack = false,
+                IsAddition = true
+            };
+            _navigationService.Navigate("CrxSelectPage", param);
         }
 
         private void Update(object parameter = null)

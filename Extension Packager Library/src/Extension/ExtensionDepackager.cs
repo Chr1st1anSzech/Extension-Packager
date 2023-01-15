@@ -78,10 +78,6 @@ namespace Extension_Packager_Library.src.Extension
             _log.Debug("Extract zip archive from crx file.");
 
             CrxInfo crx = new(buf);
-            if (buf.Length < 16)
-            {
-                throw new ArgumentException("Invalid header");
-            }
 
             if (crx.IsZipArchive)
             {

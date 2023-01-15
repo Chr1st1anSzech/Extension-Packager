@@ -58,15 +58,13 @@ namespace Extension_Packager.src.Navigation
                 Content = StringResources.Get(this, 2),
                 Icon = new SymbolIcon((Symbol)0xE7C3),
                 Page = typeof(CrxSelectPage),
+                PageParameter = new()
+                {
+                    IsAddition = false,
+                    IsUpdate = false,
+                    IsPageBack = false
+                },
                 Tag = "CrxSelectPage"
-            });
-
-            MainNavMenuItems.Add(new NavMenuItem()
-            {
-                Content = StringResources.Get(this, 5),
-                Icon = new SymbolIcon((Symbol)0xE8E5),
-                Page = typeof(CrxSelectPage),
-                Tag = "AddExtensionPage"
             });
         }
 

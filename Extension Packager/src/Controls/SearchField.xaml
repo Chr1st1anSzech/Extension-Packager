@@ -24,13 +24,16 @@
         <TextBox
             x:Name="SearchFieldTextBox"
             x:Uid="SearchFieldTextBox"
-            AutomationProperties.AccessKey="S"
             KeyUp="SearchFieldTextBox_KeyUp"
             TextChanged="SearchFieldTextBox_TextChanged"
+            AccessKey="{Binding SearchAccessKey,ElementName=MySearchField}"
+            AutomationProperties.AccessKey="{Binding SearchAccessKey,ElementName=MySearchField}"
+            Style="{StaticResource BaseTextboxStyle}" 
             MinWidth="200"
             Margin="0"
+            PlaceholderText="{Binding  Path=PlaceholderText,ElementName=MySearchField}"
             PlaceholderForeground="{ThemeResource PrimaryForegroundHover}"
-            Style="{StaticResource BaseTextboxStyle}" />
+            />
         <Button
             x:Name="SearchFieldButton"
             x:Uid="SearchFieldButton"

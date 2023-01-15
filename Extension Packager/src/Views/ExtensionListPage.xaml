@@ -23,10 +23,10 @@
         <converter:BoolToVisibilityConverter
             x:Key="BoolToVisibilityConverter" />
     </Page.Resources>
-    
+
     <Grid
         x:Name="MainPageGrid"
-        AutomationProperties.LabeledBy="{Binding ElementName=AllExtensionsTitle}"
+        AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
         AutomationProperties.LandmarkType="Main"
         Padding="0"
         Style="{StaticResource BaseGridStyle}">
@@ -42,71 +42,68 @@
         </Grid.RowDefinitions>
 
         <TextBlock
-            x:Name="AllExtensionsTitle"
-            x:Uid="AllExtensionsTitle"
+            x:Name="PageTitle"
+            x:Uid="ExtensionListPageTitle"
             AutomationProperties.HeadingLevel="Level2"
             Style="{StaticResource Header01Style}" />
 
         <TextBlock
             AutomationProperties.LiveSetting="Polite"
             Grid.Row="1"
-            MinWidth="300"
-            MinHeight="32"
-            Margin="0,0,0,6"
             Style="{StaticResource WarningTextBlockStyle}"
+            Margin="0,0,0,6"
+            MinHeight="32"
+            MinWidth="300"
             Text="{Binding ErrorMessage}"
             TextWrapping="WrapWholeWords"
             Visibility="{Binding Path=ErrorOccured,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
 
         <StackPanel
-            x:Uid="ExtListToolbar"
+            x:Uid="ExtensionListPageToolbar"
+            AutomationProperties.AutomationControlType="ToolBar"
             Grid.Row="2"
+            Style="{StaticResource BaseStackPanelStyle}"
             Orientation="Horizontal"
-            Padding="0"
-            Style="{StaticResource BaseStackPanelStyle}">
+            Padding="0">
             <Button
-                x:Name="CreateExtButton"
-                x:Uid="CreateExtButton"
+                x:Uid="ExtensionListPageCreateButton"
                 Command="{Binding CreateCommand}"
-                Content="&#xE7C3;"
-                Style="{StaticResource IconButtonStyle}" />
+                Style="{StaticResource IconButtonStyle}"
+                Content="&#xE7C3;" />
             <Button
-                x:Name="AddExtButton"
-                x:Uid="AddExtButton"
+                x:Uid="ExtensionListPageAddButton"
                 Command="{Binding AddCommand}"
-                Content="&#xE8E5;"
-                Style="{StaticResource IconButtonStyle}" />
+                Style="{StaticResource IconButtonStyle}"
+                Content="&#xE8E5;" />
             <Button
-                x:Name="DeleteExtButton"
-                x:Uid="DeleteExtButton"
+                x:Uid="ExtensionListPageDeleteButton"
                 Command="{Binding AskDeleteCommand}"
-                Content="&#xE74D;"
-                Style="{StaticResource IconButtonStyle}" />
+                Style="{StaticResource IconButtonStyle}"
+                Content="&#xE74D;" />
             <Button
-                x:Name="ChangeExtButton"
-                x:Uid="ChangeExtButton"
+                x:Uid="ExtensionListPageChangeButton"
                 Command="{Binding UpdateCommand}"
-                Content="&#xE70F;"
-                Style="{StaticResource IconButtonStyle}" />
+                Style="{StaticResource IconButtonStyle}"
+                Content="&#xE70F;" />
         </StackPanel>
 
         <ListView
-            x:Name="AllExtensionsListView"
-            x:Uid="AllExtensionsListView"
-            SelectedItem="{Binding SelectedExtension, Mode=TwoWay}"
+            x:Uid="ExtensionListPageAllExtensionsListView"
+            AccessKey="U"
             Grid.Row="3"
-            SelectionMode="Single"
+            ItemsSource="{Binding Path=AllExtensions}"
             Padding="0"
-            ItemsSource="{Binding Path=AllExtensions}">
+            SelectedItem="{Binding SelectedExtension, Mode=TwoWay}"
+            SelectionMode="Single">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid
                         AutomationProperties.AccessibilityView="Raw"
                         AutomationProperties.Name="{Binding Converter={StaticResource ExtToStringConverter}}"
-                        Padding="12"
+                        CornerRadius="4"
                         Margin="0,6"
-                        CornerRadius="4">
+                        Padding="12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
                                 Width="auto" />
@@ -124,27 +121,26 @@
                                 Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock
-                            x:Name="ExtensionTitle"
-                            x:Uid="ExtensionTitle"
+                            x:Uid="ExtensionListPageExtensionTitle"
                             Grid.Column="0"
-                            Text="{Binding Path=Name}"
-                            FontWeight="SemiBold" />
+                            FontWeight="SemiBold"
+                            Text="{Binding Path=Name}" />
                         <TextBlock
-                            x:Uid="ExtensionId"
-                            Text="{Binding Path=Id}"
+                            x:Uid="ExtensionListPageExtensionId"
                             Grid.Column="0"
                             Grid.ColumnSpan="5"
                             Grid.Row="1"
+                            FontSize="10"
                             Foreground="#d1d1d1"
                             Margin="0,8,0,0"
-                            FontSize="10" />
+                            Text="{Binding Path=Id}" />
                         <TextBlock
                             AutomationProperties.AccessibilityView="Raw"
                             Grid.Column="1"
-                            Text="-"
-                            Margin="6,0" />
+                            Margin="6,0"
+                            Text="-" />
                         <TextBlock
-                            x:Uid="ExtensionVersion"
+                            x:Uid="ExtensionListPageExtensionVersion"
                             Grid.Column="2"
                             Text="{Binding Path=Version}" />
 

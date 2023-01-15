@@ -11,6 +11,9 @@ namespace Extension_Packager.src.Controls
 {
     public sealed partial class SearchField : UserControl
     {
+        public string PlaceholderText { get; set; } = "*Set Placeholder*";
+        public string SearchAccessKey { get; set; } = "S";
+
         public ICommand Command
         {
             get { return (ICommand)GetValue(CommandProperty); }

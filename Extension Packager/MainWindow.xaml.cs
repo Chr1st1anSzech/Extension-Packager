@@ -69,9 +69,13 @@ namespace Extension_Packager
             }
             if(sender.SelectedItem is NavMenuItem mainNavMenuItem)
             {
-                NavigationService.Instance.Navigate(mainNavMenuItem.Tag);
+                NavigationService.Instance.Navigate(mainNavMenuItem.Tag.ToString(), mainNavMenuItem.PageParameter);
             }
         }
 
+        private void SetNavViewAccessKeys()
+        {
+            MainNavigationView.GetVisualInternal();
+        }
     }
 }

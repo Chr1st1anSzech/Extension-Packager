@@ -26,24 +26,28 @@
 
         <TextBox
             x:Name="InputTextBox"
-            Header="{Binding Path=Label}"
             Grid.Column="0"
-            Text="{Binding Path=Value,Mode=TwoWay,ElementName=MyPathTextBox}"
+            Style="{StaticResource TextboxWithHeaderStyle}" 
+            Header="{Binding Path=Label}"
             IsReadOnly="{Binding IsReadOnly}"
             PlaceholderText="{Binding PlaceholderText}"
-            Style="{StaticResource TextboxWithHeaderStyle}" />
+            Text="{Binding Path=Value,Mode=TwoWay,ElementName=MyPathTextBox}"
+            />
 
         <Button
-            x:Uid="FileDialogButton"
+            x:Uid="PathTextBoxFileDialogButton"
+            AutomationProperties.AccessKey="{Binding InputAccessKey,ElementName=MyPathTextBox}"
+            AccessKey="{Binding InputAccessKey,ElementName=MyPathTextBox}"
+            Command="{Binding OpenFilesDialogCommand}" 
             Grid.Column="1"
-            Width="32"
-            Height="32"
-            Margin="12,24,0,0"
-            Padding="4,2,8,8"
-            HorizontalAlignment="Left"
-            Content="{StaticResource SearchIconData}"
             Style="{StaticResource IconButtonStyle}"
-            Command="{Binding OpenFilesDialogCommand}" />
+            Content="&#xED25;"
+            Height="32"
+            HorizontalAlignment="Left"
+            Margin="12,24,0,0"
+            Padding="0"
+            Width="32"
+            />
 
     </Grid>
 </UserControl>
