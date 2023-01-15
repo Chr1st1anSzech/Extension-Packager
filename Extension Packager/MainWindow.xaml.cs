@@ -22,7 +22,7 @@ namespace Extension_Packager
         public MainWindow()
         {
             InitializeComponent();
-            SetSize(1200, 950);
+            SetSize(1400, 950);
             SetTitleBar();
             MainNavigationView.Loaded += async (object sender, RoutedEventArgs e) =>
             {

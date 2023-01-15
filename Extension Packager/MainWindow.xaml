@@ -68,7 +68,7 @@
             MenuItemsSource="{Binding Path=MenuItems.MainNavMenuItems,UpdateSourceTrigger=PropertyChanged}"
             MenuItemTemplate="{StaticResource NavigationViewMenuItem}"
             OpenPaneLength="200"
-            PaneDisplayMode="Left"
+            PaneDisplayMode="LeftCompact"
             SelectionChanged="NavigationView_SelectionChanged">
             <Frame
                 x:Name="MainWindowFrame"

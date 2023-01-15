@@ -5,9 +5,14 @@ using Extension_Packager_Library.src.Database;
 using Extension_Packager_Library.src.DataModels;
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
+using Extension_Packager_Library.src.Settings;
+using log4net;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {
@@ -40,6 +45,12 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         #endregion
 
+        #region Static Fields
+
+        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        #endregion
+
         #region Commands
 
         public MyCommand SettingsCommand { get; set; }
@@ -48,6 +59,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         public MyCommand UpdateCommand { get; set; }
         public MyCommand AddCommand { get; set; }
         public MyCommand SearchCommand { get; set; }
+        public MyCommand OpenFolderCommand { get; set; }
 
         private void SetCommands()
         {
@@ -57,6 +69,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             AddCommand = new MyCommand(Add);
             UpdateCommand = new MyCommand(Update);
             SearchCommand = new MyCommand(Search);
+            OpenFolderCommand = new MyCommand(OpenFolder);
         }
 
         #endregion
@@ -89,7 +102,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             PageParameter param = new()
             {
                 IsUpdate = false,
-                IsPageBack= false,
+                IsPageBack = false,
                 IsAddition = false
             };
             _navigationService.Navigate("CrxSelectPage", param);
@@ -137,6 +150,35 @@ namespace Extension_Packager_Library.src.Viewmodels
                 {
                     return extension.Name.ToLower().Contains(searchText.ToLower());
                 }).ToList();
+            }
+        }
+
+        private void OpenFolder(object parameter = null)
+        {
+            if (parameter is string folderName)
+            {
+                DataModels.Settings settings = SettingsReaderFactory.Create().ReadSettings();
+                string directory = null;
+                if (folderName.Equals("Deployement"))
+                {
+                    directory = settings.OutputPath;
+                }
+                else if (folderName.Equals("Backup"))
+                {
+                    directory = settings.BackupDirectory; ;
+                }
+
+                if (directory == null) return;
+
+                try
+                {
+
+                    Process.Start("explorer.exe", directory);
+                }
+                catch (Exception exception)
+                {
+                    _log.Warn(StringResources.Get(this, 1, directory), exception);
+                }
             }
         }
     }

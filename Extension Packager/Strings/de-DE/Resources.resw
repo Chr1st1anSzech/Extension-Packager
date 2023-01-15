@@ -129,7 +129,7 @@
   <data name="MainPageActionsTitle.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Aktionen</value>
   </data>
-  <data name="AdvancedSettingsTitle.Text" xml:space="preserve">
+  <data name="SettingsPageAdvancedSettingsTitle.Text" xml:space="preserve">
     <value>Erweiterte Einstellungen</value>
   </data>
   <data name="ExtensionListPageAllExtensionsListView.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
@@ -138,22 +138,22 @@
   <data name="ExtensionListPageTitle.Text" xml:space="preserve">
     <value>Alle Erweiterungen</value>
   </data>
-  <data name="AppCrxTextBox.Header" xml:space="preserve">
+  <data name="SettingsPageAppCrxTextBox.Header" xml:space="preserve">
     <value>Name der CRX-Datei</value>
   </data>
   <data name="AppTitle.Text" xml:space="preserve">
     <value>Extension Packager</value>
   </data>
-  <data name="AppXmlTextBox.Header" xml:space="preserve">
+  <data name="SettingsPageXmlManifestTextBox.Header" xml:space="preserve">
     <value>Name der XML-Manifest-Datei</value>
   </data>
   <data name="BackToStartpageButton.Content" xml:space="preserve">
     <value>Startseite</value>
   </data>
-  <data name="BackupPathTextBox.Label" xml:space="preserve">
+  <data name="SettingsPageBackupDirectoryTextBox.Label" xml:space="preserve">
     <value>Sicherungsverzeichnis (privater Schlüssel)</value>
   </data>
-  <data name="BackupPathTextBox.PlaceholderText" xml:space="preserve">
+  <data name="SettingsPageBackupDirectoryTextBox.PlaceholderText" xml:space="preserve">
     <value>Verzeichnis auswählen</value>
   </data>
   <data name="MainPageBrowserFilterComboBox.AccessKey" xml:space="preserve">
@@ -171,23 +171,23 @@
   <data name="MainPageBrowserFilterComboBox.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Browser filtern</value>
   </data>
-  <data name="BrowserPathTextBox.Label" xml:space="preserve">
+  <data name="SettingsPageBrowserPathTextBox.Label" xml:space="preserve">
     <value>Pfad zu einem Chromium Browser</value>
   </data>
-  <data name="BrowserPathTextBox.PlaceholderText" xml:space="preserve">
+  <data name="SettingsPageBrowserPathTextBox.PlaceholderText" xml:space="preserve">
     <value>Browser auswählen</value>
   </data>
   <data name="CancelButton.Content" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
-  <data name="ChangeExtButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="MainPageChangeExtButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Ändern</value>
   </data>
-  <data name="MainPageChangeExtButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Erweiterung ändern</value>
+  <data name="SettingsPageConfirmButton.Content" xml:space="preserve">
+    <value>Speichern</value>
   </data>
-  <data name="ConfirmSettingsButton.Content" xml:space="preserve">
-    <value>Bestätigen</value>
+  <data name="SettingsPageConfirmButton.AccessKey" xml:space="preserve">
+    <value>S</value>
   </data>
   <data name="MainPageCreateExtButton.AccessKey" xml:space="preserve">
     <value>E</value>
@@ -264,14 +264,17 @@
   <data name="ManifestEditPageTitle.Text" xml:space="preserve">
     <value>Manifest bearbeiten</value>
   </data>
-  <data name="ExpertModeToggle.Header" xml:space="preserve">
+  <data name="SettingsPageExpertModeToggle.Header" xml:space="preserve">
     <value>Konfigurationsauswahl</value>
   </data>
-  <data name="ExpertModeToggle.OffContent" xml:space="preserve">
+  <data name="SettingsPageExpertModeToggle.OffContent" xml:space="preserve">
     <value>Einfach</value>
   </data>
-  <data name="ExpertModeToggle.OnContent" xml:space="preserve">
+  <data name="SettingsPageExpertModeToggle.OnContent" xml:space="preserve">
     <value>Erweitert</value>
+  </data>
+  <data name="SettingsPageExpertModeToggle.AccessKey" xml:space="preserve">
+    <value>K</value>
   </data>
   <data name="ExtensionAppXmlTextBox.Header" xml:space="preserve">
     <value>XML-Manifest-Datei</value>
@@ -282,10 +285,10 @@
   <data name="XmlManifestEditPageIdTextBox.Header" xml:space="preserve">
     <value>App-ID</value>
   </data>
-  <data name="ExtensionKeyParameterTextBox.Header" xml:space="preserve">
+  <data name="SettingsPageKeyParameterTextBox.Header" xml:space="preserve">
     <value>Parametername des Erweiterungsschlüssel</value>
   </data>
-  <data name="ExtensionKeyParameterTextBox.PlaceholderText" xml:space="preserve">
+  <data name="SettingsPageKeyParameterTextBox.PlaceholderText" xml:space="preserve">
     <value>Parameternamen eingeben</value>
   </data>
   <data name="ExtensionListPageViewModel1" xml:space="preserve">
@@ -327,10 +330,10 @@ werden gelöscht.</value>
   <data name="ManifestEditPageNameTextBox.AccessKey" xml:space="preserve">
     <value>N</value>
   </data>
-  <data name="ExtensionPathParameterTextBox.Header" xml:space="preserve">
+  <data name="SettingsPageCrxParameterTextBox.Header" xml:space="preserve">
     <value>Parametername des Erweiterungspfads</value>
   </data>
-  <data name="ExtensionPathParameterTextBox.PlaceholderText" xml:space="preserve">
+  <data name="SettingsPageCrxParameterTextBox.PlaceholderText" xml:space="preserve">
     <value>Parameternamen eingeben</value>
   </data>
   <data name="ManifestEditPageShortNameTextBox.Header" xml:space="preserve">
@@ -378,7 +381,7 @@ werden gelöscht.</value>
   <data name="XmlManifestEditPageFinishButton.Content" xml:space="preserve">
     <value>Fertigstellen</value>
   </data>
-  <data name="FirstRunInfo.Text" xml:space="preserve">
+  <data name="SettingsPageFirstRunInfo.Text" xml:space="preserve">
     <value>Die Standardeinstellungen wurden geladen. Bitte konfigurieren Sie die Vorgaben.</value>
   </data>
   <data name="AllPagesGoBackButton.Content" xml:space="preserve">
@@ -417,6 +420,15 @@ werden gelöscht.</value>
   <data name="MainPageAddExtTitleButton.Text" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
+  <data name="MainPageOpenDeployementDirButton.AccessKey" xml:space="preserve">
+    <value>R</value>
+  </data>
+  <data name="MainPageOpenDeployementDirButtonDescription.Text" xml:space="preserve">
+    <value>Im Windows Explorer öffnen</value>
+  </data>
+  <data name="MainPageOpenDeployementDirButtonTitle.Text" xml:space="preserve">
+    <value>Bereitstellung</value>
+  </data>
   <data name="MainPageShowExtButton.AccessKey" xml:space="preserve">
     <value>A</value>
   </data>
@@ -425,6 +437,15 @@ werden gelöscht.</value>
   </data>
   <data name="MainPageShowExtButtonTitle.Text" xml:space="preserve">
     <value>Anzeigen</value>
+  </data>
+  <data name="MainPageOpenBackupDirButton.AccessKey" xml:space="preserve">
+    <value>I</value>
+  </data>
+  <data name="MainPageOpenBackupDirButtonDescription.Text" xml:space="preserve">
+    <value>Im Windows Explorer ansehen</value>
+  </data>
+  <data name="MainPageOpenBackupDirButtonTitle.Text" xml:space="preserve">
+    <value>Sicherung</value>
   </data>
   <data name="MainWindowViewModel2" xml:space="preserve">
     <value>Erstellen</value>
@@ -492,13 +513,13 @@ werden gelöscht.</value>
   <data name="CrxSelectPageUnpackButton.Content" xml:space="preserve">
     <value>Entpacken</value>
   </data>
-  <data name="OutputPathTextBox.Label" xml:space="preserve">
+  <data name="SettingsPageDeployementDirectoryTextBox.Label" xml:space="preserve">
     <value>Ausgabepfad</value>
   </data>
-  <data name="OutputPathTextBox.PlaceholderText" xml:space="preserve">
+  <data name="SettingsPageDeployementDirectoryTextBox.PlaceholderText" xml:space="preserve">
     <value>Verzeichnis auswählen</value>
   </data>
-  <data name="OutputUrlTextBox.Header" xml:space="preserve">
+  <data name="SettingsPageDeployementUrlTextBox.Header" xml:space="preserve">
     <value>URL-Pfad der Erweiterungen</value>
   </data>
   <data name="ManifestEditPagePackButton.Content" xml:space="preserve">
@@ -516,8 +537,8 @@ werden gelöscht.</value>
   <data name="XmlManifestEditPageFinishMessage.Text" xml:space="preserve">
     <value>Führe Nachbearbeitung durch...</value>
   </data>
-  <data name="PrivatKeyTextBox.Header" xml:space="preserve">
-    <value>Name der PEM-Datei (privater Schlüssel)</value>
+  <data name="SettingsPageKeyTextBox.Header" xml:space="preserve">
+    <value>Name der Schlüsseldatei</value>
   </data>
   <data name="AllPagesResetValuesButton.Content" xml:space="preserve">
     <value>Zurücksetzen</value>
@@ -543,7 +564,7 @@ werden gelöscht.</value>
   <data name="SearchFieldTextBox.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Suchbegriff eingeben</value>
   </data>
-  <data name="SettingsTitle.Text" xml:space="preserve">
+  <data name="SettingsPageTitle.Text" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
   <data name="SettingsViewModel1" xml:space="preserve">
@@ -567,10 +588,10 @@ werden gelöscht.</value>
   <data name="VersionText.Text" xml:space="preserve">
     <value>Version: </value>
   </data>
-  <data name="WorkPathTextBox.Label" xml:space="preserve">
+  <data name="SettingsPageWorkDirectoryTextBox.Label" xml:space="preserve">
     <value>Arbeitsverzeichnis (optional)</value>
   </data>
-  <data name="WorkPathTextBox.PlaceholderText" xml:space="preserve">
+  <data name="SettingsPageWorkDirectoryTextBox.PlaceholderText" xml:space="preserve">
     <value>Verzeichnis auswählen</value>
   </data>
   <data name="XmlManifestEditPageTitle.Text" xml:space="preserve">

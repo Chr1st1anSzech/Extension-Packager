@@ -45,9 +45,7 @@
 
         <ScrollViewer
             AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
-            AutomationProperties.LandmarkType="Main"
-            Grid.Row="0"
-            Padding="0">
+            AutomationProperties.LandmarkType="Main">
             <Grid
                 AutomationProperties.AccessibilityView="Raw"
                 Style="{StaticResource BaseGridStyle}">
@@ -86,16 +84,20 @@
                     Visibility="{Binding Path=ErrorOccurred,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
 
                 <controls:PathTextBox
+                    x:Name="CrxFileTextBox"
                     x:Uid="CrxSelectPageCrxFileTextBox"
                     AutomationProperties.IsDataValidForForm="{Binding Path=ViewModel.IsCrxFileValid,ElementName=MyCrxSelectPage}"
+                    AutomationProperties.Name="{Binding ElementName=CrxFileTextBox, Path=Label}"
                     Grid.Row="2"
                     PickerFileTypes=".crx"
                     PickerType="File"
                     Value="{Binding Path=ViewModel.CrxFile,Mode=TwoWay,ElementName=MyCrxSelectPage}" />
 
                 <controls:PathTextBox
+                    x:Name="PrivateKeyFileTextBox"
                     x:Uid="CrxSelectPagePrivateKeyFileTextBox"
                     AutomationProperties.IsDataValidForForm="{Binding Path=ViewModel.IsPrivateKeyFileValid,ElementName=MyCrxSelectPage}"
+                    AutomationProperties.Name="{Binding ElementName=PrivateKeyFileTextBox, Path=Label}"
                     Grid.Row="4"
                     PickerFileTypes=".pem"
                     PickerType="File"

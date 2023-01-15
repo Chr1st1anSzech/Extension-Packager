@@ -177,11 +177,13 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void GoBack(object parameter = null)
         {
+            PageParameter.IsPageBack = true;
             _navigationService.Navigate("CrxSelectPage", PageParameter);
         }
 
         private void GoForward()
         {
+            PageParameter.IsPageBack = false;
             _navigationService.Navigate("XmlManifestPage", PageParameter);
         }
 

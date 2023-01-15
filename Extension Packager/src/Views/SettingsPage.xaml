@@ -26,6 +26,7 @@
     </Page.Resources>
 
     <Grid
+        AutomationProperties.AccessibilityView="Raw"
         Padding="0"
         Style="{StaticResource BaseGridStyle}">
         <Grid.ColumnDefinitions>
@@ -42,12 +43,13 @@
                 Height="auto" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer>
+        <ScrollViewer
+            AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
+            AutomationProperties.LandmarkType="Main">
 
             <Grid
-                Padding="0"
-                Grid.Row="0"
-                Style="{StaticResource BaseGridStyle}">
+                Style="{StaticResource BaseGridStyle}"
+                Padding="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
                         Width="*"
@@ -86,133 +88,130 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock
-                    x:Uid="SettingsTitle"
+                    x:Name="PageTitle"
+                    x:Uid="SettingsPageTitle"
                     AutomationProperties.HeadingLevel="Level2"
                     Grid.Row="0"
                     Style="{StaticResource Header01Style}" />
 
                 <TextBlock
-                    x:Uid="FirstRunInfo"
+                    x:Uid="SettingsPageFirstRunInfo"
                     Grid.Row="1"
-                    MinWidth="300"
-                    MinHeight="32"
                     Style="{StaticResource InfoTextBlockStyle}"
+                    MinHeight="32"
+                    MinWidth="300"
                     TextWrapping="WrapWholeWords"
                     Visibility="{Binding Settings.IsFirstRun,Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 <controls:PathTextBox
-                    x:Uid="BrowserPathTextBox"
                     x:Name="BrowserPathTextBox"
+                    x:Uid="SettingsPageBrowserPathTextBox"
+                    AutomationProperties.Name="{Binding ElementName=BrowserPathTextBox, Path=Label}"
                     Grid.Row="2"
+                    PickerFileTypes=".exe"
                     PickerType="File"
-                    Value="{Binding Path=ViewModel.Settings.BrowserPath,Mode=TwoWay,ElementName=MySettingsPage}"
-                    PickerFileTypes=".exe" />
+                    Value="{Binding Path=ViewModel.Settings.BrowserPath,Mode=TwoWay,ElementName=MySettingsPage}" />
 
                 <TextBox
-                    x:Uid="OutputUrlTextBox"
-                    x:Name="OutputUrlTextBox"
+                    x:Uid="SettingsPageDeployementUrlTextBox"
                     Grid.Row="3"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
-                    Text="{Binding Path=Settings.OutputURL,Mode=TwoWay}"
-                    Style="{StaticResource TextboxWithHeaderStyle}" />
+                    Text="{Binding Path=Settings.OutputURL,Mode=TwoWay}" />
 
                 <controls:PathTextBox
-                    x:Uid="BackupPathTextBox"
+                    x:Name="BackupDirectoryTextBox"
+                    x:Uid="SettingsPageBackupDirectoryTextBox"
+                    AutomationProperties.Name="{Binding ElementName=BackupDirectoryTextBox, Path=Label}"
                     Grid.Row="4"
+                    PickerFileTypes="*"
                     PickerType="Folder"
-                    Value="{Binding Path=ViewModel.Settings.BackupDirectory,Mode=TwoWay,ElementName=MySettingsPage}"
-                    PickerFileTypes="*" />
+                    Value="{Binding Path=ViewModel.Settings.BackupDirectory,Mode=TwoWay,ElementName=MySettingsPage}" />
 
                 <controls:PathTextBox
-                    x:Uid="OutputPathTextBox"
+                    x:Name="DeployementDirectoryTextBox"
+                    x:Uid="SettingsPageDeployementDirectoryTextBox"
+                    AutomationProperties.Name="{Binding ElementName=DeployementDirectoryTextBox, Path=Label}"
                     Grid.Row="5"
+                    PickerFileTypes="*"
                     PickerType="Folder"
-                    Value="{Binding Path=ViewModel.Settings.OutputPath,Mode=TwoWay,ElementName=MySettingsPage}"
-                    PickerFileTypes="*" />
+                    Value="{Binding Path=ViewModel.Settings.OutputPath,Mode=TwoWay,ElementName=MySettingsPage}" />
 
-                
-                
+
                 <TextBlock
-                    x:Uid="AdvancedSettingsTitle"
+                    x:Uid="SettingsPageAdvancedSettingsTitle"
                     Grid.Row="6"
                     Style="{StaticResource Header02Style}" />
 
                 <TextBox
-                    x:Uid="ExtensionPathParameterTextBox"
-                    x:Name="ExtensionPathParameterTextBox"
+                    x:Uid="SettingsPageCrxParameterTextBox"
                     Grid.Row="7"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
                     IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
-                    Text="{Binding Path=Settings.ExtensionPathParameter,Mode=TwoWay}"
-                    Style="{StaticResource TextboxWithHeaderStyle}" />
+                    Text="{Binding Path=Settings.ExtensionPathParameter,Mode=TwoWay}" />
 
                 <TextBox
-                    x:Uid="ExtensionKeyParameterTextBox"
+                    x:Uid="SettingsPageKeyParameterTextBox"
                     Grid.Row="8"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
                     IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
-                    Text="{Binding Path=Settings.ExtensionKeyParameter,Mode=TwoWay}"
-                    Style="{StaticResource TextboxWithHeaderStyle}" />
+                    Text="{Binding Path=Settings.ExtensionKeyParameter,Mode=TwoWay}" />
 
                 <TextBox
-                    x:Uid="AppXmlTextBox"
+                    x:Uid="SettingsPageXmlManifestTextBox"
                     Grid.Row="9"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
                     IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
-                    Text="{Binding Path=Settings.XmlManifestName,Mode=TwoWay}"
-                    Style="{StaticResource TextboxWithHeaderStyle}" />
+                    Text="{Binding Path=Settings.XmlManifestName,Mode=TwoWay}" />
 
                 <TextBox
-                    x:Uid="AppCrxTextBox"
+                    x:Uid="SettingsPageAppCrxTextBox"
                     Grid.Row="10"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
                     IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
-                    Text="{Binding Path=Settings.CrxName,Mode=TwoWay}"
-                    Style="{StaticResource TextboxWithHeaderStyle}" />
+                    Text="{Binding Path=Settings.CrxName,Mode=TwoWay}" />
 
                 <TextBox
-                    x:Uid="PrivatKeyTextBox"
+                    x:Uid="SettingsPageKeyTextBox"
                     Grid.Row="11"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
                     IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
-                    Text="{Binding Path=Settings.PrivateKeyName,Mode=TwoWay}"
-                    Style="{StaticResource TextboxWithHeaderStyle}" />
+                    Text="{Binding Path=Settings.PrivateKeyName,Mode=TwoWay}" />
 
                 <controls:PathTextBox
-                    x:Uid="WorkPathTextBox"
+                    x:Name="WorkDirectoryTextBox"
+                    x:Uid="SettingsPageWorkDirectoryTextBox"
+                    AutomationProperties.Name="{Binding ElementName=WorkDirectoryTextBox, Path=Label}"
                     Grid.Row="12"
+                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
+                    PickerFileTypes="*"
                     PickerType="Folder"
-                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
-                    Value="{Binding Path=ViewModel.Settings.WorkingAreaPath,Mode=TwoWay,ElementName=MySettingsPage}"
-                    PickerFileTypes="*" />
-
-                <CheckBox
-                    x:Uid="UseShortnameCheckbox"
-                    Grid.Row="13"
-                    HorizontalAlignment="Stretch"
-                    IsEnabled="{Binding ElementName=ExpertModeToggle,Path=IsOn}"
-                    IsChecked="{Binding Path=Settings.UseShortNameAsDirectoryName,Mode=TwoWay}"/>
+                    Value="{Binding Path=ViewModel.Settings.WorkingAreaPath,Mode=TwoWay,ElementName=MySettingsPage}" />
 
             </Grid>
 
         </ScrollViewer>
- 
+
         <StackPanel
             Grid.Column="1"
             Style="{StaticResource BaseStackPanelStyle}">
             <ToggleSwitch
+                x:Name="ExpertModeToggle"
+                x:Uid="SettingsPageExpertModeToggle"
                 Grid.Column="1"
-                Margin="0,12,0,0"
                 FontSize="12"
                 FontFamily="Segoe UI"
-                x:Uid="ExpertModeToggle"
-                x:Name="ExpertModeToggle"
-                IsOn="False" />
+                IsOn="False"
+                Margin="0,12,0,0" />
         </StackPanel>
 
         <Button
-            x:Uid="ConfirmSettingsButton"
-            x:Name="ConfirmSettingsButton"
+            x:Uid="SettingsPageConfirmButton"
             Grid.Row="1"
             HorizontalAlignment="Right"
             Command="{Binding ConfirmSettingsCommand}"

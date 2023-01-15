@@ -64,78 +64,199 @@
                 AutomationProperties.HeadingLevel="Level3"
                 Grid.ColumnSpan="2"
                 Style="{StaticResource Header02Style}" />
+            
             <Button
                 x:Uid="MainPageShowExtButton"
                 AutomationProperties.LabeledBy="{Binding ElementName=ShowExtButtonDescription}"
                 Command="{Binding ShowCommand}"
                 Style="{StaticResource HighlightedButtonStyle}"
                 HorizontalContentAlignment="Left"
-                Width="250"
+                Width="280"
                 Margin="0,12,0,12"
-                Padding="12"
+                Padding="0,12,12,12"
                 CornerRadius="2">
-                <StackPanel>
-                    <TextBlock
-                        x:Uid="MainPageShowExtButtonTitle"
-                        AutomationProperties.AccessibilityView="Raw"
-                        FontWeight="SemiBold"
-                        FontSize="16" />
-                    <TextBlock
-                        x:Name="ShowExtButtonDescription"
-                        x:Uid="MainPageShowExtButtonDescription"
-                        AutomationProperties.AccessibilityView="Raw"
-                        Margin="0,2,0,0"
-                        FontSize="10" />
-                </StackPanel>
+                <Grid
+                    AutomationProperties.AccessibilityView="Raw">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="50" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xE71D;" />
+                    <StackPanel
+                        Grid.Column="1">
+                        <TextBlock
+                            x:Uid="MainPageShowExtButtonTitle"
+                            AutomationProperties.AccessibilityView="Raw"
+                            FontWeight="SemiBold"
+                            FontSize="16" />
+                        <TextBlock
+                            x:Name="ShowExtButtonDescription"
+                            x:Uid="MainPageShowExtButtonDescription"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Margin="0,2,0,0"
+                            FontSize="10" />
+                    </StackPanel>
+                </Grid>
             </Button>
+            
             <Button
                 x:Uid="MainPageCreateExtButton"
                 AutomationProperties.LabeledBy="{Binding ElementName=CreateExtButtonDescription}"
                 Command="{Binding CreateCommand}"
                 Style="{StaticResource HighlightedButtonStyle}"
                 HorizontalContentAlignment="Left"
-                Width="250"
+                Width="280"
                 Margin="0,12,0,12"
-                Padding="12"
+                Padding="0,12,12,12"
                 CornerRadius="2">
-                <StackPanel>
-                    <TextBlock
-                        x:Uid="MainPageCreateExtButtonTitle"
-                        AutomationProperties.AccessibilityView="Raw"
-                        FontWeight="SemiBold"
-                        FontSize="16" />
-                    <TextBlock
-                        x:Name="CreateExtButtonDescription"
-                        x:Uid="MainPageCreateExtButtonDescription"
-                        AutomationProperties.AccessibilityView="Raw"
-                        Margin="0,2,0,0"
-                        FontSize="10" />
-                </StackPanel>
+                <Grid
+                    AutomationProperties.AccessibilityView="Raw">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="50" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xE7C3;" />
+                    <StackPanel
+                        Grid.Column="1">
+                        <TextBlock
+                            x:Uid="MainPageCreateExtButtonTitle"
+                            AutomationProperties.AccessibilityView="Raw"
+                            FontWeight="SemiBold"
+                            FontSize="16" />
+                        <TextBlock
+                            x:Name="CreateExtButtonDescription"
+                            x:Uid="MainPageCreateExtButtonDescription"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Margin="0,2,0,0"
+                            FontSize="10" />
+                    </StackPanel>
+                </Grid>
             </Button>
+            
             <Button
                 x:Uid="MainPageAddExtButton"
                 AutomationProperties.LabeledBy="{Binding ElementName=AddExtDescriptionButton}"
                 Command="{Binding AddCommand}"
                 Style="{StaticResource HighlightedButtonStyle}"
                 HorizontalContentAlignment="Left"
-                Width="250"
+                Width="280"
                 Margin="0,12,0,12"
-                Padding="12"
+                Padding="0,12,12,12"
                 CornerRadius="2">
-                <StackPanel>
-                    <TextBlock
-                        x:Uid="MainPageAddExtTitleButton"
-                        AutomationProperties.AccessibilityView="Raw"
-                        FontWeight="SemiBold"
-                        FontSize="16" />
-                    <TextBlock
-                        x:Name="AddExtDescriptionButton"
-                        x:Uid="MainPageAddExtDescriptionButton"
-                        AutomationProperties.AccessibilityView="Raw"
-                        Margin="0,2,0,0"
-                        FontSize="10" />
-                </StackPanel>
+                <Grid
+                    AutomationProperties.AccessibilityView="Raw">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="50" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xE8E5;" />
+                    <StackPanel
+                        Grid.Column="1">
+                        <TextBlock
+                            x:Uid="MainPageAddExtTitleButton"
+                            AutomationProperties.AccessibilityView="Raw"
+                            FontWeight="SemiBold"
+                            FontSize="16" />
+                        <TextBlock
+                            x:Name="AddExtDescriptionButton"
+                            x:Uid="MainPageAddExtDescriptionButton"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Margin="0,2,0,0"
+                            FontSize="10" />
+                    </StackPanel>
+                </Grid>
             </Button>
+
+            <Button
+                x:Uid="MainPageOpenDeployementDirButton"
+                AutomationProperties.LabeledBy="{Binding ElementName=OpenDeployementDirButtonDescription}"
+                Command="{Binding OpenFolderCommand}"
+                CommandParameter="Deployement"
+                Style="{StaticResource HighlightedButtonStyle}"
+                HorizontalContentAlignment="Left"
+                Width="280"
+                Margin="0,12,0,12"
+                Padding="0,12,12,12"
+                CornerRadius="2">
+                <Grid
+                    AutomationProperties.AccessibilityView="Raw">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="50" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xE838;" />
+                    <StackPanel
+                        Grid.Column="1">
+                        <TextBlock
+                            x:Uid="MainPageOpenDeployementDirButtonTitle"
+                            AutomationProperties.AccessibilityView="Raw"
+                            FontWeight="SemiBold"
+                            FontSize="16" />
+                        <TextBlock
+                            x:Name="OpenDeployementDirButtonDescription"
+                            x:Uid="MainPageOpenDeployementDirButtonDescription"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Margin="0,2,0,0"
+                            FontSize="10" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <Button
+                x:Uid="MainPageOpenBackupDirButton"
+                AutomationProperties.LabeledBy="{Binding ElementName=OpenBackupDirButtonDescription}"
+                Command="{Binding OpenFolderCommand}"
+                CommandParameter="Backup"
+                Style="{StaticResource HighlightedButtonStyle}"
+                HorizontalContentAlignment="Left"
+                Width="280"
+                Margin="0,12,0,12"
+                Padding="0,12,12,12"
+                CornerRadius="2">
+                <Grid
+                    AutomationProperties.AccessibilityView="Raw">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="50" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xE838;" />
+                    <StackPanel
+                        Grid.Column="1">
+                        <TextBlock
+                            x:Uid="MainPageOpenBackupDirButtonTitle"
+                            AutomationProperties.AccessibilityView="Raw"
+                            FontWeight="SemiBold"
+                            FontSize="16" />
+                        <TextBlock
+                            x:Name="OpenBackupDirButtonDescription"
+                            x:Uid="MainPageOpenBackupDirButtonDescription"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Margin="0,2,0,0"
+                            FontSize="10" />
+                    </StackPanel>
+                </Grid>
+            </Button>
+            
         </StackPanel>
 
         <Line
@@ -241,25 +362,22 @@
                                     <TextBlock
                                         x:Uid="MainPageExtTitle"
                                         Grid.Column="0"
-                                        FontWeight="SemiBold" 
-                                        Text="{Binding Path=Name}"
-                                        />
+                                        FontWeight="SemiBold"
+                                        Text="{Binding Path=Name}" />
                                     <TextBlock
                                         x:Uid="MainPageExtId"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="5"
                                         Grid.Row="1"
-                                        FontSize="10" 
+                                        FontSize="10"
                                         Foreground="#d1d1d1"
                                         Margin="0,8,0,0"
-                                        Text="{Binding Path=Id}"
-                                        />
+                                        Text="{Binding Path=Id}" />
                                     <TextBlock
                                         AutomationProperties.AccessibilityView="Raw"
                                         Grid.Column="1"
-                                        Margin="6,0" 
-                                        Text="-"
-                                        />
+                                        Margin="6,0"
+                                        Text="-" />
                                     <TextBlock
                                         x:Uid="MainPageExtVersion"
                                         Grid.Column="2"
@@ -267,11 +385,10 @@
                                     <TextBlock
                                         x:Uid="MainPageExtUpdate"
                                         Grid.Column="3"
-                                        FontSize="10" 
+                                        FontSize="10"
                                         Foreground="#d1d1d1"
                                         Text="{Binding Path=UpdateDate}"
-                                        VerticalAlignment="Bottom"
-                                        />
+                                        VerticalAlignment="Bottom" />
 
                                 </Grid>
                             </Button>
