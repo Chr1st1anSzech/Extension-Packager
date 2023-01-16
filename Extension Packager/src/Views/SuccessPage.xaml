@@ -19,10 +19,11 @@
     </Page.DataContext>
 
     <Grid
-        Padding="0"
-        HorizontalAlignment="Stretch"
         x:Name="MainGrid"
-        Style="{StaticResource BaseGridStyle}">
+        AutomationProperties.AccessibilityView="Raw"
+        Style="{StaticResource BaseGridStyle}"
+        HorizontalAlignment="Stretch"
+        Padding="0">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="*" />
@@ -31,8 +32,8 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer
-            Padding="0"
-            Grid.Row="0">
+            AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
+            AutomationProperties.LandmarkType="Main">
             <Grid
                 Style="{StaticResource BaseGridStyle}">
                 <Grid.ColumnDefinitions>
@@ -51,41 +52,42 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock
+                    x:Name="PageTitle"
+                    x:Uid="SuccessPageTitle"
                     Grid.Row="0"
                     AutomationProperties.HeadingLevel="Level2"
-                    x:Uid="SuccessTitle"
                     Style="{StaticResource Header01Style}" />
 
                 <TextBox
-                    x:Uid="PolicyStringTextBox"
+                    x:Uid="SuccessPagePolicyStringTextBox"
                     AutomationProperties.IsRequiredForForm="True"
-                    AutomationProperties.AccessKey="I"
                     Grid.Row="1"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
                     HorizontalAlignment="Stretch"
                     IsReadOnly="True"
-                    Style="{StaticResource TextboxWithHeaderStyle}"
                     Text="{Binding Path=PolicyString, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </ScrollViewer>
 
         <StackPanel
-            Style="{StaticResource BaseStackPanelStyle}"
+            AutomationProperties.LandmarkType="Navigation"
             Grid.Row="1"
-            Spacing="24"
+            Style="{StaticResource BaseStackPanelStyle}"
+            HorizontalAlignment="Right"
             Orientation="Horizontal"
-            HorizontalAlignment="Right">
+            Spacing="24">
 
             <Button
-                x:Uid="NewExtensionButton"
-                Width="96"
+                x:Uid="SuccessPageNewExtensionButton"
                 Command="{Binding Path=NewExtensionCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="96" />
 
             <Button
-                x:Uid="BackToStartpageButton"
-                Width="96"
+                x:Uid="SuccessPageBackToStartpageButton"
                 Command="{Binding Path=BackToStartpageCommand}"
-                Style="{StaticResource HighlightedButtonStyle}" />
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="96" />
 
         </StackPanel>
 

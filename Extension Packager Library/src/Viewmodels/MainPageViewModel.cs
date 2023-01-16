@@ -127,7 +127,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                 IExtensionStorage storage = new DatabaseStorage();
                 PageParameter param = new()
                 {
-                    Extension = storage.Get(id),
+                    Extension = storage.GetById(id),
                     IsUpdate = true
                 };
                 _navigationService.Navigate("CrxSelectPage", param);
@@ -168,17 +168,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                     directory = settings.BackupDirectory; ;
                 }
 
-                if (directory == null) return;
-
-                try
-                {
-
-                    Process.Start("explorer.exe", directory);
-                }
-                catch (Exception exception)
-                {
-                    _log.Warn(StringResources.Get(this, 1, directory), exception);
-                }
+                FileHelper.OpenDirectory(directory);
             }
         }
     }

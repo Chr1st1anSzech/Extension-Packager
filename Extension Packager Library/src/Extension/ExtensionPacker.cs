@@ -35,7 +35,7 @@ namespace Extension_Packager_Library.src.Extension
             string privateKeyParameter = (string.IsNullOrWhiteSpace(keyParam)
                 || string.IsNullOrWhiteSpace(keyPath)) ? "" : $"{keyParam}=\"{keyPath}\"";
 
-            Process p = new();
+            using Process p = new();
             p.StartInfo.FileName = browserPath;
             p.StartInfo.Arguments = $"{pathParam}=\"{extensionPath}\" {privateKeyParameter}";
             p.StartInfo.UseShellExecute = false;

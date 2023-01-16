@@ -61,8 +61,25 @@ namespace Extension_Packager_Library.src.Database
         /// </summary>
         /// <param name="id">The ID of the extension that is being requested.</param>
         /// <returns>The extension with the passed ID.</returns>
-        public DataModels.Extension Get(string id);
+        public DataModels.Extension GetById(string id);
 
+
+
+        /// <summary>
+        /// Queries an extension with the passed shortname.
+        /// </summary>
+        /// <param name="shortname">The shortname of the extensions that is being requested.</param>
+        /// <returns>The extensions with the passed shortname.</returns>
+        public int GetCountByShortname(string shortname);
+
+
+
+        /// <summary>
+        /// Queries an extension with the passed id.
+        /// </summary>
+        /// <param name="id">The id of the extensions that is being requested.</param>
+        /// <returns>The extensions with the passed id.</returns>
+        public int GetCountById(string id);
 
         /// <summary>
         /// Deletes the extension with the passed ID from the storage.

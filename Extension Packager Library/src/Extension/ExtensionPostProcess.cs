@@ -21,6 +21,8 @@ namespace Extension_Packager_Library.src.Extension
 
         internal void CopyFile(string destinationFile, string sourceFile)
         {
+            if (destinationFile.Equals(sourceFile)) return;
+
             _log.Debug($"Copy the CRX file \"{sourceFile}\" to destination \"{destinationFile}\".");
 
             if (File.Exists(destinationFile) && !_isUpdate)

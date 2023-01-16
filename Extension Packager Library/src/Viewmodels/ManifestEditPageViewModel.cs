@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Christian Szech
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Extension_Packager_Library.src.Database;
 using Extension_Packager_Library.src.DataModels;
 using Extension_Packager_Library.src.Extension;
 using Extension_Packager_Library.src.Formatter;
@@ -193,9 +194,9 @@ namespace Extension_Packager_Library.src.Viewmodels
             try
             {
                 File.Delete(PageParameter.Extension.TmpPackedCrxFile);
-                if (PageParameter.Extension.TmpPrivateKeyFile != null)
+                if (PageParameter.Extension.PrivateKeyFile != null)
                 {
-                    File.Delete(PageParameter.Extension.TmpPrivateKeyFile);
+                    File.Delete(PageParameter.Extension.PrivateKeyFile);
                 }
             }
             catch (Exception exception)
@@ -239,10 +240,10 @@ namespace Extension_Packager_Library.src.Viewmodels
             {
                 string tmpPrivateKeyFile = FindPrivateKeyFile(PageParameter.Extension.ExtensionWorkingDirectory);
                 if (tmpPrivateKeyFile == null) return;
-                PageParameter.Extension.TmpPrivateKeyFile = tmpPrivateKeyFile;
+                PageParameter.Extension.PrivateKeyFile = tmpPrivateKeyFile;
             }
 
-            string appId = PageParameter.Extension.Id ?? ExtractAppId(PageParameter.Extension.TmpPackedCrxFile);
+            string appId = PageParameter.Extension.Id ?? ExtractAppId(PageParameter.Extension.PrivateKeyFile);
             if (appId == null) return;
             PageParameter.Extension.Id = appId;
 
@@ -272,10 +273,26 @@ namespace Extension_Packager_Library.src.Viewmodels
                 return false;
             }
 
+            if(IsDuplicateShortname())
+            {
+                IsShortNameValid = false;
+                IsBusy = false;
+                ErrorMessage = StringResources.Get(this, 10);
+                ErrorOccured = true;
+                return false;
+            }
+
             IsNameValid = true;
             IsShortNameValid = true;
             ErrorOccured = false;
             return true;
+        }
+
+        private bool IsDuplicateShortname()
+        {
+            IExtensionStorage storage = new DatabaseStorage();
+            int count = storage.GetCountByShortname(ShortName);
+            return count > 0;
         }
 
 
@@ -351,8 +368,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private string FindPrivateKeyFile(string searchDirectory)
         {
-            FileFinder fileFinder = new();
-            string[] files = fileFinder.FindFiles(searchDirectory, ".pem");
+            string[] files = FileHelper.FindFiles(searchDirectory, ".pem");
 
             if (files.Length != 1)
             {
@@ -366,17 +382,17 @@ namespace Extension_Packager_Library.src.Viewmodels
         }
 
 
-        private string ExtractAppId(string outputPath)
+        private string ExtractAppId(string privateKeyFile)
         {
-            if (string.IsNullOrWhiteSpace(outputPath))
+            if (string.IsNullOrWhiteSpace(privateKeyFile))
             {
-                throw new ArgumentException($"\"{nameof(outputPath)}\" should not be NULL or whitespace.", nameof(outputPath));
+                throw new ArgumentException($"\"{nameof(privateKeyFile)}\" should not be NULL or whitespace.", nameof(privateKeyFile));
             }
 
             IAppIdReader appIdReader = new AppIdReader();
             try
             {
-                return appIdReader.GetAppId(outputPath);
+                return appIdReader.GetAppIdByPrivateKey(privateKeyFile);
             }
             catch (Exception ex)
             {

@@ -31,13 +31,13 @@ namespace Extension_Packager_Library.src.Extension
 
             string backupDirectory = CreateExtensionDirectory(infos.BackupDirectory, infos.Name);
 
-            string xmlManifestFile = await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, backupDirectory);
+            await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, backupDirectory);
 
             string crxFile = Path.Combine(backupDirectory, infos.CrxName);
             CopyFile(crxFile, infos.CrxPath);
 
             string privateKeyFile = Path.Combine(backupDirectory, infos.PrivateKeyName);
-            if (File.Exists(infos.TmpPrivateKeyPath))
+            if (!_isUpdate && File.Exists(infos.TmpPrivateKeyPath))
             {
                 CopyFile(privateKeyFile, infos.TmpPrivateKeyPath);
             }

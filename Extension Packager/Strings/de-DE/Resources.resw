@@ -147,8 +147,11 @@
   <data name="SettingsPageXmlManifestTextBox.Header" xml:space="preserve">
     <value>Name der XML-Manifest-Datei</value>
   </data>
-  <data name="BackToStartpageButton.Content" xml:space="preserve">
+  <data name="SuccessPageBackToStartpageButton.Content" xml:space="preserve">
     <value>Startseite</value>
+  </data>
+  <data name="SuccessPageBackToStartpageButton.AccessKey" xml:space="preserve">
+    <value>S</value>
   </data>
   <data name="SettingsPageBackupDirectoryTextBox.Label" xml:space="preserve">
     <value>Sicherungsverzeichnis (privater Schlüssel)</value>
@@ -202,7 +205,7 @@
     <value>Erstellen</value>
   </data>
   <data name="CrxSelectPageTitle.Text" xml:space="preserve">
-    <value>Neue Erweiterung erstellen/hinzufügen</value>
+    <value>Erweiterung auswählen</value>
   </data>
   <data name="CrxSelectPageAdditionInfoDescription.Text" xml:space="preserve">
     <value>Beim Hinzufügen wird die CRX neu verpackt und die Schlüsseldatei ins festgelegte Sicherungsverzeichnis kopiert.</value>
@@ -245,6 +248,9 @@
   </data>
   <data name="CrxSelectPageViewModel7" xml:space="preserve">
     <value>Es wurde keine Schlüsseldatei ausgewählt oder die ausgewählte Datei wurde nicht gefunden.</value>
+  </data>
+  <data name="CrxSelectPageViewModel8" xml:space="preserve">
+    <value>Es gibt bereits eine Erweiterung mit derselben ID "{0}". Wählen Sie eine andere Schlüsseldatei oder aktualisieren Sie die vorhandene Erweiterung.</value>
   </data>
   <data name="CrxSelectPagePrivateKeyFileTextBox.Label" xml:space="preserve">
     <value>Schlüsseldatei</value>
@@ -366,13 +372,13 @@ werden gelöscht.</value>
   <data name="PathTextBoxFileDialogButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Datei auswählen</value>
   </data>
-  <data name="FileFinder1" xml:space="preserve">
+  <data name="FileHelper1" xml:space="preserve">
     <value>Der Verzeichnispfad "{0}" ist ungültig oder das Verzeichnis existiert nicht.</value>
   </data>
-  <data name="FileFinder2" xml:space="preserve">
+  <data name="FileHelper2" xml:space="preserve">
     <value>Die gesuchte Dateierweiterung darf nicht leer sein und keine ungültigen Zeichen enthalten.</value>
   </data>
-  <data name="FileFinder3" xml:space="preserve">
+  <data name="FileHelper3" xml:space="preserve">
     <value>Es konnten aufgrund eines Fehler keine Dateien gefunden werden.</value>
   </data>
   <data name="FinishAddExtButton.Content" xml:space="preserve">
@@ -386,6 +392,12 @@ werden gelöscht.</value>
   </data>
   <data name="AllPagesGoBackButton.Content" xml:space="preserve">
     <value>Zurück</value>
+  </data>
+  <data name="CrxSelectPageGoBackButton.Content" xml:space="preserve">
+    <value>Startseite</value>
+  </data>
+  <data name="CrxSelectPageGoBackButton.AccessKey" xml:space="preserve">
+    <value>S</value>
   </data>
   <data name="ImprintTitle.Text" xml:space="preserve">
     <value>Impressum und Info</value>
@@ -477,6 +489,9 @@ werden gelöscht.</value>
   <data name="ManifestEditPageViewModel9" xml:space="preserve">
     <value>Die CRX Datei oder Schlüsseldatei konnten nicht gelöscht werden.</value>
   </data>
+  <data name="ManifestEditPageViewModel10" xml:space="preserve">
+    <value>Es existiert bereits eine Erweiterung unter diesem Kurznamen. Wählen Sie einen abweichenden Kurznamen aus.</value>
+  </data>
   <data name="ManifestEditPageManifestGroupTitle.Text" xml:space="preserve">
     <value>Manifestvorschau</value>
   </data>
@@ -504,8 +519,11 @@ werden gelöscht.</value>
   <data name="MyTitleBar.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Titelleiste</value>
   </data>
-  <data name="NewExtensionButton.Content" xml:space="preserve">
+  <data name="SuccessPageNewExtensionButton.Content" xml:space="preserve">
     <value>Erstellen</value>
+  </data>
+  <data name="SuccessPageNewExtensionButton.AccessKey" xml:space="preserve">
+    <value>E</value>
   </data>
   <data name="NextStepButton.Content" xml:space="preserve">
     <value>Weiter</value>
@@ -531,8 +549,11 @@ werden gelöscht.</value>
   <data name="ManifestEditPagePackMessage.Text" xml:space="preserve">
     <value>Packe Erweiterung...</value>
   </data>
-  <data name="PolicyStringTextBox.Header" xml:space="preserve">
+  <data name="SuccessPagePolicyStringTextBox.Header" xml:space="preserve">
     <value>Verwenden Sie diesen Wert in einer Gruppenrichtlinie, um die Erweiterung zu installieren</value>
+  </data>
+  <data name="SuccessPagePolicyStringTextBox.AccessKey" xml:space="preserve">
+    <value>P</value>
   </data>
   <data name="XmlManifestEditPageFinishMessage.Text" xml:space="preserve">
     <value>Führe Nachbearbeitung durch...</value>
@@ -579,7 +600,7 @@ werden gelöscht.</value>
   <data name="MainPageTitle.Text" xml:space="preserve">
     <value>Startseite</value>
   </data>
-  <data name="SuccessTitle.Text" xml:space="preserve">
+  <data name="SuccessPageTitle.Text" xml:space="preserve">
     <value>Fertig!</value>
   </data>
   <data name="UseShortnameCheckbox.Content" xml:space="preserve">
@@ -642,6 +663,9 @@ werden gelöscht.</value>
   <data name="ExtensionListPageCreateButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Erstellen</value>
   </data>
+  <data name="ExtensionListPageCreateButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
   <data name="ExtensionListPageAddButton.Name" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
@@ -649,6 +673,9 @@ werden gelöscht.</value>
     <value>H</value>
   </data>
   <data name="ExtensionListPageAddButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="ExtensionListPageAddButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
   <data name="ExtensionListPageDeleteButton.Name" xml:space="preserve">
@@ -660,6 +687,9 @@ werden gelöscht.</value>
   <data name="ExtensionListPageDeleteButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="ExtensionListPageDeleteButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
   <data name="ExtensionListPageChangeButton.Name" xml:space="preserve">
     <value>Aktualisieren</value>
   </data>
@@ -667,6 +697,9 @@ werden gelöscht.</value>
     <value>A</value>
   </data>
   <data name="ExtensionListPageChangeButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="ExtensionListPageChangeButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Aktualisieren</value>
   </data>
   <data name="ExtensionListPageExtensionTitle.Name" xml:space="preserve">
@@ -677,5 +710,26 @@ werden gelöscht.</value>
   </data>
   <data name="ExtensionListPageExtensionVersion.Name" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="FileHelper4" xml:space="preserve">
+    <value>Das Verzeichnis {0} konnte nicht geöffnet werdne</value>
+  </data>
+  <data name="ExtensionListPageOpenDeployementDirButton.AccessKey" xml:space="preserve">
+    <value>R</value>
+  </data>
+  <data name="ExtensionListPageOpenDeployementDirButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Bereitstellung im Explorer öffnen</value>
+  </data>
+  <data name="ExtensionListPageOpenDeployementDirButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Bereitstellung im Explorer öffnen</value>
+  </data>
+  <data name="ExtensionListPageOpenBackupDirButton.AccessKey" xml:space="preserve">
+    <value>I</value>
+  </data>
+  <data name="ExtensionListPageOpenBackupDirButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Sicherung im Explorer öffnen</value>
+  </data>
+  <data name="ExtensionListPageOpenBackupDirButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Sicherung im Explorer öffnen</value>
   </data>
 </root>

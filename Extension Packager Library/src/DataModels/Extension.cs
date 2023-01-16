@@ -60,16 +60,11 @@ namespace Extension_Packager_Library.src.DataModels
         /// </summary>
         public string TmpPackedCrxFile { get; set; }
 
-        /// <summary>
-        /// Path to the key file in the backup directory.
-        /// </summary>
-        public string PrivateKeyFile { get; set; }
-
 
         /// <summary>
         /// Path to the temporary key file.
         /// </summary>
-        public string TmpPrivateKeyFile { get; set; }
+        public string PrivateKeyFile { get; set; }
 
 
         /// <summary>

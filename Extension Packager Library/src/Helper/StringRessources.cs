@@ -13,9 +13,19 @@ namespace Extension_Packager_Library.src.Helper
             {
                 throw new ArgumentNullException(nameof(callingClass));
             }
+
+            return Get(callingClass.GetType().Name, number, parameters);
+        }
+
+        public static string Get(string callingClassName, int number, params object[] parameters)
+        {
+            if (callingClassName is null)
+            {
+                throw new ArgumentNullException(nameof(callingClassName));
+            }
             var resourceContext = new Windows.ApplicationModel.Resources.Core.ResourceContext();
             var resourceMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap.GetSubtree("Resources");
-            string id = $"{callingClass.GetType().Name}{number}";
+            string id = $"{callingClassName}{number}";
             var txt = resourceMap.GetValue(id, resourceContext)?.ValueAsString ?? "";
             if (parameters != null)
             {

@@ -15,131 +15,27 @@ namespace Extension_Packager_Library.src.Extension
 {
     public interface IAppIdReader
     {
-        public string GetAppId(string crxPath);
+        public string GetAppIdByPrivateKey(string privateKeyFile);
     }
 
     public class AppIdReader : IAppIdReader
     {
-        public string GetAppId(string crxPath)
+        public string GetAppIdByPrivateKey(string privateKeyFile)
         {
-            if (!File.Exists(crxPath)) return null;
+            if (!File.Exists(privateKeyFile)) return null;
 
-            byte[] buf = File.ReadAllBytes(crxPath);
-            CrxInfo crx = new(buf);
+            string privateKeyBase64 = File.ReadAllText(privateKeyFile);
+            privateKeyBase64 = privateKeyBase64.Replace("-----BEGIN PRIVATE KEY-----", "");
+            privateKeyBase64 = privateKeyBase64.Replace("-----END PRIVATE KEY-----", "");
 
-            byte[] key = FindPublicKey(crx.PublicKey);
+            RSA rsa = RSA.Create();
+            rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(privateKeyBase64), out _);
 
-            string hashStr = ComputeHash(key);
+            byte[] publicKey = rsa.ExportSubjectPublicKeyInfo();
+
+            string hashStr = ComputeHash(publicKey);
 
             return ComputeAppId(hashStr);
-        }
-
-        private byte[] FindPublicKey(byte[] publicKey)
-        {
-            List<byte[]> publicKeys = new();
-            byte[] crxIdBin = Array.Empty<byte>();
-            for (int i = 0; i < publicKey.Length;)
-            {
-                int key = GetVarInt(publicKey, ref i);
-                int length = GetVarInt(publicKey, ref i);
-
-                if (key == 80002)
-                {
-                    int sigdatakey = GetVarInt(publicKey, ref i);
-                    int sigdatalen = GetVarInt(publicKey, ref i);
-                    if (sigdatakey != 0xA)
-                    {
-                        //throw new ArgumentException("proto: Unexpected key in signed_header_data: " + sigdatakey);
-                    }
-                    else if (sigdatalen != 16)
-                    {
-                        //throw new ArgumentException("proto: Unexpected signed_header_data length " + length);
-                    }
-                    else if (crxIdBin.Length != 0)
-                    {
-                        //throw new ArgumentException("proto: Unexpected duplicate signed_header_data");
-                    }
-                    else
-                    {
-                        crxIdBin = publicKey.Skip(i).Take(16).ToArray();
-                    }
-                    i += sigdatalen;
-                    continue;
-                }
-                if (key != 0x12)
-                {
-                    if (key != 0x1a)
-                    {
-                        //throw new ArgumentException("proto: Unexpected key: " + key);
-                    }
-                    i += length;
-                    continue;
-                }
-
-                var keyproofend = i + length;
-                var keyproofkey = GetVarInt(publicKey, ref i);
-                var keyprooflength = GetVarInt(publicKey, ref i);
-                if (keyproofkey == 0x12)
-                {
-                    i += keyprooflength;
-                    if (i >= keyproofend)
-                    {
-                        continue;
-                    }
-                    keyproofkey = GetVarInt(publicKey, ref i);
-                    keyprooflength = GetVarInt(publicKey, ref i);
-                }
-                if (keyproofkey != 0xA)
-                {
-                    i += keyprooflength;
-                    //throw new ArgumentException("proto: Unexpected key in AsymmetricKeyProof: " + keyproofkey);
-                }
-                if (i + keyprooflength >= publicKey.Length)
-                {
-                    //throw new ArgumentException("proto: size of public_key field is too large");
-                }
-                byte[] b = publicKey.Skip(i).Take(keyprooflength).ToArray();
-
-                publicKeys.Add(b);
-                i = keyproofend;
-            }
-
-            if (publicKeys.Count == 0)
-            {
-                throw new ArgumentException("proto: Did not find any public key");
-            }
-            if (crxIdBin == null)
-            {
-                throw new ArgumentException("proto: Did not find crx_id");
-            }
-
-            string crxIdHex = StringifyTwoHexDigits(crxIdBin.Skip(0).Take(16).ToArray());
-            for (int j = 0; j < publicKeys.Count; ++j)
-            {
-                string sha256sum = ComputeHash(publicKeys[j]);
-                string f = sha256sum[0..32];
-                if (f == crxIdHex)
-                {
-                    return publicKeys[j];
-                }
-            }
-
-            return null;
-        }
-
-        private int GetVarInt(byte[] buf, ref int i)
-        {
-            var val = buf[i] & 0x7F;
-            if (buf[i++] < 0x80) return val;
-            val |= (buf[i] & 0x7F) << 7;
-            if (buf[i++] < 0x80) return val;
-            val |= (buf[i] & 0x7F) << 14;
-            if (buf[i++] < 0x80) return val;
-            val |= (buf[i] & 0x7F) << 21;
-            if (buf[i++] < 0x80) return val;
-            val = (val | (buf[i] & 0xF) << 28);
-            if (buf[i++] >= 0x80) throw new ArgumentException("proto: not a uint32");
-            return val;
         }
 
         private string ComputeAppId(string hashStr)
@@ -160,11 +56,11 @@ namespace Extension_Packager_Library.src.Extension
             SHA256 hasher = SHA256.Create();
             byte[] hash = hasher.ComputeHash(latin1Bytes);
 
-            string hashStr = StringifyTwoHexDigits(hash);
+            string hashStr = StringifyToHexDigits(hash);
             return hashStr;
         }
 
-        private string StringifyTwoHexDigits(byte[] buf)
+        private string StringifyToHexDigits(byte[] buf)
         {
             StringBuilder stringBuilder = new();
             foreach (byte item in buf)

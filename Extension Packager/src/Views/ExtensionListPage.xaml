@@ -84,18 +84,40 @@
                 x:Uid="ExtensionListPageChangeButton"
                 Command="{Binding UpdateCommand}"
                 Style="{StaticResource IconButtonStyle}"
-                Content="&#xE70F;" />
+                Content="&#xE72C;" />
+
+            <Button
+                x:Uid="ExtensionListPageOpenDeployementDirButton"
+                Command="{Binding OpenFolderCommand}"
+                CommandParameter="Deployement"
+                Style="{StaticResource IconButtonStyle}"
+                Content="&#xE7B8;" />
+            <Button
+                x:Uid="ExtensionListPageOpenBackupDirButton"
+                Command="{Binding OpenFolderCommand}"
+                CommandParameter="Backup"
+                Style="{StaticResource IconButtonStyle}"
+                Content="&#xE96A;" />
         </StackPanel>
 
         <ListView
+            x:Name="AllExtensionsListView"
             x:Uid="ExtensionListPageAllExtensionsListView"
-            AccessKey="U"
             Grid.Row="3"
+            KeyTipPlacementMode="Left"
             ItemsSource="{Binding Path=AllExtensions}"
             Padding="0"
             SelectedItem="{Binding SelectedExtension, Mode=TwoWay}"
             SelectionMode="Single">
-
+            <ListView.ItemContainerStyle>
+                <Style
+                    TargetType="ListViewItem"
+                    BasedOn="{StaticResource DefaultListViewItemStyle}">
+                    <Setter
+                        Property="AccessKey"
+                        Value="W" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid
@@ -106,13 +128,7 @@
                         Padding="12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
-                                Width="auto" />
-                            <ColumnDefinition
-                                Width="auto" />
-                            <ColumnDefinition
                                 Width="*" />
-                            <ColumnDefinition
-                                Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition
@@ -121,28 +137,34 @@
                                 Height="*" />
                         </Grid.RowDefinitions>
                         <TextBlock
-                            x:Uid="ExtensionListPageExtensionTitle"
-                            Grid.Column="0"
-                            FontWeight="SemiBold"
-                            Text="{Binding Path=Name}" />
+                            x:Uid="MainPageExtTitle"
+                            Grid.Column="0">
+                                        <Run
+                                FontWeight="SemiBold"
+                                Text="{Binding Path=Name}" />
+                                        <Run
+                                AutomationProperties.AccessibilityView="Raw"
+                                Text=" - " />
+                                        <Run
+                                Text="{Binding Path=Version}" />
+                        </TextBlock>
+
                         <TextBlock
-                            x:Uid="ExtensionListPageExtensionId"
+                            x:Uid="MainPageExtId"
                             Grid.Column="0"
-                            Grid.ColumnSpan="5"
+                            Grid.ColumnSpan="2"
                             Grid.Row="1"
                             FontSize="10"
                             Foreground="#d1d1d1"
-                            Margin="0,8,0,0"
-                            Text="{Binding Path=Id}" />
-                        <TextBlock
-                            AutomationProperties.AccessibilityView="Raw"
-                            Grid.Column="1"
-                            Margin="6,0"
-                            Text="-" />
-                        <TextBlock
-                            x:Uid="ExtensionListPageExtensionVersion"
-                            Grid.Column="2"
-                            Text="{Binding Path=Version}" />
+                            Margin="0,8,0,0">
+                                        <Run
+                                Text="{Binding Path=ShortName}" />
+                                        <Run
+                                AutomationProperties.AccessibilityView="Raw"
+                                Text=" - " />
+                                        <Run
+                                Text="{Binding Path=Id}" />
+                        </TextBlock>
 
                     </Grid>
                 </DataTemplate>

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Christian Szech
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Extension_Packager_Library.src.Database;
 using Extension_Packager_Library.src.DataModels;
 using Extension_Packager_Library.src.Extension;
 using Extension_Packager_Library.src.Helper;
@@ -165,7 +166,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             PageParameter.Extension ??= new()
             {
-                TmpPrivateKeyFile = PrivateKeyFile
+                PrivateKeyFile = PrivateKeyFile
             };
 
             bool directoriesCreated = CreateDirectories();
@@ -196,6 +197,18 @@ namespace Extension_Packager_Library.src.Viewmodels
                 ErrorMessage = StringResources.Get(this, 7);
                 ErrorOccurred = true;
                 return false;
+            }
+
+            if (PageParameter.IsAddition)
+            {
+                string appId = ExtractAppId(PrivateKeyFile);
+                if (IsDuplicateShortname(appId))
+                {
+                    IsBusy = false;
+                    ErrorMessage = StringResources.Get(this, 8, appId);
+                    ErrorOccurred = true;
+                    return false;
+                }
             }
 
             ErrorOccurred = false;
@@ -272,5 +285,35 @@ namespace Extension_Packager_Library.src.Viewmodels
             PageParameter.Extension.ShortName = PageParameter.Extension.ShortName ?? new ShortNameFormatter().Format(manifest.Name);
             PageParameter.Extension.ManifestFile = manifest.File;
         }
+
+        private string ExtractAppId(string privateKeyFile)
+        {
+            if (string.IsNullOrWhiteSpace(privateKeyFile))
+            {
+                throw new ArgumentException($"\"{nameof(privateKeyFile)}\" should not be NULL or whitespace.", nameof(privateKeyFile));
+            }
+
+            IAppIdReader appIdReader = new AppIdReader();
+            try
+            {
+                return appIdReader.GetAppIdByPrivateKey(privateKeyFile);
+            }
+            catch (Exception ex)
+            {
+                IsBusy = false;
+                //ErrorMessage = StringResources.GetWithReason(this, 4, ex.Message);
+                ErrorOccurred = true;
+                _log.Error(ex);
+                return null;
+            }
+        }
+
+        private bool IsDuplicateShortname(string id)
+        {
+            IExtensionStorage storage = new DatabaseStorage();
+            int count = storage.GetCountById(id);
+            return count > 0;
+        }
+
     }
 }

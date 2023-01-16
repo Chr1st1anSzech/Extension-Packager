@@ -2,6 +2,7 @@
 using Extension_Packager_Library.src.DataModels;
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
+using Extension_Packager_Library.src.Settings;
 using log4net;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
@@ -85,6 +86,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         public MyCommand AddCommand { get; set; }
         public MyCommand UpdateCommand { get; set; }
         public MyCommand AskDeleteCommand { get; set; }
+        public MyCommand OpenFolderCommand { get; set; }
 
         private void SetCommands()
         {
@@ -92,6 +94,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             AddCommand = new MyCommand(Add);
             UpdateCommand = new MyCommand(Update);
             AskDeleteCommand = new MyCommand(AskDelete);
+            OpenFolderCommand = new MyCommand(OpenFolder);
         }
 
         #endregion
@@ -173,7 +176,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         /// </summary>
         private async void AskDelete(object parameter = null)
         {
-            if(SelectedExtension== null) return;
+            if (SelectedExtension == null) return;
 
             if (XamlRoot == null)
             {
@@ -253,5 +256,30 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void OpenFolder(object parameter = null)
+        {
+            if (SelectedExtension == null) return;
+
+            if(parameter is string folderName)
+            {
+                string directory = null;
+                if (folderName.Equals("Deployement"))
+                {
+                    directory = SelectedExtension.DeployementDir;
+                }
+                else if (folderName.Equals("Backup"))
+                {
+                    directory = SelectedExtension.BackupDir; ;
+                }
+
+                FileHelper.OpenDirectory(directory);
+            }
+
+        }
     }
 }

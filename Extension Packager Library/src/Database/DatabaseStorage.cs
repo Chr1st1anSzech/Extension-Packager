@@ -229,7 +229,7 @@ namespace Extension_Packager_Library.src.Database
         /// <param name="extension">The extension to be inserted or updated.</param>
         public void Set(DataModels.Extension extension)
         {
-            if (Get(extension.Id) == null)
+            if (GetById(extension.Id) == null)
             {
                 Insert(extension);
             }
@@ -331,7 +331,7 @@ namespace Extension_Packager_Library.src.Database
         /// </summary>
         /// <param name="id">The ID of the extension that is being requested.</param>
         /// <returns>The extension with the passed ID.</returns>
-        public DataModels.Extension Get(string id)
+        public DataModels.Extension GetById(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -358,6 +358,72 @@ namespace Extension_Packager_Library.src.Database
             });
 
             return extension;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shortname"></param>
+        /// <returns></returns>
+        public int GetCountByShortname(string shortname)
+        {
+            int count = 0;
+            if (string.IsNullOrWhiteSpace(shortname))
+            {
+                _log.Warn($"\"{nameof(shortname)}\" must not be NULL or a space character.");
+                return count;
+            }
+            ExecuteReaderCommand((connection) =>
+            {
+                SqliteCommand command = connection.CreateCommand();
+                command.CommandText = @$"SELECT COUNT({ID_COLUMN}) AS COUNT FROM {EXTENSION_TABLE}
+                    WHERE {SHORTNAME_COLUMN} = ${SHORTNAME_COLUMN}";
+                command.Parameters.AddWithValue($"${SHORTNAME_COLUMN}", shortname);
+                return command;
+            },
+            (dataReader) =>
+            {
+                if (dataReader.Read())
+                {
+                    count = dataReader.GetInt32("COUNT");
+                }
+            });
+
+            return count;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int GetCountById(string id)
+        {
+            int count = 0;
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                _log.Warn($"\"{nameof(id)}\" must not be NULL or a space character.");
+                return count;
+            }
+            ExecuteReaderCommand((connection) =>
+            {
+                SqliteCommand command = connection.CreateCommand();
+                command.CommandText = @$"SELECT COUNT({ID_COLUMN}) AS COUNT FROM {EXTENSION_TABLE}
+                    WHERE {ID_COLUMN} = ${ID_COLUMN}";
+                command.Parameters.AddWithValue($"${ID_COLUMN}", id);
+                return command;
+            },
+            (dataReader) =>
+            {
+                if (dataReader.Read())
+                {
+                    count = dataReader.GetInt32("COUNT");
+                }
+            });
+
+            return count;
         }
 
 

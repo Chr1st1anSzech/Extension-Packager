@@ -48,7 +48,7 @@ namespace Extension_Packager.src.Navigation
             MainNavMenuItems.Add(new NavMenuItem()
             {
                 Content = StringResources.Get(this, 4),
-                Icon = new SymbolIcon((Symbol)0xE71D),
+                Icon = new SymbolIcon((Symbol)0xE8F1),
                 Page = typeof(ExtensionListPage),
                 Tag = "ExtensionListPage"
             });

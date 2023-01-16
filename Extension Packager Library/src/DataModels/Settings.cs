@@ -15,7 +15,7 @@ namespace Extension_Packager_Library.src.DataModels
         public string OutputURL { get; set; } = @"https://my-server.com/Extensions/";
         public string XmlManifestName { get; set; } = "ext.xml";
         public string CrxName { get; set; } = "ext.crx";
-        public string PrivateKeyName { get; set; } = "ext.pem";
+        public string PrivateKeyName { get; set; } = "key.pem";
         public bool IsFirstRun { get; set; } = true;
         public string BackupDirectory { get; set; } = @"C:\";
 

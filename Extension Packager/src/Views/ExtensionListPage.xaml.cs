@@ -18,13 +18,13 @@ namespace Extension_Packager.src.Views
 
         public ExtensionListPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             ViewModel.NavigationService = NavigationService.Instance;
-            this.Loaded += (object sender, Microsoft.UI.Xaml.RoutedEventArgs e) =>
+            Loaded += (object sender, Microsoft.UI.Xaml.RoutedEventArgs e) =>
             {
                 ViewModel.XamlRoot = MainPageGrid.XamlRoot;
             };
-            
+
         }
     }
 }

@@ -1,8 +1,12 @@
 ﻿// Copyright (c) Christian Szech
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Extension_Packager_Library.src.Settings;
 using log4net;
+using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Extension_Packager_Library.src.Helper
@@ -67,6 +71,55 @@ namespace Extension_Packager_Library.src.Helper
             string path = GetRandomDirectory(destinationDirectory);
             Directory.CreateDirectory(path);
             return path;
+        }
+
+        public static void OpenDirectory(string directory)
+        {
+            if(!DirectoryExists(directory)) return;
+
+            try
+            {
+                Process.Start("explorer.exe", directory);
+            }
+            catch (Exception exception)
+            {
+                _log.Warn(StringResources.Get("FileHelper", 4, directory), exception);
+            }
+        }
+
+        public static string[] FindFiles(string searchDirectory, string fileExtension)
+        {
+            if (!Directory.Exists(searchDirectory))
+            {
+                _log.Warn(StringResources.Get("FileHelper", 1, searchDirectory));
+                return Array.Empty<string>();
+            }
+
+            if (string.IsNullOrWhiteSpace(fileExtension) || ContainsInvalidChars(fileExtension))
+            {
+                _log.Warn(StringResources.Get("FileHelper", 2));
+                return Array.Empty<string>();
+            }
+
+            if (fileExtension[0] != '.')
+            {
+                fileExtension = fileExtension.Prepend('.').ToString();
+            }
+            try
+            {
+                return Directory.GetFiles(searchDirectory, $"*{fileExtension}");
+            }
+            catch
+            {
+                _log.Warn(StringResources.Get("FileHelper", 3));
+                return Array.Empty<string>();
+            }
+        }
+
+        private static bool ContainsInvalidChars(string path)
+        {
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            return path.Any(c => invalidChars.Contains(c));
         }
     }
 }

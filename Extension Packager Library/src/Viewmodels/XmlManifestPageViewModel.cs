@@ -221,7 +221,6 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
         }
 
-
         private async Task<bool> BackupExtensionAsync()
         {
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
@@ -233,7 +232,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                 CrxName = settings.CrxName,
                 XmlManifest = PageParameter.Extension.XmlManifestContent,
                 XmlManifestName = settings.XmlManifestName,
-                TmpPrivateKeyPath = PageParameter.Extension.TmpPrivateKeyFile,
+                TmpPrivateKeyPath = PageParameter.Extension.PrivateKeyFile,
                 PrivateKeyName = settings.PrivateKeyName
             };
             IExtensionBackup backup = new ExtensionBackup(PageParameter.IsUpdate);
@@ -286,7 +285,6 @@ namespace Extension_Packager_Library.src.Viewmodels
                 return null;
             }
         }
-
 
         private void PreviewXmlManifest(object parameter = null)
         {

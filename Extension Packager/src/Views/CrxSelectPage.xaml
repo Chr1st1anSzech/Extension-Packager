@@ -38,10 +38,32 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition
+                x:Name="FirstColumn"
                 Width="3*" />
             <ColumnDefinition
+                x:Name="SecondColumn"
                 Width="*" />
         </Grid.ColumnDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger
+                            MinWindowWidth="950" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter
+                            Target="FirstColumn.Width"
+                            Value="2*" />
+                        <Setter
+                            Target="SecondColumn.Width"
+                            Value="*" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <ScrollViewer
             AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
@@ -109,22 +131,7 @@
 
         <StackPanel
             Grid.Column="1"
-            Style="{StaticResource BaseStackPanelStyle}"
-            MinWidth="500">
-            <TextBlock
-                x:Uid="CrxSelectPageOperationTitle"
-                AutomationProperties.HeadingLevel="Level3"
-                Style="{StaticResource Header02Style}"
-                Margin="0,0,0,6" />
-
-            <ToggleSwitch
-                x:Uid="CrxSelectPageOperationToggle"
-                Grid.Column="1"
-                FontFamily="Segoe UI"
-                FontSize="12"
-                IsOn="{Binding Path=ViewModel.PageParameter.IsAddition,ElementName=MyCrxSelectPage, Mode=TwoWay}"
-                Margin="0" />
-
+            Style="{StaticResource BaseStackPanelStyle}">
             <TextBlock
                 x:Uid="CrxSelectPageAdditionInfoTitle"
                 AutomationProperties.HeadingLevel="Level3"
@@ -137,6 +144,7 @@
                 Style="{StaticResource BaseTextBlockStyle}"
                 FontSize="10"
                 Foreground="#c1c1c1"
+                LineHeight="18"
                 Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, Path=ViewModel.PageParameter.IsAddition,ElementName=MyCrxSelectPage}" />
         </StackPanel>
 
@@ -150,7 +158,7 @@
             Spacing="24">
 
             <Button
-                x:Uid="AllPagesGoBackButton"
+                x:Uid="CrxSelectPageGoBackButton"
                 Command="{Binding Path=GoBackCommand}"
                 Style="{StaticResource HighlightedButtonStyle}"
                 Width="110" />
