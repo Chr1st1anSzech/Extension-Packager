@@ -190,13 +190,13 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         public void Reset()
         {
-            if (PageParameter.Extension.TmpPackedCrxFile == null) return;
+            if (PageParameter.Get<string>("TmpPackedCrxFile") == null) return;
             try
             {
-                File.Delete(PageParameter.Extension.TmpPackedCrxFile);
-                if (PageParameter.Extension.PrivateKeyFile != null)
+                File.Delete(PageParameter.Get<string>("TmpPackedCrxFile"));
+                if (PageParameter.Get<string>("PrivateKeyFile") != null)
                 {
-                    File.Delete(PageParameter.Extension.PrivateKeyFile);
+                    File.Delete(PageParameter.Get<string>("PrivateKeyFile"));
                 }
             }
             catch (Exception exception)
@@ -229,21 +229,21 @@ namespace Extension_Packager_Library.src.Viewmodels
             {
                 string privateKeyFile = FindPrivateKeyFile(PageParameter.Extension.BackupDir);
                 if (privateKeyFile == null) return;
-                PageParameter.Extension.PrivateKeyFile = privateKeyFile;
+                PageParameter.Set("PrivateKeyFile", privateKeyFile);
             }
 
-            string packedCrxFile = PackExtension(PageParameter.Extension.UnpackedCrxDirectory, PageParameter.Extension.PrivateKeyFile);
+            string packedCrxFile = PackExtension(PageParameter.Get<string>("UnpackedCrxDirectory"), PageParameter.Get<string>("PrivateKeyFile"));
             if (packedCrxFile == null) return;
-            PageParameter.Extension.TmpPackedCrxFile = packedCrxFile;
+            PageParameter.Set("TmpPackedCrxFile", packedCrxFile);
 
             if (!PageParameter.IsUpdate && !PageParameter.IsAddition)
             {
-                string tmpPrivateKeyFile = FindPrivateKeyFile(PageParameter.Extension.ExtensionWorkingDirectory);
+                string tmpPrivateKeyFile = FindPrivateKeyFile(PageParameter.Get<string>("ExtensionWorkingDirectory"));
                 if (tmpPrivateKeyFile == null) return;
-                PageParameter.Extension.PrivateKeyFile = tmpPrivateKeyFile;
+                PageParameter.Set("PrivateKeyFile", tmpPrivateKeyFile);
             }
 
-            string appId = PageParameter.Extension.Id ?? ExtractAppId(PageParameter.Extension.PrivateKeyFile);
+            string appId = PageParameter.Extension.Id ?? ExtractAppId(PageParameter.Get<string>("PrivateKeyFile"));
             if (appId == null) return;
             PageParameter.Extension.Id = appId;
 
@@ -309,7 +309,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             string updateUrl = Helper.Uri.Combine(settings.OutputURL, ShortName, settings.XmlManifestName);
             try
             {
-                PageParameter.Extension.ManifestContent = Manifest.ChangeUpdateUrl(PageParameter.Extension.ManifestContent, updateUrl);
+                PageParameter.Set("ManifestContent", Manifest.ChangeUpdateUrl(PageParameter.Get<string>("ManifestContent"), updateUrl));
             }
             catch (Exception ex)
             {
@@ -327,7 +327,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             try
             {
-                await File.WriteAllTextAsync(PageParameter.Extension.ManifestFile, PageParameter.Extension.ManifestContent);
+                await File.WriteAllTextAsync(PageParameter.Get<string>("ManifestFile"), PageParameter.Get<string>("ManifestContent"));
                 return true;
             }
             catch (Exception ex)
@@ -418,7 +418,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             ChangeManifest();
 
-            ExtensionManifestDocument.SetText(TextSetOptions.FormatRtf, PageParameter.Extension.ManifestContent);
+            ExtensionManifestDocument.SetText(TextSetOptions.FormatRtf, PageParameter.Get<string>("ManifestContent"));
 
             Formatter.Formatter formatter = new JSONFormatter()
             {

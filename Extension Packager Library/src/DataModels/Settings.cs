@@ -11,7 +11,7 @@ namespace Extension_Packager_Library.src.DataModels
         public string WorkingAreaPath { get; set; } = Path.GetTempPath();
         public string ExtensionPathParameter { get; set; } = "--pack-extension";
         public string ExtensionKeyParameter { get; set; } = "--pack-extension-key";
-        public string OutputPath { get; set; } = @"C:\";
+        public string DeployementDirectory { get; set; } = @"C:\";
         public string OutputURL { get; set; } = @"https://my-server.com/Extensions/";
         public string XmlManifestName { get; set; } = "ext.xml";
         public string CrxName { get; set; } = "ext.crx";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -13,7 +14,8 @@ namespace Extension_Packager_Library.src.DataModels
         }
 
         public Extension Extension { get; set; }
-        public bool _isUpdate { get; set; } = false;
+
+        private bool _isUpdate = false;
         public bool IsUpdate
         {
             get
@@ -64,6 +66,36 @@ namespace Extension_Packager_Library.src.DataModels
                     _isAddition = value;
                     NotifyPropertyChanged();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Temporary values that are need during the packaging process.
+        /// </summary>
+        private readonly Dictionary<string, object> _tmpValues = new();
+
+        public T Get<T>(string key)
+        {
+
+            return _tmpValues.ContainsKey(key) && _tmpValues[key] is T t ? t : default;
+        }
+
+        public T TakeOut<T>(string key)
+        {
+            T val = _tmpValues.ContainsKey(key) && _tmpValues[key] is T t ? t : default;
+            _tmpValues.Remove(key);
+            return val;
+        }
+
+        public void Set(string key, object value)
+        {
+            if (_tmpValues.ContainsKey(key))
+            {
+                _tmpValues[key] = value;
+            }
+            else
+            {
+                _tmpValues.Add(key, value);
             }
         }
     }

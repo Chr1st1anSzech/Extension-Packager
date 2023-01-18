@@ -5,11 +5,11 @@ namespace Extension_Packager_Library.src.DataModels
 {
     public class DeployementInfoData
     {
-        public string DestinationDirectory { get; set; }
+        public string DeployementDirectory { get; set; }
         public string XmlManifest { get; set; }
         public string XmlManifestName { get; set; }
         public string CrxName { get; set; }
-        public string CrxPath { get; set; }
+        public string CrxFile { get; set; }
         public string Name { get; set; }
     }
 }

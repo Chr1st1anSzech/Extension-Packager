@@ -161,7 +161,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                 string directory = null;
                 if (folderName.Equals("Deployement"))
                 {
-                    directory = settings.OutputPath;
+                    directory = settings.DeployementDirectory;
                 }
                 else if (folderName.Equals("Backup"))
                 {

@@ -147,10 +147,10 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         public void Reset()
         {
-            if (PageParameter.Extension.ExtensionWorkingDirectory == null) return;
+            if (PageParameter.Get<string>("ExtensionWorkingDirectory") == null) return;
             try
             {
-                Directory.Delete(PageParameter.Extension.ExtensionWorkingDirectory, true);
+                Directory.Delete(PageParameter.Get<string>("ExtensionWorkingDirectory"), true);
             }
             catch (Exception exception)
             {
@@ -164,18 +164,16 @@ namespace Extension_Packager_Library.src.Viewmodels
             IsBusy = true;
             if (!IsInputValid()) return;
 
-            PageParameter.Extension ??= new()
-            {
-                PrivateKeyFile = PrivateKeyFile
-            };
+            PageParameter.Extension ??= new();
+            PageParameter.Set("PrivatKeyFile", PrivateKeyFile);
 
             bool directoriesCreated = CreateDirectories();
             if (!directoriesCreated) return;
 
-            bool isSuccess = await UnpackAsync(CrxFile, PageParameter.Extension.UnpackedCrxDirectory);
+            bool isSuccess = await UnpackAsync(CrxFile, PageParameter.Get<string>("UnpackedCrxDirectory"));
             if (!isSuccess) return;
 
-            Manifest manifest = ReadManifest(PageParameter.Extension.UnpackedCrxDirectory);
+            Manifest manifest = ReadManifest(PageParameter.Get<string>("UnpackedCrxDirectory"));
             if (manifest == null) return;
 
             SetExtensionValues(manifest);
@@ -216,7 +214,6 @@ namespace Extension_Packager_Library.src.Viewmodels
         }
 
 
-
         private bool CreateDirectories()
         {
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
@@ -225,8 +222,8 @@ namespace Extension_Packager_Library.src.Viewmodels
                 string workingDirectory = FileHelper.CreateRandomDirectory(settings.WorkingAreaPath);
                 string unpackedCrxDirectory = FileHelper.CreateRandomDirectory(workingDirectory);
 
-                PageParameter.Extension.ExtensionWorkingDirectory = workingDirectory;
-                PageParameter.Extension.UnpackedCrxDirectory = unpackedCrxDirectory;
+                PageParameter.Set("ExtensionWorkingDirectory", workingDirectory);
+                PageParameter.Set("UnpackedCrxDirectory", unpackedCrxDirectory);
 
                 return true;
             }
@@ -239,7 +236,6 @@ namespace Extension_Packager_Library.src.Viewmodels
                 return false;
             }
         }
-
 
 
         private async Task<bool> UnpackAsync(string sourceCrxFile, string unpackedCrxDirectory)
@@ -279,11 +275,11 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetExtensionValues(Manifest manifest)
         {
-            PageParameter.Extension.ManifestContent = manifest.RawContent;
+            PageParameter.Set("ManifestContent", manifest.RawContent);
             PageParameter.Extension.Name = PageParameter.Extension.Name ?? manifest.Name;
             PageParameter.Extension.Version = manifest.Version;
             PageParameter.Extension.ShortName = PageParameter.Extension.ShortName ?? new ShortNameFormatter().Format(manifest.Name);
-            PageParameter.Extension.ManifestFile = manifest.File;
+            PageParameter.Set("ManifestFile", manifest.File);
         }
 
         private string ExtractAppId(string privateKeyFile)

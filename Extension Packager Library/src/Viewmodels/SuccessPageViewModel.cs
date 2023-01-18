@@ -69,7 +69,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void SetProperties()
         {
-            PolicyString= PageParameter.Extension.PolicyString ?? string.Empty;
+            PolicyString= PageParameter.Get<string>("PolicyString") ?? string.Empty;
         }
 
         private void NewExtension(object parameter = null)

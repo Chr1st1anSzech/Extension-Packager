@@ -11,7 +11,7 @@ namespace Extension_Packager_Library.src.DataModels
         public string XmlManifest { get; set; }
         public string XmlManifestName { get; set; }
         public string CrxName { get; set; }
-        public string CrxPath { get; set; }
+        public string CrxFile { get; set; }
         public string Name { get; set; }
     }
 }

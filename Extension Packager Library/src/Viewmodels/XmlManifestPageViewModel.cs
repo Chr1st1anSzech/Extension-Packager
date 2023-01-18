@@ -153,7 +153,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             IsBusy = true;
             string xmlManifest = CreateXmlManifest();
             if (xmlManifest == null) return;
-            PageParameter.Extension.XmlManifestContent = xmlManifest;
+            PageParameter.Set("XmlManifestContent", xmlManifest);
 
             if (!await DeployExtensionAsync()) { return; }
             if(!await BackupExtensionAsync()) { return; }
@@ -162,7 +162,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             string policyString = CreatePolicyString(PageParameter.Extension.ShortName);
             if (policyString == null) return;
-            PageParameter.Extension.PolicyString = policyString;
+            PageParameter.Set("PolicyString", policyString);
 
             DeleteTemporaryFiles();
 
@@ -173,10 +173,10 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private void DeleteTemporaryFiles()
         {
-            if (PageParameter.Extension.ExtensionWorkingDirectory == null) return;
+            if (PageParameter.Get<string>("ExtensionWorkingDirectory") == null) return;
             try
             {
-                Directory.Delete(PageParameter.Extension.ExtensionWorkingDirectory, true);
+                Directory.Delete(PageParameter.Get<string>("ExtensionWorkingDirectory"), true);
             }
             catch (Exception exception)
             {
@@ -197,12 +197,12 @@ namespace Extension_Packager_Library.src.Viewmodels
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
             DeployementInfoData deployementInfos = new()
             {
-                CrxName = settings.CrxName,
+                DeployementDirectory = settings.DeployementDirectory,
                 Name = PageParameter.Extension.ShortName,
-                XmlManifest = PageParameter.Extension.XmlManifestContent,
-                XmlManifestName = settings.XmlManifestName,
-                DestinationDirectory = settings.OutputPath,
-                CrxPath = PageParameter.Extension.TmpPackedCrxFile
+                CrxFile = PageParameter.Get<string>("TmpPackedCrxFile"),
+                CrxName = settings.CrxName,
+                XmlManifest = PageParameter.Get<string>("XmlManifestContent"),
+                XmlManifestName = settings.XmlManifestName
             };
             IExtensionDeployement deployment = new ExtensionDeployement(PageParameter.IsUpdate);
 
@@ -228,12 +228,12 @@ namespace Extension_Packager_Library.src.Viewmodels
             {
                 BackupDirectory = settings.BackupDirectory,
                 Name = PageParameter.Extension.ShortName,
-                CrxPath = PageParameter.Extension.TmpPackedCrxFile,
+                CrxFile = PageParameter.Get<string>("TmpPackedCrxFile"),
                 CrxName = settings.CrxName,
-                XmlManifest = PageParameter.Extension.XmlManifestContent,
+                PrivateKeyName = settings.PrivateKeyName,
+                XmlManifest = PageParameter.Get<string>("XmlManifestContent"),
                 XmlManifestName = settings.XmlManifestName,
-                TmpPrivateKeyPath = PageParameter.Extension.PrivateKeyFile,
-                PrivateKeyName = settings.PrivateKeyName
+                TmpPrivateKeyPath = PageParameter.Get<string>("PrivateKeyFile")
             };
             IExtensionBackup backup = new ExtensionBackup(PageParameter.IsUpdate);
             try

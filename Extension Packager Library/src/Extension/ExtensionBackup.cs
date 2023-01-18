@@ -34,7 +34,7 @@ namespace Extension_Packager_Library.src.Extension
             await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, backupDirectory);
 
             string crxFile = Path.Combine(backupDirectory, infos.CrxName);
-            CopyFile(crxFile, infos.CrxPath);
+            CopyFile(crxFile, infos.CrxFile);
 
             string privateKeyFile = Path.Combine(backupDirectory, infos.PrivateKeyName);
             if (!_isUpdate && File.Exists(infos.TmpPrivateKeyPath))

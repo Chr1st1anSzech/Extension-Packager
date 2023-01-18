@@ -135,7 +135,7 @@
                     Grid.Row="5"
                     PickerFileTypes="*"
                     PickerType="Folder"
-                    Value="{Binding Path=ViewModel.Settings.OutputPath,Mode=TwoWay,ElementName=MySettingsPage}" />
+                    Value="{Binding Path=ViewModel.Settings.DeployementDirectory,Mode=TwoWay,ElementName=MySettingsPage}" />
 
 
                 <TextBlock
