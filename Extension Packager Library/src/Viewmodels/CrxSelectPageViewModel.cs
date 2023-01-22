@@ -9,7 +9,6 @@ using Extension_Packager_Library.src.Navigation;
 using Extension_Packager_Library.src.Settings;
 using Extension_Packager_Library.src.Validation;
 using log4net;
-using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.IO;
 using System.Reflection;
@@ -165,8 +164,10 @@ namespace Extension_Packager_Library.src.Viewmodels
             if (!IsInputValid()) return;
 
             PageParameter.Extension ??= new();
-            PageParameter.Set("PrivatKeyFile", PrivateKeyFile);
+            PageParameter.Set("PrivateKeyFile", PrivateKeyFile);
 
+            CheckForExtInOutputDir();
+            
             bool directoriesCreated = CreateDirectories();
             if (!directoriesCreated) return;
 
@@ -213,6 +214,39 @@ namespace Extension_Packager_Library.src.Viewmodels
             return true;
         }
 
+
+        private void CheckForExtInOutputDir()
+        {
+            DataModels.Settings settings = SettingsReaderFactory.Create().ReadSettings();
+            bool isCrxInDeployementDir = IsFileInSubdirOf(CrxFile, settings.DeployementDirectory, out string subDirectory1);
+            bool isPrivateKeyInBackupDir = IsFileInSubdirOf(PrivateKeyFile, settings.BackupDirectory, out string subDirectory2);
+            if (isCrxInDeployementDir)
+            {
+                PageParameter.Set("Shortname1", subDirectory1);
+            }
+            if (isPrivateKeyInBackupDir)
+            {
+                PageParameter.Set("Shortname2", subDirectory2);
+            }
+        }
+
+        private bool IsFileInSubdirOf(string file, string compareDirectory, out string subDir)
+        {
+            try
+            {
+                DirectoryInfo parentDir = new FileInfo(file).Directory;
+                subDir = parentDir.Name;
+                DirectoryInfo secondParentDir = parentDir.Parent;
+                return secondParentDir.Parent != null && 
+                    secondParentDir.FullName == Path.GetFullPath(compareDirectory);
+            }
+            catch (Exception exception)
+            {
+                _log.Error(exception);
+                subDir = null;
+                return false;
+            }
+        }
 
         private bool CreateDirectories()
         {

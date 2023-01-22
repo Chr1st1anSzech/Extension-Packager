@@ -14,8 +14,8 @@ using Microsoft.UI.Text;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
+using static Extension_Packager_Library.src.DataModels.Constants;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {
@@ -173,6 +173,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             SetCommands();
             SetProperties();
+            CompareToRecognizedShortname();
         }
 
 
@@ -273,7 +274,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                 return false;
             }
 
-            if(IsDuplicateShortname())
+            if (IsDuplicateShortname() && !PageParameter.IsUpdate)
             {
                 IsShortNameValid = false;
                 IsBusy = false;
@@ -293,6 +294,26 @@ namespace Extension_Packager_Library.src.Viewmodels
             IExtensionStorage storage = new DatabaseStorage();
             int count = storage.GetCountByShortname(ShortName);
             return count > 0;
+        }
+
+        private void CompareToRecognizedShortname()
+        {
+            string shortname1 = PageParameter.Get<string>("Shortname1");
+            string shortname2 = PageParameter.Get<string>("Shortname2");
+
+            ExtInOutputDir result = ExtInOutputDir.None;
+            if (shortname1 != null || shortname2 != null)
+            {
+                result = ExtInOutputDir.Partial;
+                ErrorMessage = StringResources.Get(this, 11);
+                if (shortname1.Equals(shortname2))
+                {
+                    result = ExtInOutputDir.Full;
+                    ErrorMessage = StringResources.Get(this, 12);
+                }
+                ErrorOccured = true;
+            }
+            PageParameter.Set("ExtInOutputDir", result);
         }
 
 

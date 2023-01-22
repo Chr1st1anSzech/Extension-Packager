@@ -25,7 +25,7 @@ namespace Extension_Packager.src.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if( e.Parameter is PageParameter param)
+            if (e.Parameter is PageParameter param)
             {
                 ViewModel.PageParameter = param;
                 if (param.IsPageBack)

@@ -33,6 +33,24 @@ namespace Extension_Packager_Library.src.DataModels
             }
         }
 
+        private bool _cancelNavigation = false;
+        public bool CancelNavigation
+        {
+            get
+            {
+                return _cancelNavigation;
+            }
+
+            set
+            {
+                if (value != _cancelNavigation)
+                {
+                    _cancelNavigation = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         private bool _isPageBack = false;
         public bool IsPageBack
         {

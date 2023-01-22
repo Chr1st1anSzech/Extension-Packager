@@ -9,13 +9,13 @@ namespace Extension_Packager_Library.src.Extension
 {
     public interface IExtensionBackup
     {
-        public Task<string> BackupAsync(BackupInfoData infos);
+        public Task BackupAsync(BackupInfoData infos);
     }
 
 
     public class ExtensionBackup : ExtensionPostProcess, IExtensionBackup
     {
-        public ExtensionBackup(bool isUpdate = false) : base(isUpdate)
+        public ExtensionBackup(bool canOverwrite = false) : base(canOverwrite)
         {
 
         }
@@ -25,24 +25,22 @@ namespace Extension_Packager_Library.src.Extension
         /// </summary>
         /// <param name="infos"></param>
         /// <returns></returns>
-        public async Task<string> BackupAsync(BackupInfoData infos)
+        public async Task BackupAsync(BackupInfoData infos)
         {
             _log.Info("Backup the extension and private key.");
 
-            string backupDirectory = CreateExtensionDirectory(infos.BackupDirectory, infos.Name);
+            CreateExtensionDirectory(infos.BackupDirectory);
 
-            await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, backupDirectory);
+            await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, infos.BackupDirectory);
 
-            string crxFile = Path.Combine(backupDirectory, infos.CrxName);
+            string crxFile = Path.Combine(infos.BackupDirectory, infos.CrxName);
             CopyFile(crxFile, infos.CrxFile);
 
-            string privateKeyFile = Path.Combine(backupDirectory, infos.PrivateKeyName);
-            if (!_isUpdate && File.Exists(infos.TmpPrivateKeyPath))
+            string privateKeyFile = Path.Combine(infos.BackupDirectory, infos.PrivateKeyName);
+            if (!_canOverwrite && File.Exists(infos.TmpPrivateKeyPath))
             {
                 CopyFile(privateKeyFile, infos.TmpPrivateKeyPath);
             }
-
-            return backupDirectory;
         }
     }
 }

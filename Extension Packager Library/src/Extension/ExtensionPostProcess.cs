@@ -12,11 +12,11 @@ namespace Extension_Packager_Library.src.Extension
     public class ExtensionPostProcess
     {
         internal static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        internal readonly bool _isUpdate = false;
+        internal readonly bool _canOverwrite = false;
 
-        internal ExtensionPostProcess(bool isUpdate = false)
+        internal ExtensionPostProcess(bool canOverwrite = false)
         {
-            _isUpdate = isUpdate;
+            _canOverwrite = canOverwrite;
         }
 
         internal void CopyFile(string destinationFile, string sourceFile)
@@ -25,7 +25,7 @@ namespace Extension_Packager_Library.src.Extension
 
             _log.Debug($"Copy the CRX file \"{sourceFile}\" to destination \"{destinationFile}\".");
 
-            if (File.Exists(destinationFile) && !_isUpdate)
+            if (File.Exists(destinationFile) && !_canOverwrite)
             {
                 _log.Warn($"The CRX file {destinationFile} already exists.");
                 throw new ArgumentException($"The CRX file {destinationFile} already exists.");
@@ -41,29 +41,25 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
-        internal string CreateExtensionDirectory(string destinationDirectory, string extensionName)
+        internal void CreateExtensionDirectory(string directoryToCreate)
         {
-            string newDirectory = Path.Combine(destinationDirectory, extensionName);
+            _log.Debug($"Create extension directory \"{directoryToCreate}\".");
 
-            _log.Debug($"Create extension directory \"{newDirectory}\".");
-
-            if (Directory.Exists(newDirectory) && Directory.GetFiles(newDirectory).Length != 0 && !_isUpdate)
+            if (Directory.Exists(directoryToCreate) && Directory.GetFiles(directoryToCreate).Length != 0 && !_canOverwrite)
             {
-                _log.Error($"The directory \"{newDirectory}\" already exists and is not empty.");
-                throw new ArgumentException($"The directory \"{newDirectory}\" already exists and is not empty.");
+                _log.Error($"The directory \"{directoryToCreate}\" already exists and is not empty.");
+                throw new ArgumentException($"The directory \"{directoryToCreate}\" already exists and is not empty.");
             }
 
             try
             {
-                Directory.CreateDirectory(newDirectory);
+                Directory.CreateDirectory(directoryToCreate);
             }
             catch (Exception ex)
             {
-                _log.Error($"The directory \"{newDirectory}\" could not be created.", ex);
+                _log.Error($"The directory \"{directoryToCreate}\" could not be created.", ex);
                 throw;
             }
-
-            return newDirectory;
         }
 
         internal async Task<string> WriteXmlManifestAsync(string xmlManifest, string xmlManifestFile, string destinationDirectory)

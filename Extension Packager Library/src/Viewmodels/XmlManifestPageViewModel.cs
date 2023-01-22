@@ -156,7 +156,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             PageParameter.Set("XmlManifestContent", xmlManifest);
 
             if (!await DeployExtensionAsync()) { return; }
-            if(!await BackupExtensionAsync()) { return; }
+            if (!await BackupExtensionAsync()) { return; }
 
             if (!StoreExtension()) { return; }
 
@@ -194,21 +194,27 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private async Task<bool> DeployExtensionAsync()
         {
-            DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-            DeployementInfoData deployementInfos = new()
-            {
-                DeployementDirectory = settings.DeployementDirectory,
-                Name = PageParameter.Extension.ShortName,
-                CrxFile = PageParameter.Get<string>("TmpPackedCrxFile"),
-                CrxName = settings.CrxName,
-                XmlManifest = PageParameter.Get<string>("XmlManifestContent"),
-                XmlManifestName = settings.XmlManifestName
-            };
-            IExtensionDeployement deployment = new ExtensionDeployement(PageParameter.IsUpdate);
-
             try
             {
-                PageParameter.Extension.DeployementDir = await deployment.DeployAsync(deployementInfos);
+                DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
+                string extDeployementDir = Path.Combine(settings.DeployementDirectory, PageParameter.Extension.ShortName);
+                Constants.ExtInOutputDir ExtInOutputDir = PageParameter.Get<Constants.ExtInOutputDir>("ExtInOutputDir");
+                if (ExtInOutputDir != Constants.ExtInOutputDir.Full)
+                {
+                    DeployementInfoData deployementInfos = new()
+                    {
+                        DeployementDirectory = extDeployementDir,
+                        CrxFile = PageParameter.Get<string>("TmpPackedCrxFile"),
+                        CrxName = settings.CrxName,
+                        XmlManifest = PageParameter.Get<string>("XmlManifestContent"),
+                        XmlManifestName = settings.XmlManifestName
+                    };
+
+                    bool canOverwrite = PageParameter.IsUpdate || ExtInOutputDir == Constants.ExtInOutputDir.Partial;
+                    IExtensionDeployement deployment = new ExtensionDeployement(canOverwrite);
+                    await deployment.DeployAsync(deployementInfos);
+                }
+                PageParameter.Extension.DeployementDir = extDeployementDir;
                 return true;
             }
             catch (Exception ex)
@@ -223,23 +229,28 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private async Task<bool> BackupExtensionAsync()
         {
-            DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-            BackupInfoData backupInfos = new()
-            {
-                BackupDirectory = settings.BackupDirectory,
-                Name = PageParameter.Extension.ShortName,
-                CrxFile = PageParameter.Get<string>("TmpPackedCrxFile"),
-                CrxName = settings.CrxName,
-                PrivateKeyName = settings.PrivateKeyName,
-                XmlManifest = PageParameter.Get<string>("XmlManifestContent"),
-                XmlManifestName = settings.XmlManifestName,
-                TmpPrivateKeyPath = PageParameter.Get<string>("PrivateKeyFile")
-            };
-            IExtensionBackup backup = new ExtensionBackup(PageParameter.IsUpdate);
             try
             {
-                PageParameter.Extension.BackupDir = await backup.BackupAsync(backupInfos);
-
+                DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
+                string extBackupDeployementDir = Path.Combine(settings.BackupDirectory, PageParameter.Extension.ShortName);
+                Constants.ExtInOutputDir ExtInOutputDir = PageParameter.Get<Constants.ExtInOutputDir>("ExtInOutputDir");
+                if (ExtInOutputDir != Constants.ExtInOutputDir.Full)
+                {
+                    BackupInfoData backupInfos = new()
+                    {
+                        BackupDirectory = extBackupDeployementDir,
+                        CrxFile = PageParameter.Get<string>("TmpPackedCrxFile"),
+                        CrxName = settings.CrxName,
+                        PrivateKeyName = settings.PrivateKeyName,
+                        XmlManifest = PageParameter.Get<string>("XmlManifestContent"),
+                        XmlManifestName = settings.XmlManifestName,
+                        TmpPrivateKeyPath = PageParameter.Get<string>("PrivateKeyFile")
+                    };
+                    bool canOverwrite = PageParameter.IsUpdate || ExtInOutputDir == Constants.ExtInOutputDir.Partial;
+                    IExtensionBackup backup = new ExtensionBackup(canOverwrite);
+                    await backup.BackupAsync(backupInfos);
+                }
+                PageParameter.Extension.BackupDir = extBackupDeployementDir;
                 return true;
             }
             catch (Exception ex)
@@ -290,7 +301,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             IsEditBoxReadOnly = false;
 
-            
+
             string xmlManifest = CreateXmlManifest();
             if (xmlManifest == null) return;
 

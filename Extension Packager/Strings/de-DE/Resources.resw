@@ -250,7 +250,7 @@
     <value>Es wurde keine Schlüsseldatei ausgewählt oder die ausgewählte Datei wurde nicht gefunden.</value>
   </data>
   <data name="CrxSelectPageViewModel8" xml:space="preserve">
-    <value>Es gibt bereits eine Erweiterung mit derselben ID "{0}". Wählen Sie eine andere Schlüsseldatei oder aktualisieren Sie die vorhandene Erweiterung.</value>
+    <value>Es gibt bereits eine Erweiterung mit der ID "{0}". Wählen Sie eine andere Schlüsseldatei oder aktualisieren Sie die vorhandene Erweiterung.</value>
   </data>
   <data name="CrxSelectPagePrivateKeyFileTextBox.Label" xml:space="preserve">
     <value>Schlüsseldatei</value>
@@ -492,6 +492,12 @@ werden gelöscht.</value>
   <data name="ManifestEditPageViewModel10" xml:space="preserve">
     <value>Es existiert bereits eine Erweiterung unter diesem Kurznamen. Wählen Sie einen abweichenden Kurznamen aus.</value>
   </data>
+  <data name="ManifestEditPageViewModel11" xml:space="preserve">
+    <value>Die Erweiterung oder der private Schlüssel befinden sich bereits in einem Ausgabeverzeichnis mit demselben Kurznamen. Wählen Sie einen anderen Kurznamen, falls es nicht überschrieben werden soll.</value>
+  </data>
+  <data name="ManifestEditPageViewModel12" xml:space="preserve">
+    <value>Die Erweiterung und der private Schlüssel befinden sich bereits in einem Ausgabeverzeichnis mit demselben Kurznamen. Wählen Sie einen anderen Kurznamen, falls es nicht überschrieben werden soll.</value>
+  </data>
   <data name="ManifestEditPageManifestGroupTitle.Text" xml:space="preserve">
     <value>Manifestvorschau</value>
   </data>
@@ -731,5 +737,18 @@ werden gelöscht.</value>
   </data>
   <data name="ExtensionListPageOpenBackupDirButton.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Sicherung im Explorer öffnen</value>
+  </data>
+
+  <data name="PageNavigationWarning1" xml:space="preserve">
+    <value>Möchten Sie die Seite wirklich verlassen?</value>
+  </data>
+  <data name="PageNavigationWarning2" xml:space="preserve">
+    <value>Die eingegebene Daten werden nicht gespeichert, wenn Sie die Seite verlassen.</value>
+  </data>  
+  <data name="PageNavigationWarning3" xml:space="preserve">
+    <value>Bleiben</value>
+  </data>  
+  <data name="PageNavigationWarning4" xml:space="preserve">
+    <value>Verlassen</value>
   </data>
 </root>

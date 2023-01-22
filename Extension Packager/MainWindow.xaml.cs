@@ -1,7 +1,6 @@
 using Extension_Packager.src.Navigation;
 using Extension_Packager.src.Startup;
 using Extension_Packager_Library.src.DataModels;
-using Extension_Packager_Library.src.Extension;
 using Extension_Packager_Library.src.Settings;
 using Extension_Packager_Library.src.Viewmodels;
 using Microsoft.UI.Xaml;
@@ -13,6 +12,10 @@ namespace Extension_Packager
 {
     public sealed partial class MainWindow : Window
     {
+        //private NavMenuItem _lastSelectedItem;
+        //private bool _handleSelection = true;
+
+
         public MainWindowViewModel ViewModel
         {
             get => (MainWindowViewModel)rootPanel.DataContext;
@@ -47,7 +50,7 @@ namespace Extension_Packager
 
         private async Task PrepareView()
         {
-            Startup startup = new ();
+            Startup startup = new();
             NavigationService.Instance.Navigate("SettingsLoadingPage");
             startup.SetupSettingsRepo(SettingsReaderFactory.Create(), SettingsWriterFactory.Create());
             await Task.Delay(250);
@@ -63,19 +66,17 @@ namespace Extension_Packager
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+            NavMenuItem item = sender.SelectedItem as NavMenuItem;
+            if (item == null) return;
+                        
             if (args.IsSettingsSelected)
             {
                 NavigationService.Instance.Navigate("SettingsPage");
             }
-            if(sender.SelectedItem is NavMenuItem mainNavMenuItem)
+            else
             {
-                NavigationService.Instance.Navigate(mainNavMenuItem.Tag.ToString(), mainNavMenuItem.PageParameter);
+                NavigationService.Instance.Navigate(item.Tag.ToString(), item.PageParameter);
             }
-        }
-
-        private void SetNavViewAccessKeys()
-        {
-            MainNavigationView.GetVisualInternal();
         }
     }
 }

@@ -9,25 +9,24 @@ namespace Extension_Packager_Library.src.Extension
 {
     public interface IExtensionDeployement
     {
-        public Task<string> DeployAsync(DeployementInfoData infos);
+        public Task DeployAsync(DeployementInfoData infos);
     }
 
     public class ExtensionDeployement : ExtensionPostProcess, IExtensionDeployement
     {
-        public ExtensionDeployement(bool isUpdate = false) : base(isUpdate)
+        public ExtensionDeployement(bool canOverwrite = false) : base(canOverwrite)
         {
 
         }
 
-        public async Task<string> DeployAsync(DeployementInfoData infos)
+        public async Task DeployAsync(DeployementInfoData infos)
         {
             _log.Info("Deploy the extension.");
 
-            string deployementDirectory = CreateExtensionDirectory(infos.DeployementDirectory, infos.Name);
-            await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, deployementDirectory);
-            string destinationFile = Path.Combine(deployementDirectory, infos.CrxName);
+            CreateExtensionDirectory(infos.DeployementDirectory);
+            await WriteXmlManifestAsync(infos.XmlManifest, infos.XmlManifestName, infos.DeployementDirectory);
+            string destinationFile = Path.Combine(infos.DeployementDirectory, infos.CrxName);
             CopyFile(destinationFile, infos.CrxFile);
-            return deployementDirectory;
         }
     }
 }
