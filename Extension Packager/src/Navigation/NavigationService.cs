@@ -24,15 +24,16 @@ namespace Extension_Packager.src.Navigation
         private NavigationView _navView;
 
         private Dictionary<string, Type> _pageTypes = new() {
-            { "MainPage", typeof(MainPage) },
-            { "CrxSelectPage", typeof(CrxSelectPage) },
-            { "ManifestEditPage", typeof(ManifestEditPage) },
-            { "SettingsLoadingPage", typeof(SettingsLoadingPage) },
-            { "SettingsPage", typeof(SettingsPage) },
-            { "SuccessPage", typeof(SuccessPage) },
-            { "XmlManifestPage", typeof(XmlManifestPage) },
-            { "ImprintPage", typeof(ImprintPage) },
-            { "ExtensionListPage", typeof(ExtensionListPage) }
+            { nameof(MainPage), typeof(MainPage) },
+            { nameof(CrxSelectPage), typeof(CrxSelectPage) },
+            { nameof(ManifestEditPage), typeof(ManifestEditPage) },
+            { nameof(SettingsLoadingPage), typeof(SettingsLoadingPage) },
+            { nameof(SettingsPage), typeof(SettingsPage) },
+            { nameof(SuccessPage), typeof(SuccessPage) },
+            { nameof(XmlManifestPage), typeof(XmlManifestPage) },
+            { nameof(ImprintPage), typeof(ImprintPage) },
+            { nameof(ExtensionListPage), typeof(ExtensionListPage) },
+            { nameof(OptionalInfosPage), typeof(OptionalInfosPage) }
         };
 
         #endregion

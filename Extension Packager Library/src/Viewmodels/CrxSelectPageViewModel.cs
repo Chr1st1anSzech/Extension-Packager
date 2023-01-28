@@ -3,6 +3,7 @@
 
 using Extension_Packager_Library.src.Database;
 using Extension_Packager_Library.src.DataModels;
+using Extension_Packager_Library.src.DataProcessing;
 using Extension_Packager_Library.src.Extension;
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
@@ -13,6 +14,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Windows.Gaming.Input;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {
@@ -33,27 +35,6 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             get { return _navigationService; }
             set { SetField(ref _navigationService, value); }
-        }
-
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get { return _isBusy; }
-            set { SetField(ref _isBusy, value); }
-        }
-
-        private string _errorMessage;
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { SetField(ref _errorMessage, value); }
-        }
-
-        private bool _errorOccurred;
-        public bool ErrorOccurred
-        {
-            get { return _errorOccurred; }
-            set { SetField(ref _errorOccurred, value); }
         }
 
 
@@ -153,7 +134,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception exception)
             {
-                ErrorMessage = StringResources.GetWithReason(this, 6, exception.Message);
+                WarningMessage = StringResources.GetWithReason(this, 6, exception.Message);
             }
         }
 
@@ -166,155 +147,58 @@ namespace Extension_Packager_Library.src.Viewmodels
             PageParameter.Extension ??= new();
             PageParameter.Set("PrivateKeyFile", PrivateKeyFile);
 
-            CheckForExtInOutputDir();
-            
-            bool directoriesCreated = CreateDirectories();
-            if (!directoriesCreated) return;
+            CrxSelectDataProcessing dataProcessing = new(CrxFile, PrivateKeyFile, PageParameter, ShowWarning);
 
-            bool isSuccess = await UnpackAsync(CrxFile, PageParameter.Get<string>("UnpackedCrxDirectory"));
-            if (!isSuccess) return;
-
-            Manifest manifest = ReadManifest(PageParameter.Get<string>("UnpackedCrxDirectory"));
+            Manifest manifest = await dataProcessing.ProcessInput();
             if (manifest == null) return;
 
             SetExtensionValues(manifest);
+
             GoForward();
         }
 
+
         private bool IsInputValid()
         {
-            if (!InputValidator.IsValidCrxFile(CrxFile))
+            bool areAllInputsValid = IsValidOrWarn(() =>
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.Get(this, 1);
-                ErrorOccurred = true;
-                return false;
-            }
-            if (PageParameter.IsAddition && !InputValidator.IsValidFile(PrivateKeyFile, ".pem"))
+                return InputValidator.IsValidCrxFile(CrxFile);
+            }, StringResources.Get(this, 1));
+
+
+            areAllInputsValid &= IsValidOrWarn(() =>
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.Get(this, 7);
-                ErrorOccurred = true;
-                return false;
-            }
+                return !PageParameter.IsAddition || InputValidator.IsValidFile(PrivateKeyFile, ".pem");
+            }, StringResources.Get(this, 7));
+
 
             if (PageParameter.IsAddition)
             {
                 string appId = ExtractAppId(PrivateKeyFile);
-                if (IsDuplicateShortname(appId))
+                areAllInputsValid &= IsValidOrWarn(() =>
                 {
-                    IsBusy = false;
-                    ErrorMessage = StringResources.Get(this, 8, appId);
-                    ErrorOccurred = true;
-                    return false;
-                }
+                    string appId = ExtractAppId(PrivateKeyFile);
+                    return IdAlreadyExists(appId);
+
+                }, StringResources.Get(this, 8, appId));
             }
 
-            ErrorOccurred = false;
+            if (!areAllInputsValid) return false;
+
+            IsWarningVisible = false;
             return true;
         }
 
 
-        private void CheckForExtInOutputDir()
-        {
-            DataModels.Settings settings = SettingsReaderFactory.Create().ReadSettings();
-            bool isCrxInDeployementDir = IsFileInSubdirOf(CrxFile, settings.DeployementDirectory, out string subDirectory1);
-            bool isPrivateKeyInBackupDir = IsFileInSubdirOf(PrivateKeyFile, settings.BackupDirectory, out string subDirectory2);
-            if (isCrxInDeployementDir)
-            {
-                PageParameter.Set("Shortname1", subDirectory1);
-            }
-            if (isPrivateKeyInBackupDir)
-            {
-                PageParameter.Set("Shortname2", subDirectory2);
-            }
-        }
-
-        private bool IsFileInSubdirOf(string file, string compareDirectory, out string subDir)
-        {
-            try
-            {
-                DirectoryInfo parentDir = new FileInfo(file).Directory;
-                subDir = parentDir.Name;
-                DirectoryInfo secondParentDir = parentDir.Parent;
-                return secondParentDir.Parent != null && 
-                    secondParentDir.FullName == Path.GetFullPath(compareDirectory);
-            }
-            catch (Exception exception)
-            {
-                _log.Error(exception);
-                subDir = null;
-                return false;
-            }
-        }
-
-        private bool CreateDirectories()
-        {
-            DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-            try
-            {
-                string workingDirectory = FileHelper.CreateRandomDirectory(settings.WorkingAreaPath);
-                string unpackedCrxDirectory = FileHelper.CreateRandomDirectory(workingDirectory);
-
-                PageParameter.Set("ExtensionWorkingDirectory", workingDirectory);
-                PageParameter.Set("UnpackedCrxDirectory", unpackedCrxDirectory);
-
-                return true;
-            }
-            catch (Exception exception)
-            {
-                ErrorMessage = StringResources.GetWithReason(this, 4, exception.Message);
-                ErrorOccurred = true;
-                _log.Error(exception);
-
-                return false;
-            }
-        }
-
-
-        private async Task<bool> UnpackAsync(string sourceCrxFile, string unpackedCrxDirectory)
-        {
-            IExtensionDepackager depackager = new ExtensionDepackager();
-            try
-            {
-                await depackager.UnpackCrxAsync(sourceCrxFile, unpackedCrxDirectory);
-                return true;
-            }
-            catch (Exception exception)
-            {
-                ErrorMessage = StringResources.GetWithReason(this, 5, exception.Message);
-                ErrorOccurred = true;
-                _log.Error(exception);
-                return false;
-            }
-        }
-
-
-        private Manifest ReadManifest(string unpackedCrxDirectory)
-        {
-            IManifestReader manifestReader = new ManifestReader(unpackedCrxDirectory);
-            try
-            {
-                Manifest manifest = manifestReader.ReadManifest();
-                return manifest;
-            }
-            catch (Exception exception)
-            {
-                ErrorMessage = StringResources.GetWithReason(this, 3, exception.Message);
-                ErrorOccurred = true;
-                _log.Warn(exception);
-                return null;
-            }
-        }
-
         private void SetExtensionValues(Manifest manifest)
         {
-            PageParameter.Set("ManifestContent", manifest.RawContent);
             PageParameter.Extension.Name = PageParameter.Extension.Name ?? manifest.Name;
-            PageParameter.Extension.Version = manifest.Version;
             PageParameter.Extension.ShortName = PageParameter.Extension.ShortName ?? new ShortNameFormatter().Format(manifest.Name);
+            PageParameter.Extension.Version = manifest.Version;
+            PageParameter.Set("ManifestContent", manifest.RawContent);
             PageParameter.Set("ManifestFile", manifest.File);
         }
+
 
         private string ExtractAppId(string privateKeyFile)
         {
@@ -332,14 +216,17 @@ namespace Extension_Packager_Library.src.Viewmodels
             {
                 IsBusy = false;
                 //ErrorMessage = StringResources.GetWithReason(this, 4, ex.Message);
-                ErrorOccurred = true;
+                IsWarningVisible = true;
                 _log.Error(ex);
                 return null;
             }
         }
 
-        private bool IsDuplicateShortname(string id)
+
+        private bool IdAlreadyExists(string id)
         {
+            if (id == null) return false;
+
             IExtensionStorage storage = new DatabaseStorage();
             int count = storage.GetCountById(id);
             return count > 0;

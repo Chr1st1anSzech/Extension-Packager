@@ -234,13 +234,16 @@
   <data name="CrxSelectPageViewModel2" xml:space="preserve">
     <value>Beim Entpacken der CRX-Datei oder Lesen des Manifests ist ein Fehler aufgetreten.</value>
   </data>
-  <data name="CrxSelectPageViewModel3" xml:space="preserve">
+  <data name="CrxSelectDataProcessing4" xml:space="preserve">
     <value>Die erforderlichen Informationen konnten nicht aus der Manifestdatei gelesen werden.</value>
   </data>
-  <data name="CrxSelectPageViewModel4" xml:space="preserve">
+  <data name="CrxSelectDataProcessing1" xml:space="preserve">
+    <value>Es konnte nicht ermittelt werden, ob sich die CRX-Datei oder die Schlüsseldatei bereits im Anwendungsverzeichnis befinden.</value>
+  </data>
+  <data name="CrxSelectDataProcessing2" xml:space="preserve">
     <value>Die Arbeitsverzeichnisse konnten nicht erstellt werden.</value>
   </data>
-  <data name="CrxSelectPageViewModel5" xml:space="preserve">
+  <data name="CrxSelectDataProcessing3" xml:space="preserve">
     <value>Das Entpacken der CRX-Datei ist fehlgeschlagen.</value>
   </data>
   <data name="CrxSelectPageViewModel6" xml:space="preserve">
@@ -385,7 +388,7 @@ werden gelöscht.</value>
     <value>Hinzufügen</value>
   </data>
   <data name="XmlManifestEditPageFinishButton.Content" xml:space="preserve">
-    <value>Fertigstellen</value>
+    <value>Bereitstellen</value>
   </data>
   <data name="SettingsPageFirstRunInfo.Text" xml:space="preserve">
     <value>Die Standardeinstellungen wurden geladen. Bitte konfigurieren Sie die Vorgaben.</value>
@@ -747,8 +750,21 @@ werden gelöscht.</value>
   </data>  
   <data name="PageNavigationWarning3" xml:space="preserve">
     <value>Bleiben</value>
-  </data>  
+  </data>
   <data name="PageNavigationWarning4" xml:space="preserve">
     <value>Verlassen</value>
+  </data>
+
+  <data name="OptionalInfosPageFinishButton.Content" xml:space="preserve">
+    <value>Fertig</value>
+  </data>
+  <data name="OptionalInfosPageTitle.Text" xml:space="preserve">
+    <value>Optionale Informationen</value>
+  </data>
+  <data name="OptionalInfosPageBrowserGroupTitle.Text" xml:space="preserve">
+    <value>Bereitstellung im Browser</value>
+  </data>
+  <data name="OptionalInfosPageCommentTextbox.Header" xml:space="preserve">
+    <value>Kommentar</value>
   </data>
 </root>

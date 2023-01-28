@@ -36,33 +36,6 @@ namespace Extension_Packager_Library.src.Viewmodels
             set { SetField(ref _navigationService, value); }
         }
 
-
-        private bool _isBusy = false;
-        public bool IsBusy
-        {
-            get { return _isBusy; }
-            set { SetField(ref _isBusy, value); }
-
-        }
-
-
-        private string _errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { SetField(ref _errorMessage, value); }
-
-        }
-
-
-        private bool _errorOccured = false;
-        public bool ErrorOccured
-        {
-            get { return _errorOccured; }
-            set { SetField(ref _errorOccured, value); }
-
-        }
-
         private bool _isEditBoxReadOnly = true;
         public bool IsEditBoxReadOnly
         {
@@ -144,7 +117,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         private void GoForward()
         {
             PageParameter.IsPageBack = false;
-            _navigationService.Navigate("SuccessPage", PageParameter);
+            _navigationService.Navigate("OptionalInfosPage", PageParameter);
         }
 
 
@@ -178,9 +151,9 @@ namespace Extension_Packager_Library.src.Viewmodels
             {
                 Directory.Delete(PageParameter.Get<string>("ExtensionWorkingDirectory"), true);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                ErrorMessage = StringResources.GetWithReason(this, 5, exception.Message);
+                ShowWarning(StringResources.GetWithReason(this, 5, ex.Message), ex);
             }
         }
 
@@ -219,10 +192,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception ex)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.GetWithReason(this, 1, ex.Message);
-                ErrorOccured = true;
-                _log.Error(ex);
+                ShowWarning(StringResources.GetWithReason(this, 1, ex.Message), ex);
                 return false;
             }
         }
@@ -255,10 +225,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception ex)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.GetWithReason(this, 2, ex.Message);
-                ErrorOccured = true;
-                _log.Error(ex);
+                ShowWarning(StringResources.GetWithReason(this, 2, ex.Message), ex);
                 return false;
             }
         }
@@ -267,9 +234,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             if (name is null)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.Get(this, 4);
-                ErrorOccured = true;
+                ShowWarning(StringResources.Get(this, 4));
                 return null;
             }
 
@@ -289,10 +254,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception ex)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.GetWithReason(this, 3, ex.Message);
-                ErrorOccured = true;
-                _log.Error(ex);
+                ShowWarning(StringResources.GetWithReason(this, 3, ex.Message), ex);
                 return null;
             }
         }

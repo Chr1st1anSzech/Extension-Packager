@@ -37,31 +37,6 @@ namespace Extension_Packager_Library.src.Viewmodels
             set { SetField(ref _navigationService, value); }
         }
 
-        private bool _isBusy = false;
-        public bool IsBusy
-        {
-            get { return _isBusy; }
-            set { SetField(ref _isBusy, value); }
-
-        }
-
-        private string _errorMessage = string.Empty;
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { SetField(ref _errorMessage, value); }
-
-        }
-
-
-        private bool _errorOccured = false;
-        public bool ErrorOccured
-        {
-            get { return _errorOccured; }
-            set { SetField(ref _errorOccured, value); }
-
-        }
-
 
         private bool _isEditBoxReadOnly = true;
         public bool IsEditBoxReadOnly
@@ -202,7 +177,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception exception)
             {
-                ErrorMessage = StringResources.GetWithReason(this, 9, exception.Message);
+                WarningMessage = StringResources.GetWithReason(this, 9, exception.Message);
             }
         }
 
@@ -256,36 +231,27 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         private bool IsInputValide()
         {
-            if (!InputValidator.IsNameValid(Name))
+            bool areAllInputsValid = IsValidOrWarn(() =>
             {
-                IsNameValid = false;
-                IsBusy = false;
-                ErrorMessage = StringResources.Get(this, 7);
-                ErrorOccured = true;
-                return false;
-            }
+                return InputValidator.IsNameValid(Name);
+            }, StringResources.Get(this, 7));
 
-            if (!InputValidator.IsShortNameValide(ShortName))
+
+            areAllInputsValid &= IsValidOrWarn(() =>
             {
-                IsShortNameValid = false;
-                IsBusy = false;
-                ErrorMessage = StringResources.Get(this, 8);
-                ErrorOccured = true;
-                return false;
-            }
+                return InputValidator.IsShortNameValide(ShortName);
+            }, StringResources.Get(this, 8));
 
-            if (IsDuplicateShortname() && !PageParameter.IsUpdate)
+
+            areAllInputsValid &= IsValidOrWarn(() =>
             {
-                IsShortNameValid = false;
-                IsBusy = false;
-                ErrorMessage = StringResources.Get(this, 10);
-                ErrorOccured = true;
-                return false;
-            }
+                return !IsDuplicateShortname() || PageParameter.IsUpdate;
+            }, StringResources.Get(this, 10));
 
-            IsNameValid = true;
-            IsShortNameValid = true;
-            ErrorOccured = false;
+            if (!areAllInputsValid) return false;
+
+            IsNameValid = IsShortNameValid = true;
+            IsWarningVisible = false;
             return true;
         }
 
@@ -305,13 +271,14 @@ namespace Extension_Packager_Library.src.Viewmodels
             if (shortname1 != null || shortname2 != null)
             {
                 result = ExtInOutputDir.Partial;
-                ErrorMessage = StringResources.Get(this, 11);
+
+                string errorMessage = StringResources.Get(this, 11);
                 if (shortname1.Equals(shortname2))
                 {
                     result = ExtInOutputDir.Full;
-                    ErrorMessage = StringResources.Get(this, 12);
+                    errorMessage = StringResources.Get(this, 12);
                 }
-                ErrorOccured = true;
+                ShowWarning(errorMessage);
             }
             PageParameter.Set("ExtInOutputDir", result);
         }
@@ -334,10 +301,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception ex)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.GetWithReason(this, 3, ex.Message);
-                ErrorOccured = true;
-                _log.Error(ex);
+                ShowWarning(StringResources.GetWithReason(this, 3, ex.Message), ex);
                 return false;
             }
             return true;
@@ -353,10 +317,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception ex)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.GetWithReason(this, 1, ex.Message);
-                ErrorOccured = true;
-                _log.Error(ex);
+                ShowWarning(StringResources.GetWithReason(this, 1, ex.Message), ex);
                 return false;
             }
         }
@@ -378,10 +339,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception ex)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.GetWithReason(this, 2, ex.Message);
-                ErrorOccured = true;
-                _log.Error(ex);
+                ShowWarning(StringResources.GetWithReason(this, 2, ex.Message), ex);
             }
             return null;
         }
@@ -393,9 +351,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             if (files.Length != 1)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.Get(this, 6);
-                ErrorOccured = true;
+                ShowWarning(StringResources.Get(this, 6));
                 return null;
             }
 
@@ -417,10 +373,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             }
             catch (Exception ex)
             {
-                IsBusy = false;
-                ErrorMessage = StringResources.GetWithReason(this, 4, ex.Message);
-                ErrorOccured = true;
-                _log.Error(ex);
+                ShowWarning(StringResources.GetWithReason(this, 4, ex.Message), ex);
                 return null;
             }
         }

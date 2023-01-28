@@ -1,0 +1,121 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
+    x:Class="Extension_Packager.src.Views.OptionalInfosPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Extension_Packager.src.Views"
+    xmlns:viewmodels="using:Extension_Packager_Library.src.Viewmodels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <viewmodels:OptionalInfosPageViewModel />
+    </Page.DataContext>
+
+
+    <Grid
+        x:Name="MainGrid"
+        AutomationProperties.AccessibilityView="Raw"
+        Style="{StaticResource BaseGridStyle}"
+        HorizontalAlignment="Stretch"
+        Padding="0">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer
+            AutomationProperties.LabeledBy="{Binding ElementName=PageTitle}"
+            AutomationProperties.LandmarkType="Main"
+            Grid.Row="0"
+            Padding="0">
+            <Grid
+                AutomationProperties.AccessibilityView="Raw"
+                Style="{StaticResource BaseGridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*"
+                        MinWidth="312"
+                        MaxWidth="512" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                    <RowDefinition
+                        Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    x:Name="PageTitle"
+                    x:Uid="OptionalInfosPageTitle"
+                    AutomationProperties.HeadingLevel="Level2"
+                    Grid.Row="0"
+                    Style="{StaticResource Header01Style}" />
+
+                <StackPanel
+                    AutomationProperties.LabeledBy="{Binding ElementName=BrowserGroupTitle}"
+                    Grid.Row="1"
+                    Orientation="Vertical">
+                    <TextBlock
+                        x:Name="BrowserGroupTitle"
+                        x:Uid="OptionalInfosPageBrowserGroupTitle"
+                        AutomationProperties.HeadingLevel="Level2"
+                        Grid.Row="0"
+                        Style="{StaticResource Header01Style}" />
+                    <StackPanel
+                        x:Name="BrowserCheckboxsesStackPanel"
+                        Orientation="Horizontal">
+                        
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBox
+                    x:Uid="OptionalInfosPageCommentTextbox"
+                    Grid.Row="2"
+                    Style="{StaticResource TextboxWithHeaderStyle}"
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding Path=Comment, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+
+            </Grid>
+
+        </ScrollViewer>
+
+        <StackPanel
+            AutomationProperties.LandmarkType="Navigation"
+            Grid.Row="1"
+            Style="{StaticResource BaseStackPanelStyle}"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal"
+            Spacing="24">
+
+            <Button
+                x:Uid="AllPagesGoBackButton"
+                Command="{Binding Path=GoBackCommand}"
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="110" />
+
+            <Button
+                x:Uid="OptionalInfosPageFinishButton"
+                Command="{Binding Path=ProcessAndContinueCommand}"
+                Style="{StaticResource HighlightedButtonStyle}"
+                Width="110" />
+
+        </StackPanel>
+
+    </Grid>
+
+</Page>

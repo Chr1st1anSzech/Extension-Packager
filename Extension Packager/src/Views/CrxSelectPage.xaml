@@ -101,9 +101,9 @@
                     Style="{StaticResource WarningTextBlockStyle}"
                     MinWidth="300"
                     MinHeight="32"
+                    Text="{Binding Path=WarningMessage}"
                     TextWrapping="WrapWholeWords"
-                    Text="{Binding Path=ErrorMessage}"
-                    Visibility="{Binding Path=ErrorOccurred,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
+                    Visibility="{Binding Path=IsWarningVisible,Converter={StaticResource BoolToVisibilityConverter}, Mode=TwoWay}" />
 
                 <controls:PathTextBox
                     x:Name="CrxFileTextBox"
