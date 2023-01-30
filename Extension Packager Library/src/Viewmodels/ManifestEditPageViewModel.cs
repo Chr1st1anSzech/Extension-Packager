@@ -3,18 +3,16 @@
 
 using Extension_Packager_Library.src.Database;
 using Extension_Packager_Library.src.DataModels;
-using Extension_Packager_Library.src.Extension;
+using Extension_Packager_Library.src.DataProcessing;
 using Extension_Packager_Library.src.Formatter;
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
-using Extension_Packager_Library.src.Settings;
 using Extension_Packager_Library.src.Validation;
 using log4net;
 using Microsoft.UI.Text;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using static Extension_Packager_Library.src.DataModels.Constants;
 
 namespace Extension_Packager_Library.src.Viewmodels
@@ -113,6 +111,8 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         #region Private Fields
 
+        private ManifestEditDataProcessing dataProcessing;
+
         #endregion
 
 
@@ -149,6 +149,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             SetCommands();
             SetProperties();
             CompareToRecognizedShortname();
+            dataProcessing = new(ShortName, PageParameter, ShowWarning);
         }
 
 
@@ -158,11 +159,13 @@ namespace Extension_Packager_Library.src.Viewmodels
             _navigationService.Navigate("CrxSelectPage", PageParameter);
         }
 
+
         private void GoForward()
         {
             PageParameter.IsPageBack = false;
             _navigationService.Navigate("XmlManifestPage", PageParameter);
         }
+
 
         public void Reset()
         {
@@ -197,31 +200,8 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             SetExtensionValues();
 
-            if (!ChangeManifest()) return;
-
-            if (!await SaveManifestAsync()) return;
-
-            if (PageParameter.IsUpdate)
-            {
-                string privateKeyFile = FindPrivateKeyFile(PageParameter.Extension.BackupDir);
-                if (privateKeyFile == null) return;
-                PageParameter.Set("PrivateKeyFile", privateKeyFile);
-            }
-
-            string packedCrxFile = PackExtension(PageParameter.Get<string>("UnpackedCrxDirectory"), PageParameter.Get<string>("PrivateKeyFile"));
-            if (packedCrxFile == null) return;
-            PageParameter.Set("TmpPackedCrxFile", packedCrxFile);
-
-            if (!PageParameter.IsUpdate && !PageParameter.IsAddition)
-            {
-                string tmpPrivateKeyFile = FindPrivateKeyFile(PageParameter.Get<string>("ExtensionWorkingDirectory"));
-                if (tmpPrivateKeyFile == null) return;
-                PageParameter.Set("PrivateKeyFile", tmpPrivateKeyFile);
-            }
-
-            string appId = PageParameter.Extension.Id ?? ExtractAppId(PageParameter.Get<string>("PrivateKeyFile"));
-            if (appId == null) return;
-            PageParameter.Extension.Id = appId;
+            bool successfulProcessing = await dataProcessing.ProcessInput();
+            if (!successfulProcessing) return;
 
             IsBusy = false;
 
@@ -255,12 +235,14 @@ namespace Extension_Packager_Library.src.Viewmodels
             return true;
         }
 
+
         private bool IsDuplicateShortname()
         {
             IExtensionStorage storage = new DatabaseStorage();
             int count = storage.GetCountByShortname(ShortName);
             return count > 0;
         }
+
 
         private void CompareToRecognizedShortname()
         {
@@ -291,94 +273,6 @@ namespace Extension_Packager_Library.src.Viewmodels
         }
 
 
-        private bool ChangeManifest()
-        {
-            DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-            string updateUrl = Helper.Uri.Combine(settings.OutputURL, ShortName, settings.XmlManifestName);
-            try
-            {
-                PageParameter.Set("ManifestContent", Manifest.ChangeUpdateUrl(PageParameter.Get<string>("ManifestContent"), updateUrl));
-            }
-            catch (Exception ex)
-            {
-                ShowWarning(StringResources.GetWithReason(this, 3, ex.Message), ex);
-                return false;
-            }
-            return true;
-        }
-
-
-        private async Task<bool> SaveManifestAsync()
-        {
-            try
-            {
-                await File.WriteAllTextAsync(PageParameter.Get<string>("ManifestFile"), PageParameter.Get<string>("ManifestContent"));
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ShowWarning(StringResources.GetWithReason(this, 1, ex.Message), ex);
-                return false;
-            }
-        }
-
-
-        /// <summary>
-        /// Packs an unpacked extension.
-        /// </summary>
-        /// <returns>Path to the newly packed extension</returns>
-        private string PackExtension(string unpackedCrxDirectory, string privateKeyFile)
-        {
-            try
-            {
-                DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-                IExtensionPacker packer = new ExtensionPacker();
-                return packer.Pack(settings.BrowserPath,
-                    settings.ExtensionPathParameter, unpackedCrxDirectory,
-                    settings.ExtensionKeyParameter, privateKeyFile);
-            }
-            catch (Exception ex)
-            {
-                ShowWarning(StringResources.GetWithReason(this, 2, ex.Message), ex);
-            }
-            return null;
-        }
-
-
-        private string FindPrivateKeyFile(string searchDirectory)
-        {
-            string[] files = FileHelper.FindFiles(searchDirectory, ".pem");
-
-            if (files.Length != 1)
-            {
-                ShowWarning(StringResources.Get(this, 6));
-                return null;
-            }
-
-            return files[0];
-        }
-
-
-        private string ExtractAppId(string privateKeyFile)
-        {
-            if (string.IsNullOrWhiteSpace(privateKeyFile))
-            {
-                throw new ArgumentException($"\"{nameof(privateKeyFile)}\" should not be NULL or whitespace.", nameof(privateKeyFile));
-            }
-
-            IAppIdReader appIdReader = new AppIdReader();
-            try
-            {
-                return appIdReader.GetAppIdByPrivateKey(privateKeyFile);
-            }
-            catch (Exception ex)
-            {
-                ShowWarning(StringResources.GetWithReason(this, 4, ex.Message), ex);
-                return null;
-            }
-        }
-
-
         private void ShowManifest(object parameter = null)
         {
             IsEditBoxReadOnly = false;
@@ -390,7 +284,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                 return;
             }
 
-            ChangeManifest();
+            dataProcessing.ChangeManifest(ShortName);
 
             ExtensionManifestDocument.SetText(TextSetOptions.FormatRtf, PageParameter.Get<string>("ManifestContent"));
 

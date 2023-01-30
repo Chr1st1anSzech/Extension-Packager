@@ -119,11 +119,13 @@ namespace Extension_Packager_Library.src.Viewmodels
             _navigationService.Navigate("MainPage");
         }
 
+
         private void GoForward()
         {
             PageParameter.IsPageBack = false;
             _navigationService.Navigate("ManifestEditPage", PageParameter);
         }
+
 
         public void Reset()
         {

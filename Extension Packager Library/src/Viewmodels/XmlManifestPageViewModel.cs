@@ -3,18 +3,12 @@
 
 using Microsoft.UI.Text;
 using Extension_Packager_Library.src.DataModels;
-using Extension_Packager_Library.src.Extension;
-using Extension_Packager_Library.src.Settings;
 using Extension_Packager_Library.src.Formatter;
-using System.Threading.Tasks;
 using Extension_Packager_Library.src.Helper;
 using log4net;
-using System;
 using System.Reflection;
-using Uri = Extension_Packager_Library.src.Helper.Uri;
 using Extension_Packager_Library.src.Navigation;
-using Extension_Packager_Library.src.Database;
-using System.IO;
+using Extension_Packager_Library.src.DataProcessing;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {
@@ -114,6 +108,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             _navigationService.Navigate("ManifestEditPage", PageParameter);
         }
 
+
         private void GoForward()
         {
             PageParameter.IsPageBack = false;
@@ -124,140 +119,16 @@ namespace Extension_Packager_Library.src.Viewmodels
         private async void ProcessAndContinue(object parameter = null)
         {
             IsBusy = true;
-            string xmlManifest = CreateXmlManifest();
-            if (xmlManifest == null) return;
-            PageParameter.Set("XmlManifestContent", xmlManifest);
 
-            if (!await DeployExtensionAsync()) { return; }
-            if (!await BackupExtensionAsync()) { return; }
-
-            if (!StoreExtension()) { return; }
-
-            string policyString = CreatePolicyString(PageParameter.Extension.ShortName);
-            if (policyString == null) return;
-            PageParameter.Set("PolicyString", policyString);
-
-            DeleteTemporaryFiles();
+            XmlManifestDataProcessing dataProcessing = new(PageParameter, ShowWarning);
+            bool successfulProcessing = await dataProcessing.ProcessInput(); ;
+            if (!successfulProcessing) return;
 
             IsBusy = false;
 
             GoForward();
         }
 
-        private void DeleteTemporaryFiles()
-        {
-            if (PageParameter.Get<string>("ExtensionWorkingDirectory") == null) return;
-            try
-            {
-                Directory.Delete(PageParameter.Get<string>("ExtensionWorkingDirectory"), true);
-            }
-            catch (Exception ex)
-            {
-                ShowWarning(StringResources.GetWithReason(this, 5, ex.Message), ex);
-            }
-        }
-
-        private bool StoreExtension()
-        {
-            IExtensionStorage storage = new DatabaseStorage();
-            storage.Set(PageParameter.Extension);
-            storage.SetLastModified(PageParameter.Extension);
-            return true;
-        }
-
-        private async Task<bool> DeployExtensionAsync()
-        {
-            try
-            {
-                DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-                string extDeployementDir = Path.Combine(settings.DeployementDirectory, PageParameter.Extension.ShortName);
-                Constants.ExtInOutputDir ExtInOutputDir = PageParameter.Get<Constants.ExtInOutputDir>("ExtInOutputDir");
-                if (ExtInOutputDir != Constants.ExtInOutputDir.Full)
-                {
-                    DeployementInfoData deployementInfos = new()
-                    {
-                        DeployementDirectory = extDeployementDir,
-                        CrxFile = PageParameter.Get<string>("TmpPackedCrxFile"),
-                        CrxName = settings.CrxName,
-                        XmlManifest = PageParameter.Get<string>("XmlManifestContent"),
-                        XmlManifestName = settings.XmlManifestName
-                    };
-
-                    bool canOverwrite = PageParameter.IsUpdate || ExtInOutputDir == Constants.ExtInOutputDir.Partial;
-                    IExtensionDeployement deployment = new ExtensionDeployement(canOverwrite);
-                    await deployment.DeployAsync(deployementInfos);
-                }
-                PageParameter.Extension.DeployementDir = extDeployementDir;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ShowWarning(StringResources.GetWithReason(this, 1, ex.Message), ex);
-                return false;
-            }
-        }
-
-        private async Task<bool> BackupExtensionAsync()
-        {
-            try
-            {
-                DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-                string extBackupDeployementDir = Path.Combine(settings.BackupDirectory, PageParameter.Extension.ShortName);
-                Constants.ExtInOutputDir ExtInOutputDir = PageParameter.Get<Constants.ExtInOutputDir>("ExtInOutputDir");
-                if (ExtInOutputDir != Constants.ExtInOutputDir.Full)
-                {
-                    BackupInfoData backupInfos = new()
-                    {
-                        BackupDirectory = extBackupDeployementDir,
-                        CrxFile = PageParameter.Get<string>("TmpPackedCrxFile"),
-                        CrxName = settings.CrxName,
-                        PrivateKeyName = settings.PrivateKeyName,
-                        XmlManifest = PageParameter.Get<string>("XmlManifestContent"),
-                        XmlManifestName = settings.XmlManifestName,
-                        TmpPrivateKeyPath = PageParameter.Get<string>("PrivateKeyFile")
-                    };
-                    bool canOverwrite = PageParameter.IsUpdate || ExtInOutputDir == Constants.ExtInOutputDir.Partial;
-                    IExtensionBackup backup = new ExtensionBackup(canOverwrite);
-                    await backup.BackupAsync(backupInfos);
-                }
-                PageParameter.Extension.BackupDir = extBackupDeployementDir;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ShowWarning(StringResources.GetWithReason(this, 2, ex.Message), ex);
-                return false;
-            }
-        }
-
-        private string CreatePolicyString(string name)
-        {
-            if (name is null)
-            {
-                ShowWarning(StringResources.Get(this, 4));
-                return null;
-            }
-
-            DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-            string xmlManifestFileUrl = Uri.Combine(settings.OutputURL, name, settings.XmlManifestName);
-            return new PolicyStringGenerator().Create(PageParameter.Extension.Id, xmlManifestFileUrl);
-        }
-
-        private string CreateXmlManifest()
-        {
-            XmlManifest xmlManifest = new();
-            DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
-            string crxFileUrl = Uri.Combine(settings.OutputURL, PageParameter.Extension.ShortName, settings.CrxName);
-            try
-            {
-                return xmlManifest.Create(crxFileUrl, PageParameter.Extension.Version, PageParameter.Extension.Id);
-            }
-            catch (Exception ex)
-            {
-                ShowWarning(StringResources.GetWithReason(this, 3, ex.Message), ex);
-                return null;
-            }
-        }
 
         private void PreviewXmlManifest(object parameter = null)
         {
