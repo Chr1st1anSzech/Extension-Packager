@@ -1,8 +1,8 @@
 ﻿namespace Extension_Packager_Library.src.DataModels
 {
-    public class Constants
+    internal class Constants
     {
-        public enum ExtInOutputDir
+        internal enum ExtInOutputDir
         {
             None,
             Partial,

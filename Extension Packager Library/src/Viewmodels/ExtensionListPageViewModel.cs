@@ -1,11 +1,12 @@
-﻿using Extension_Packager_Library.src.Database;
+﻿// Copyright (c) Christian Szech
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Extension_Packager_Library.src.Database;
 using Extension_Packager_Library.src.DataModels;
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
-using Extension_Packager_Library.src.Settings;
 using log4net;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;

@@ -1,21 +1,20 @@
 ﻿/**
  * (c) 2013 Rob Wu <rob@robwu.nl>
- * This Source Code Form is subject to the terms of the Mozilla Public
+ * This Source Code Form is subject to the terms of the Mozilla internal
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public class CrxInfo
+    internal class CrxInfo
     {
         #region Properties
 
-        public string Version
+        internal string Version
         {
             get
             {
@@ -23,7 +22,7 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
-        public int PublicKeyLength
+        internal int PublicKeyLength
         {
             get
             {
@@ -31,7 +30,7 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
-        public byte[] PublicKey
+        internal byte[] PublicKey
         {
             get
             {
@@ -39,7 +38,7 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
-        public int HeaderLength
+        internal int HeaderLength
         {
             get
             {
@@ -47,7 +46,7 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
-        public int SignatureLength
+        internal int SignatureLength
         {
             get
             {
@@ -57,7 +56,7 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
-        public bool IsZipArchive
+        internal bool IsZipArchive
         {
             get
             {
@@ -66,7 +65,7 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
-        public string MagicNumber
+        internal string MagicNumber
         {
             get
             {
@@ -84,7 +83,7 @@ namespace Extension_Packager_Library.src.Extension
 
         private readonly byte[] _buf;
 
-        public CrxInfo(byte[] buf)
+        internal CrxInfo(byte[] buf)
         {
             if (buf == null) throw new ArgumentNullException(nameof(buf));
             if (buf.Length < 16) throw new ArgumentException(nameof(buf), "Invalid header");

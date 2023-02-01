@@ -9,18 +9,18 @@ using System.Reflection;
 
 namespace Extension_Packager_Library.src.DataModels
 {
-    public class Manifest
+    internal class Manifest
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly static string _updateUrlAttribute = "update_url";
 
-        public string RawContent { get; set; }
-        public string File { get; set; }
-        public string Name { get; set; }
-        public string Version { get; set; }
+        internal string RawContent { get; set; }
+        internal string File { get; set; }
+        internal string Name { get; set; }
+        internal string Version { get; set; }
 
-        public Manifest(string rawContent, string file)
+        internal Manifest(string rawContent, string file)
         {
             RawContent = rawContent;
             File = file;
@@ -30,7 +30,7 @@ namespace Extension_Packager_Library.src.DataModels
         /// Sets a new value for the update URL. The attribute is created if it does not already exist.
         /// </summary>
         /// <param name="updateUrl">The new value for the attribute.</param>
-        public static string ChangeUpdateUrl(string manifest, string updateUrl)
+        internal static string ChangeUpdateUrl(string manifest, string updateUrl)
         {
             try
             {

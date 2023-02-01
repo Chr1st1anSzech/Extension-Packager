@@ -3,12 +3,12 @@
 
 namespace Extension_Packager_Library.src.DataModels
 {
-    public class DeployementInfoData
+    internal class DeployementInfoData
     {
-        public string DeployementDirectory { get; set; }
-        public string XmlManifest { get; set; }
-        public string XmlManifestName { get; set; }
-        public string CrxName { get; set; }
-        public string CrxFile { get; set; }
+        internal string DeployementDirectory { get; set; }
+        internal string XmlManifest { get; set; }
+        internal string XmlManifestName { get; set; }
+        internal string CrxName { get; set; }
+        internal string CrxFile { get; set; }
     }
 }

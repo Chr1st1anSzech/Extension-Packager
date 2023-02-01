@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public interface IExtensionBackup
+    internal interface IExtensionBackup
     {
-        public Task BackupAsync(BackupInfoData infos);
+        internal Task BackupAsync(BackupInfoData infos);
     }
 
 
-    public class ExtensionBackup : ExtensionPostProcess, IExtensionBackup
+    internal class ExtensionBackup : ExtensionPostProcess, IExtensionBackup
     {
-        public ExtensionBackup(bool canOverwrite = false) : base(canOverwrite)
+        internal ExtensionBackup(bool canOverwrite = false) : base(canOverwrite)
         {
 
         }

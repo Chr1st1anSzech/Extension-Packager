@@ -465,13 +465,13 @@ werden gelöscht.</value>
   <data name="MainWindowViewModel2" xml:space="preserve">
     <value>Erstellen</value>
   </data>
-  <data name="ManifestEditPageViewModel1" xml:space="preserve">
+  <data name="ManifestEditDataProcessing2" xml:space="preserve">
     <value>Das Schreiben der Manifestdatei ist fehlgeschlagen. Prüfen Sie, ob auf die Datei Zugriff besteht.</value>
   </data>
-  <data name="ManifestEditPageViewModel2" xml:space="preserve">
+  <data name="ManifestEditDataProcessing4" xml:space="preserve">
     <value>Die Erweiterung konnte nicht gepackt werden. Prüfen Sie den Pfad des Browser, die Parameter und den Zugriff auf das Verzeichnis.</value>
   </data>
-  <data name="ManifestEditPageViewModel3" xml:space="preserve">
+  <data name="ManifestEditDataProcessing1" xml:space="preserve">
     <value>Die Update-URL der Manifestdatei konnte nicht verändert werden.</value>
   </data>
   <data name="ManifestEditPageViewModel4" xml:space="preserve">
@@ -480,7 +480,7 @@ werden gelöscht.</value>
   <data name="ManifestEditPageViewModel5" xml:space="preserve">
     <value>Die Suche nach dem privaten Schlüssel (PEM-Datei) ist fehlgeschlagen.</value>
   </data>
-  <data name="ManifestEditPageViewModel6" xml:space="preserve">
+  <data name="ManifestEditDataProcessing3" xml:space="preserve">
     <value>Im Verzeichnis wurde keine oder mehrere private Schlüssel gefunden. Verschieben/Löschen Sie die unbenötigte Schlüsseldatei.</value>
   </data>
   <data name="ManifestEditPageViewModel7" xml:space="preserve">
@@ -627,19 +627,19 @@ werden gelöscht.</value>
   <data name="XmlManifestEditPageTitle.Text" xml:space="preserve">
     <value>XML Manifest erstellen</value>
   </data>
-  <data name="XmlManifestPageViewModel1" xml:space="preserve">
+  <data name="XmlManifestDataProcessing3" xml:space="preserve">
     <value>Die Erweiterung konnte nicht im Zielverzeichnis bereitgestellt werden.</value>
   </data>
-  <data name="XmlManifestPageViewModel2" xml:space="preserve">
+  <data name="XmlManifestDataProcessing4" xml:space="preserve">
     <value>Die Erweiterung konnte nicht im Sicherungsverzeichnis gesichert werden.</value>
   </data>
-  <data name="XmlManifestPageViewModel3" xml:space="preserve">
+  <data name="XmlManifestDataProcessing1" xml:space="preserve">
     <value>Das XML-Manifest konnte nicht erstellt werden.</value>
   </data>
-  <data name="XmlManifestPageViewModel4" xml:space="preserve">
+  <data name="XmlManifestDataProcessing5" xml:space="preserve">
     <value>Der Richtlinienwert konnte nicht erstellt werden, weil der Name invalide ist.</value>
   </data>
-  <data name="XmlManifestPageViewModel5" xml:space="preserve">
+  <data name="XmlManifestDataProcessing2" xml:space="preserve">
     <value>Das Arbeitsverzeichnis konnte nicht gelöscht werden.</value>
   </data>
   <data name="XmlManifestEditPagePreviewButton.Content" xml:space="preserve">

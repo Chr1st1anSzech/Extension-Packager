@@ -9,6 +9,7 @@ using log4net;
 using System.Reflection;
 using Extension_Packager_Library.src.Navigation;
 using Extension_Packager_Library.src.DataProcessing;
+using System.Xml;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {
@@ -62,12 +63,13 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         #region Private Fields
 
+        private XmlManifestDataProcessing _dataProcessing;
+
         #endregion
 
 
         #region Static Fields
 
-        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
@@ -85,6 +87,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             SetCommands();
             SetProperties();
+            _dataProcessing = new(PageParameter, ShowWarning);
         }
 
 
@@ -120,8 +123,7 @@ namespace Extension_Packager_Library.src.Viewmodels
         {
             IsBusy = true;
 
-            XmlManifestDataProcessing dataProcessing = new(PageParameter, ShowWarning);
-            bool successfulProcessing = await dataProcessing.ProcessInput(); ;
+            bool successfulProcessing = await _dataProcessing.ProcessInput(); ;
             if (!successfulProcessing) return;
 
             IsBusy = false;
@@ -135,7 +137,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             IsEditBoxReadOnly = false;
 
 
-            string xmlManifest = CreateXmlManifest();
+            string xmlManifest = _dataProcessing.CreateXmlManifest();
             if (xmlManifest == null) return;
 
             ExtensionXmlManifestDocument.SetText(TextSetOptions.FormatRtf, xmlManifest);

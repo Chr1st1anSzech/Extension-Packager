@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public interface IExtensionDeployement
+    internal interface IExtensionDeployement
     {
-        public Task DeployAsync(DeployementInfoData infos);
+        internal Task DeployAsync(DeployementInfoData infos);
     }
 
-    public class ExtensionDeployement : ExtensionPostProcess, IExtensionDeployement
+    internal class ExtensionDeployement : ExtensionPostProcess, IExtensionDeployement
     {
-        public ExtensionDeployement(bool canOverwrite = false) : base(canOverwrite)
+        internal ExtensionDeployement(bool canOverwrite = false) : base(canOverwrite)
         {
 
         }

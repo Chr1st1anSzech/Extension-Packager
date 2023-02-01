@@ -4,11 +4,8 @@ using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Settings;
 using log4net;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.DataProcessing
@@ -27,18 +24,17 @@ namespace Extension_Packager_Library.src.DataProcessing
 
         #region Static Fields
 
-        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #endregion
 
-        public ManifestEditDataProcessing(string shortName, PageParameter pageParameter, Action<string, Exception> ShowWarning)
+        internal ManifestEditDataProcessing(string shortName, PageParameter pageParameter, Action<string, Exception> ShowWarning)
         {
             _shortName = shortName;
             _pageParameter = pageParameter;
             _showWarning = ShowWarning;
         }
 
-        public async Task<bool> ProcessInput()
+        internal async Task<bool> ProcessInput()
         {
             if (!ChangeManifest(_shortName)) return false;
 
@@ -72,7 +68,7 @@ namespace Extension_Packager_Library.src.DataProcessing
         }
 
 
-        public bool ChangeManifest(string shortName)
+        internal bool ChangeManifest(string shortName)
         {
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
             string updateUrl = Helper.Uri.Combine(settings.OutputURL, shortName, settings.XmlManifestName);
@@ -83,7 +79,7 @@ namespace Extension_Packager_Library.src.DataProcessing
             }
             catch (Exception ex)
             {
-                _showWarning(StringResources.GetWithReason(this, 3, ex.Message), ex);
+                _showWarning(StringResources.GetWithReason(this, 1, ex.Message), ex);
                 return false;
             }
             return true;
@@ -99,7 +95,7 @@ namespace Extension_Packager_Library.src.DataProcessing
             }
             catch (Exception ex)
             {
-                _showWarning(StringResources.GetWithReason(this, 1, ex.Message), ex);
+                _showWarning(StringResources.GetWithReason(this, 2, ex.Message), ex);
                 return false;
             }
         }
@@ -111,7 +107,7 @@ namespace Extension_Packager_Library.src.DataProcessing
 
             if (files.Length != 1)
             {
-                _showWarning(StringResources.Get(this, 6), null);
+                _showWarning(StringResources.Get(this, 3), null);
                 return null;
             }
 
@@ -135,7 +131,7 @@ namespace Extension_Packager_Library.src.DataProcessing
             }
             catch (Exception ex)
             {
-                _showWarning(StringResources.GetWithReason(this, 2, ex.Message), ex);
+                _showWarning(StringResources.GetWithReason(this, 4, ex.Message), ex);
             }
             return null;
         }

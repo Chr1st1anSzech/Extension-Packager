@@ -9,15 +9,17 @@ using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public class ExtensionPostProcess
+    internal class ExtensionPostProcess
     {
         internal static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         internal readonly bool _canOverwrite = false;
+
 
         internal ExtensionPostProcess(bool canOverwrite = false)
         {
             _canOverwrite = canOverwrite;
         }
+
 
         internal void CopyFile(string destinationFile, string sourceFile)
         {
@@ -41,6 +43,7 @@ namespace Extension_Packager_Library.src.Extension
             }
         }
 
+
         internal void CreateExtensionDirectory(string directoryToCreate)
         {
             _log.Debug($"Create extension directory \"{directoryToCreate}\".");
@@ -61,6 +64,7 @@ namespace Extension_Packager_Library.src.Extension
                 throw;
             }
         }
+
 
         internal async Task<string> WriteXmlManifestAsync(string xmlManifest, string xmlManifestFile, string destinationDirectory)
         {

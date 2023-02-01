@@ -5,20 +5,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public interface IAppIdReader
+    internal interface IAppIdReader
     {
-        public string GetAppIdByPrivateKey(string privateKeyFile);
+        internal string GetAppIdByPrivateKey(string privateKeyFile);
     }
 
-    public class AppIdReader : IAppIdReader
+    internal class AppIdReader : IAppIdReader
     {
         public string GetAppIdByPrivateKey(string privateKeyFile)
         {

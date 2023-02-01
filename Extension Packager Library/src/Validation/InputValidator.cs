@@ -4,23 +4,22 @@
 using Extension_Packager_Library.src.Extension;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Validation
 {
-    public class InputValidator
+    internal class InputValidator
     {
-        public static bool IsNameValid(string name)
+        internal static bool IsNameValid(string name)
         {
             return Regex.IsMatch(name, "^.{1,64}$");
         }
 
-        public static bool IsShortNameValide(string shortName)
+        internal static bool IsShortNameValide(string shortName)
         {
             return Regex.IsMatch(shortName, "^[A-Za-z_\\-0-9]{1,64}$");
         }
 
-        public static bool IsValidFile(string file, string fileExtension)
+        internal static bool IsValidFile(string file, string fileExtension)
         {
             if (string.IsNullOrWhiteSpace(file)) return false;
 
@@ -30,7 +29,7 @@ namespace Extension_Packager_Library.src.Validation
             return fileInfo.Exists && fileInfo.Extension.Equals(fileExtension);
         }
 
-        public static bool IsValidCrxFile(string file)
+        internal static bool IsValidCrxFile(string file)
         {
             if (!IsValidFile(file, ".crx")) return false;
             try

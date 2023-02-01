@@ -4,7 +4,7 @@ using Extension_Packager_Library.src.DataModels;
 
 namespace Extension_Packager.src.Converter
 {
-    class ExtToStringConverter : IValueConverter
+    internal class ExtToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

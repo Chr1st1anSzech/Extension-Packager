@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Extension_Packager_Library.src.Database
 {
-    public class DatabaseStorage : BaseDatabase, IExtensionStorage
+    internal class DatabaseStorage : BaseDatabase, IExtensionStorage
     {
         #region Constants
         private readonly int MAXIMUM_LAST_USED_ROWS = 10;

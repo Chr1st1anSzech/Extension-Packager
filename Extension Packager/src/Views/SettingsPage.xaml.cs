@@ -12,7 +12,7 @@ namespace Extension_Packager.src.Views
         public SettingsViewModel ViewModel
         {
             get => (SettingsViewModel)DataContext;
-            set => DataContext = value;
+            private set => DataContext = value;
         }
         public SettingsPage()
         {

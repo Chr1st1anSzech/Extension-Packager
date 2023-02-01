@@ -7,16 +7,14 @@ using System.Reflection;
 
 namespace Extension_Packager.src.Startup
 {
-    class Startup
+    internal class Startup
     {
-        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public void SetupSettingsRepo(ISettingsReader reader, ISettingsWriter writer)
+        internal void SetupSettingsRepo(ISettingsReader reader, ISettingsWriter writer)
         {
             SettingsRepository.Initialize(reader, writer);
         }
 
-        public bool AreSettingsValide()
+        internal bool AreSettingsValide()
         {
             return new SettingsCheck().AreSettingsValide(SettingsRepository.Instance.ReadSettings());
         }

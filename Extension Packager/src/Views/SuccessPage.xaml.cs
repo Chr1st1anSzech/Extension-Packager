@@ -14,7 +14,7 @@ namespace Extension_Packager.src.Views
         public SuccessPageViewModel ViewModel
         {
             get => (SuccessPageViewModel)DataContext;
-            set => DataContext = value;
+            private set => DataContext = value;
         }
         public SuccessPage()
         {

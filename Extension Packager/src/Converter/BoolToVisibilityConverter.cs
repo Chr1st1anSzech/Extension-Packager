@@ -7,7 +7,7 @@ using System;
 
 namespace Extension_Packager.src.Converter
 {
-    class BoolToVisibilityConverter : IValueConverter
+    internal class BoolToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

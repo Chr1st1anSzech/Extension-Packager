@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Extension_Packager.src.Navigation
 {
-    public class MenuItemsProvider : IMenuItemsProvider
+    internal class MenuItemsProvider : IMenuItemsProvider
     {
         #region Public Properties
 
@@ -26,14 +26,16 @@ namespace Extension_Packager.src.Navigation
             get { return _mainNavMenuItems; }
 
         }
-        
+
         #endregion
 
-        public MenuItemsProvider()
+
+        internal MenuItemsProvider()
         {
             SetMainNavItems();
             SetFooterNavItems();
         }
+
 
         private void SetMainNavItems()
         {
@@ -67,6 +69,7 @@ namespace Extension_Packager.src.Navigation
                 Tag = "CrxSelectPage"
             });
         }
+
 
         private void SetFooterNavItems()
         {

@@ -14,17 +14,17 @@ using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public interface IExtensionDepackager
+    internal interface IExtensionDepackager
     {
         /// <summary>
         /// Unpacks a CRX file to a defined output directory.
         /// </summary>
         /// <param name="sourceFilePath">The CRX file to be unpacked.</param>
         /// <param name="destinationDirectory">The output directory of the unpacked files.</param>
-        public Task UnpackCrxAsync(string sourceFilePath, string destinationDirectory);
+        internal Task UnpackCrxAsync(string sourceFilePath, string destinationDirectory);
     }
 
-    public class ExtensionDepackager : IExtensionDepackager
+    internal class ExtensionDepackager : IExtensionDepackager
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

@@ -7,14 +7,11 @@ using Extension_Packager_Library.src.DataProcessing;
 using Extension_Packager_Library.src.Extension;
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
-using Extension_Packager_Library.src.Settings;
 using Extension_Packager_Library.src.Validation;
 using log4net;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
-using Windows.Gaming.Input;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {
@@ -156,6 +153,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             SetExtensionValues(manifest);
 
+            IsBusy = false;
             GoForward();
         }
 

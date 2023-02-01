@@ -3,9 +3,9 @@
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public class PolicyStringGenerator
+    internal class PolicyStringGenerator
     {
-        public string Create(string extensionId, string xmlManifestUrl)
+        internal string Create(string extensionId, string xmlManifestUrl)
         {
             return $"{extensionId};{xmlManifestUrl}";
         }

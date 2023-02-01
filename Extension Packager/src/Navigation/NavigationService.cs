@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace Extension_Packager.src.Navigation
 {
-    public class NavigationService : INavigationService
+    internal class NavigationService : INavigationService
     {
         #region Private Fields
 
@@ -42,7 +42,7 @@ namespace Extension_Packager.src.Navigation
         #region Static Fields
 
         private static NavigationService _instance;
-        public static NavigationService Instance
+        internal static NavigationService Instance
         {
             get
             {
@@ -66,7 +66,7 @@ namespace Extension_Packager.src.Navigation
         private NavigationService() { }
 
 
-        public static void Initialize(Frame frame, NavigationView navigationView, IMenuItemsProvider menuItems)
+        internal static void Initialize(Frame frame, NavigationView navigationView, IMenuItemsProvider menuItems)
         {
             _instance = new()
             {
@@ -119,7 +119,7 @@ namespace Extension_Packager.src.Navigation
         }
 
 
-        public NavMenuItem GetMainNavigationItem(string pageName)
+        internal NavMenuItem GetMainNavigationItem(string pageName)
         {
             return _menuItems.MainNavMenuItems.FirstOrDefault(view => view.Tag.Equals(pageName));
         }

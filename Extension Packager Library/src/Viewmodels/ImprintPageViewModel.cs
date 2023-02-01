@@ -10,7 +10,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 {
     public class ImprintPageViewModel : ViewModel
     {
-        #region Properties
+        #region Public Properties
 
         private INavigationService _navigationService;
         public INavigationService NavigationService

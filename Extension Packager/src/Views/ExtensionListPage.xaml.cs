@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation and Contributors.
-// Licensed under the MIT License.
+// Copyright (c) Christian Szech
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Extension_Packager.src.Navigation;
 using Extension_Packager_Library.src.Viewmodels;
@@ -12,7 +12,7 @@ namespace Extension_Packager.src.Views
         public ExtensionListPageViewModel ViewModel
         {
             get => (ExtensionListPageViewModel)DataContext;
-            set => DataContext = value;
+            private set => DataContext = value;
         }
 
 

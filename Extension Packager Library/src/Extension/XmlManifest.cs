@@ -2,18 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Extension_Packager_Library.src.Helper;
-using log4net;
 using System.IO;
-using System.Reflection;
 using System.Xml;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public class XmlManifest
+    internal class XmlManifest
     {
-        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public string Create(string crxFileUrl, string version, string appId)
+        internal string Create(string crxFileUrl, string version, string appId)
         {
             bool fileFound = ResourceFile.TryGetFullPath(@"Assets\App.xml", out string appXmlPath);
             if (!fileFound)

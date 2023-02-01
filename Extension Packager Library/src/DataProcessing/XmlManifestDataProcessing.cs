@@ -30,14 +30,14 @@ namespace Extension_Packager_Library.src.DataProcessing
         #endregion
 
 
-        public XmlManifestDataProcessing(PageParameter pageParameter, Action<string, Exception> ShowWarning)
+        internal XmlManifestDataProcessing(PageParameter pageParameter, Action<string, Exception> ShowWarning)
         {
             _pageParameter = pageParameter;
             _showWarning = ShowWarning;
         }
 
 
-        public async Task<bool> ProcessInput()
+        internal async Task<bool> ProcessInput()
         {
             string xmlManifest = CreateXmlManifest();
             if (xmlManifest == null) return false;
@@ -58,7 +58,7 @@ namespace Extension_Packager_Library.src.DataProcessing
         }
 
 
-        private string CreateXmlManifest()
+        internal string CreateXmlManifest()
         {
             XmlManifest xmlManifest = new();
             DataModels.Settings settings = SettingsRepository.Instance.ReadSettings();
@@ -69,7 +69,7 @@ namespace Extension_Packager_Library.src.DataProcessing
             }
             catch (Exception ex)
             {
-                _showWarning(StringResources.GetWithReason(this, 3, ex.Message), ex);
+                _showWarning(StringResources.GetWithReason(this, 1, ex.Message), ex);
                 return null;
             }
         }
@@ -84,7 +84,7 @@ namespace Extension_Packager_Library.src.DataProcessing
             }
             catch (Exception ex)
             {
-                _showWarning(StringResources.GetWithReason(this, 5, ex.Message), ex);
+                _showWarning(StringResources.GetWithReason(this, 2, ex.Message), ex);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Extension_Packager_Library.src.DataProcessing
             }
             catch (Exception ex)
             {
-                _showWarning(StringResources.GetWithReason(this, 1, ex.Message), ex);
+                _showWarning(StringResources.GetWithReason(this, 3, ex.Message), ex);
                 return false;
             }
         }
@@ -159,7 +159,7 @@ namespace Extension_Packager_Library.src.DataProcessing
             }
             catch (Exception ex)
             {
-                _showWarning(StringResources.GetWithReason(this, 2, ex.Message), ex);
+                _showWarning(StringResources.GetWithReason(this, 4, ex.Message), ex);
                 return false;
             }
         }
@@ -169,7 +169,7 @@ namespace Extension_Packager_Library.src.DataProcessing
         {
             if (name is null)
             {
-                _showWarning(StringResources.Get(this, 4), null);
+                _showWarning(StringResources.Get(this, 5), null);
                 return null;
             }
 

@@ -111,7 +111,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
         #region Private Fields
 
-        private ManifestEditDataProcessing dataProcessing;
+        private ManifestEditDataProcessing _dataProcessing;
 
         #endregion
 
@@ -149,7 +149,7 @@ namespace Extension_Packager_Library.src.Viewmodels
             SetCommands();
             SetProperties();
             CompareToRecognizedShortname();
-            dataProcessing = new(ShortName, PageParameter, ShowWarning);
+            _dataProcessing = new(ShortName, PageParameter, ShowWarning);
         }
 
 
@@ -200,7 +200,7 @@ namespace Extension_Packager_Library.src.Viewmodels
 
             SetExtensionValues();
 
-            bool successfulProcessing = await dataProcessing.ProcessInput();
+            bool successfulProcessing = await _dataProcessing.ProcessInput();
             if (!successfulProcessing) return;
 
             IsBusy = false;
@@ -284,7 +284,7 @@ namespace Extension_Packager_Library.src.Viewmodels
                 return;
             }
 
-            dataProcessing.ChangeManifest(ShortName);
+            _dataProcessing.ChangeManifest(ShortName);
 
             ExtensionManifestDocument.SetText(TextSetOptions.FormatRtf, PageParameter.Get<string>("ManifestContent"));
 

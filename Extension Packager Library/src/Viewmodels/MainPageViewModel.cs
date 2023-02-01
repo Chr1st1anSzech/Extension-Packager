@@ -7,10 +7,7 @@ using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
 using Extension_Packager_Library.src.Settings;
 using log4net;
-using SQLitePCL;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 

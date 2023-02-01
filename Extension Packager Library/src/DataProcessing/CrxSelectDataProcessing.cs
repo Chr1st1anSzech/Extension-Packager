@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.DataProcessing
 {
-    public class CrxSelectDataProcessing
+    internal class CrxSelectDataProcessing
     {
 
         #region Private Fields
@@ -31,7 +31,7 @@ namespace Extension_Packager_Library.src.DataProcessing
         #endregion
 
 
-        public CrxSelectDataProcessing(string crxFile, string privateKeyFile, 
+        internal CrxSelectDataProcessing(string crxFile, string privateKeyFile,
             PageParameter pageParameter, Action<string, Exception> ShowWarning)
         {
             _crxFile = crxFile;
@@ -40,9 +40,10 @@ namespace Extension_Packager_Library.src.DataProcessing
             _showWarning = ShowWarning;
         }
 
-        public async Task<Manifest> ProcessInput()
+        internal async Task<Manifest> ProcessInput()
         {
-            CheckForExtInOutputDir();
+            bool successfullCheck = CheckForExtInOutputDir();
+            if (!successfullCheck) return null;
 
             bool directoriesCreated = CreateDirectories();
             if (!directoriesCreated) return null;
@@ -56,38 +57,44 @@ namespace Extension_Packager_Library.src.DataProcessing
             return manifest;
         }
 
-        private void CheckForExtInOutputDir()
+        private bool CheckForExtInOutputDir()
         {
             DataModels.Settings settings = SettingsReaderFactory.Create().ReadSettings();
-            bool isCrxInDeployementDir = IsFileInSubdirOf(_crxFile, settings.DeployementDirectory, out string subDirectory1);
-            bool isPrivateKeyInBackupDir = IsFileInSubdirOf(_privateKeyFile, settings.BackupDirectory, out string subDirectory2);
-            if (isCrxInDeployementDir)
-            {
-                _pageParameter.Set("Shortname1", subDirectory1);
-            }
-            if (isPrivateKeyInBackupDir)
-            {
-                _pageParameter.Set("Shortname2", subDirectory2);
-            }
-        }
-        
-        
-        private bool IsFileInSubdirOf(string file, string compareDirectory, out string subDir)
-        {
             try
             {
-                DirectoryInfo parentDir = new FileInfo(file).Directory;
-                subDir = parentDir.Name;
-                DirectoryInfo secondParentDir = parentDir.Parent;
-                return secondParentDir.Parent != null &&
-                    secondParentDir.FullName == Path.GetFullPath(compareDirectory);
+                bool isCrxInDeployementDir = IsFileInSubdirOf(_crxFile, settings.DeployementDirectory, out string subDirectory1);
+                bool isPrivateKeyInBackupDir = IsFileInSubdirOf(_privateKeyFile, settings.BackupDirectory, out string subDirectory2);
+                if (isCrxInDeployementDir)
+                {
+                    _pageParameter.Set("Shortname1", subDirectory1);
+                }
+                if (isPrivateKeyInBackupDir)
+                {
+                    _pageParameter.Set("Shortname2", subDirectory2);
+                }
+                return true;
             }
             catch (Exception exception)
             {
                 _showWarning(StringResources.GetWithReason(this, 1, exception.Message), exception);
+                return false;
+            }
+        }
+
+
+        private bool IsFileInSubdirOf(string file, string compareDirectory, out string subDir)
+        {
+            if (!File.Exists(file) || !Directory.Exists(compareDirectory))
+            {
                 subDir = null;
                 return false;
             }
+
+            DirectoryInfo parentDir = new FileInfo(file).Directory;
+            subDir = parentDir.Name;
+            DirectoryInfo secondParentDir = parentDir.Parent;
+            return secondParentDir.Parent != null &&
+                secondParentDir.FullName == Path.GetFullPath(compareDirectory);
         }
 
 

@@ -12,7 +12,7 @@ namespace Extension_Packager.src.Views
         public ImprintPageViewModel ViewModel
         {
             get => (ImprintPageViewModel)DataContext;
-            set => DataContext = value;
+            private set => DataContext = value;
         }
 
         public ImprintPage()

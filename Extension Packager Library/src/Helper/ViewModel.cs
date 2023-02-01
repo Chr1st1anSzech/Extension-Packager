@@ -54,7 +54,7 @@ namespace Extension_Packager_Library.src.Helper
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        public bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(field, value))
                 return false;
@@ -64,7 +64,7 @@ namespace Extension_Packager_Library.src.Helper
         }
 
 
-        internal bool IsValidOrWarn(Func<bool> ValidateFunc, string errorMessage)
+        public bool IsValidOrWarn(Func<bool> ValidateFunc, string errorMessage)
         {
             bool isValid = ValidateFunc();
             if (!isValid)
@@ -75,7 +75,7 @@ namespace Extension_Packager_Library.src.Helper
         }
 
 
-        internal void ShowWarning(string message, Exception exception = null)
+        public void ShowWarning(string message, Exception exception = null)
         {
             IsBusy = false;
             WarningMessage = message;

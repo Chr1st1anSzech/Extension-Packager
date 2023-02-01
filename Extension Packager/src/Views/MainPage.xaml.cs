@@ -12,7 +12,7 @@ namespace Extension_Packager.src.Views
         public MainPageViewModel ViewModel
         {
             get => (MainPageViewModel)DataContext;
-            set => DataContext = value;
+            private set => DataContext = value;
         }
 
         public MainPage()

@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public interface IExtensionPacker
+    internal interface IExtensionPacker
     {
         /// <summary>
         /// Packs an unpacked extension by calling the browser.
@@ -16,10 +16,10 @@ namespace Extension_Packager_Library.src.Extension
         /// <param name="keyParam">Parameter name for the key file</param>
         /// <param name="keyPath">Path of the key file</param>
         /// <returns>Path to the newly packed extension</returns>
-        public string Pack(string browserPath, string pathParam, string extensionPath, string keyParam = null, string keyPath = null);
+        internal string Pack(string browserPath, string pathParam, string extensionPath, string keyParam = null, string keyPath = null);
     }
 
-    public class ExtensionPacker : IExtensionPacker
+    internal class ExtensionPacker : IExtensionPacker
     {
         /// <summary>
         /// Packs an unpacked extension by calling the browser.

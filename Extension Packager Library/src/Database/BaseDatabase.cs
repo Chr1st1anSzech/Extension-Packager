@@ -3,11 +3,11 @@ using System;
 
 namespace Extension_Packager_Library.src.Database
 {
-    public class BaseDatabase
+    internal class BaseDatabase
     {
-        internal string DatabaseFile { get; set; }
+        protected string DatabaseFile { get; set; }
 
-        internal string CreateConnectionString()
+        protected string CreateConnectionString()
         {
             return new SqliteConnectionStringBuilder()
             {
@@ -17,7 +17,7 @@ namespace Extension_Packager_Library.src.Database
             }.ToString();
         }
 
-        internal void ExecuteNonQueryCommand(Func<SqliteConnection, SqliteCommand> createCommand)
+        protected void ExecuteNonQueryCommand(Func<SqliteConnection, SqliteCommand> createCommand)
         {
             ExecuteCommand(async (connection) =>
             {
@@ -26,7 +26,7 @@ namespace Extension_Packager_Library.src.Database
             });
         }
 
-        internal void ExecuteReaderCommand(Func<SqliteConnection, SqliteCommand> createCommand, Action<SqliteDataReader> readData)
+        protected void ExecuteReaderCommand(Func<SqliteConnection, SqliteCommand> createCommand, Action<SqliteDataReader> readData)
         {
             ExecuteCommand(async (connection) =>
             {
@@ -36,7 +36,7 @@ namespace Extension_Packager_Library.src.Database
             });
         }
 
-        internal void ExecuteCommand(Action<SqliteConnection> sqlFunction)
+        protected void ExecuteCommand(Action<SqliteConnection> sqlFunction)
         {
             string connectionString = CreateConnectionString();
             using SqliteConnection connection = new(connectionString);

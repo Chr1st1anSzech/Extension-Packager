@@ -14,7 +14,7 @@ namespace Extension_Packager.src.Views
         public ManifestEditPageViewModel ViewModel
         {
             get => (ManifestEditPageViewModel)DataContext;
-            set => DataContext = value;
+            private set => DataContext = value;
         }
 
         public ManifestEditPage()

@@ -14,7 +14,7 @@ namespace Extension_Packager.src.Views
         public XmlManifestPageViewModel ViewModel
         {
             get => (XmlManifestPageViewModel)DataContext;
-            set => DataContext = value;
+            private set => DataContext = value;
         }
 
         public XmlManifestPage()

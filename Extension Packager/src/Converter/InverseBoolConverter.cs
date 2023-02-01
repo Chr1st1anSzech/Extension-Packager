@@ -6,7 +6,7 @@ using System;
 
 namespace Extension_Packager.src.Converter
 {
-    class InverseBoolConverter : IValueConverter
+    internal class InverseBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

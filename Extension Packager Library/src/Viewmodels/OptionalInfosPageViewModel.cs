@@ -2,12 +2,7 @@
 using Extension_Packager_Library.src.Helper;
 using Extension_Packager_Library.src.Navigation;
 using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Extension_Packager_Library.src.Viewmodels
 {

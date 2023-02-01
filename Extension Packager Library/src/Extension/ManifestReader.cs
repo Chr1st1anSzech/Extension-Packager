@@ -11,20 +11,20 @@ using System.Reflection;
 
 namespace Extension_Packager_Library.src.Extension
 {
-    public interface IManifestReader
+    internal interface IManifestReader
     {
-        public Manifest ReadManifest();
+        internal Manifest ReadManifest();
     }
 
-    public class ManifestReader : IManifestReader
+    internal class ManifestReader : IManifestReader
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private string _manifestFile;
+        private readonly string _manifestFile;
         private Manifest _manifest;
 
 
-        public ManifestReader(string unpackedFolderPath)
+        internal ManifestReader(string unpackedFolderPath)
         {
             _manifestFile = GetManifestPath(unpackedFolderPath);
         }

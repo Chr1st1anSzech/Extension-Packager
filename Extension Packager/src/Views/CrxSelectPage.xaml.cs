@@ -14,7 +14,7 @@ namespace Extension_Packager.src.Views
         public CrxSelectPageViewModel ViewModel
         {
             get => (CrxSelectPageViewModel)DataContext;
-            set => DataContext = value;
+            private set => DataContext = value;
         }
 
         public CrxSelectPage()

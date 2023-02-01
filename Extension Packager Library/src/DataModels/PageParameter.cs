@@ -92,20 +92,20 @@ namespace Extension_Packager_Library.src.DataModels
         /// </summary>
         private readonly Dictionary<string, object> _tmpValues = new();
 
-        public T Get<T>(string key)
+        internal T Get<T>(string key)
         {
 
             return _tmpValues.ContainsKey(key) && _tmpValues[key] is T t ? t : default;
         }
 
-        public T TakeOut<T>(string key)
+        internal T TakeOut<T>(string key)
         {
             T val = _tmpValues.ContainsKey(key) && _tmpValues[key] is T t ? t : default;
             _tmpValues.Remove(key);
             return val;
         }
 
-        public void Set(string key, object value)
+        internal void Set(string key, object value)
         {
             if (_tmpValues.ContainsKey(key))
             {
